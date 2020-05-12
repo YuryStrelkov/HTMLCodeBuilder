@@ -72,7 +72,7 @@ namespace HTMLCodeBuilder.TaggedElements
         {
             elementSettings = new Dictionary<string, string>();
 
-            OpenTag = OpenTag;
+            OpenTag = openTag;
 
             CloseTag = closeTag;
 
