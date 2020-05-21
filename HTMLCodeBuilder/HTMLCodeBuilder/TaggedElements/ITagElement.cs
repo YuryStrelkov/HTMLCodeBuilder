@@ -14,9 +14,9 @@ namespace HTMLCodeBuilder.TaggedElements
 
         void appendParam(string param, string val);
 
-        string expandElementCloseTag();
+        string expandCloseTag(int tab);
 
-        string expandElementOpenTag();
+        string expandOpenTag(int tab);
 
         string getParam(string key);
 

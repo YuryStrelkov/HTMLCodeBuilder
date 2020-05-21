@@ -48,6 +48,7 @@
     <Compile Include="HTMLelements\HTMLDocSettings.cs" />
     <Compile Include="HTMLelements\HTMLElements.cs" />
     <Compile Include="HTMLelements\HTMLElement.cs" />
+    <Compile Include="HTMLelements\HTMLTable.cs" />
     <Compile Include="TaggedElements\TagElement.cs" />
     <Compile Include="TaggedElements\TagElementsGroup.cs" />
     <Compile Include="HTMLelements\HTMLPage.cs" />

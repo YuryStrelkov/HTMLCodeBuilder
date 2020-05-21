@@ -172,14 +172,14 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public static TagElementsGroup CreatePageContainer()
         {
-            TagElementsGroup container = new TagElementsGroup(CreateDIV());//CreateCenterAlign(HTMLsettings.getSetting(HTMLSettings.PageWigth)));
-            container.getElement(container.RootID).appendParam(".style", "width : " + HTMLsettings.getSetting(HTMLSettings.PageWigth) + ";padding : 0;margin : 0 auto;background-color : " +
+            TagElementsGroup container = new TagElementsGroup(CreateDIV());
+            container.addElementParam(container.RootID,".style", "width : " + HTMLsettings.getSetting(HTMLSettings.PageWigth) + ";padding : 0;margin : 0 auto;background-color : " +
                                                                                        HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";");
-            container.getElement(container.RootID).appendParam("class", "page-container");
+            container.addElementParam(container.RootID, "class", "page-container");
             container.addElement(CreateVerticalIndent(HTMLsettings.getSetting(HTMLSettings.PageTopIndent)));
             int id = container.addElement(CreateDIV());
-            container.getElement(id).appendParam("class", "page-fields-container");
-            container.getElement(id).appendParam(".style", "width : " + HTMLsettings.getSetting(HTMLSettings.PageContentWidth) + ";padding-left : "+
+            container.addElementParam(id, "class", "page-fields-container");
+            container.addElementParam(id, ".style", "width : " + HTMLsettings.getSetting(HTMLSettings.PageContentWidth) + ";padding-left : "+
                                                                         HTMLsettings.getSetting(HTMLSettings.PageLeftIndent) + ";margin: 0;");
             return container;
         }
@@ -243,52 +243,13 @@ namespace HTMLCodeBuilder.HTMLelements
 
             return content;
         }
-
-        public static TagElementsGroup CreateTable(int w, int h, string[] headers)
+        public static TagElementsGroup CreateImageGridHolder(int rowCapacity)
         {
-
-            if (w != headers.Length && headers.Length != 0)
-            {
-                w = Math.Min(w, headers.Length);
-            }
-
-            TagElementsGroup table = new TagElementsGroup(new HTMLElement("<table>", "</table>"));
-            
-            table.addElementParam(table.RootID, "class", "table-data");
-
-            table.addElementParam(table.RootID, "id", "table-" + new Random().NextDouble().GetHashCode().ToString());
-
-            string style_width = "width : " + (100.0 / w).ToString().Replace(',','.') + "%";
-
-            string css = table.getElementParam(table.RootID, "id") + "+width:100%;border-collapse: collapse;text-align : center;+"+
-                         table.getElementParam(table.RootID, "id") + " td+border:1px solid " + HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";"+ style_width + ";+"+
-                         table.getElementParam(table.RootID, "id")+ " th+border:1px solid " + HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";";
-
-            table.addElementParam(table.RootID, "##style", css);
-
-            if (headers.Length != 0)
-            {
-                int tr = table.addElement(new HTMLElement("<tr>", "</tr>"), table.RootID);
-
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    int th = table.addElement(new HTMLElement("<th>", "</th>"), tr);
-                    table.addElementParam(th, "class", "table-header-cell");
-                    table.getElement(th).InnerString = headers[i];
-                }
-            }
-
-            for (int i = 0; i < h; i++)
-            {
-                int tr = table.addElement(new HTMLElement("<tr>", "</tr>"), table.RootID);
-
-                for (int j = 0; j < w; j++)
-                {
-                    int td = table.addElement(new HTMLElement("<td>", "</td>"), tr);
-                    table.addElementParam(td, "class", "table-cell");
-                }
-            }
-            return table;
+            TagElementsGroup holder = new TagElementsGroup(CreateDIV());
+            holder.addElementParam(holder.RootID, "class", "grid-holder");
+            holder.addElementParam(holder.RootID, "id", "grid-holder-"+ holder.RootID);
+            holder.addElementParam(holder.RootID, "#style div", "float : left; width : "+100.0/rowCapacity + "%");
+            return holder;
         }
 
         public static TagElementsGroup CreateSubscription(string subscr)
@@ -299,60 +260,24 @@ namespace HTMLCodeBuilder.HTMLelements
 
             subscrGroup.addElementParam(subscrGroup.RootID, ".style", "text-align:center;");
 
-            subscrGroup.addElement(CreateVerticalIndent(2.5));
+           /// subscrGroup.addElement(CreateVerticalIndent(2.5));
 
             int nodeID = subscrGroup.addElement(CreateSPAN());
 
-            subscrGroup.addElementParam(nodeID, "class", "subscription-text");
-            subscrGroup.getElement(nodeID).InnerString = subscr;
-            subscrGroup.addElementParam(nodeID, ".style", "background-color:" + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";text-align:center;font-size:"
+            subscrGroup.addElementParam(nodeID, "class", "subscription-text-holder");
+
+            int enumirationNodeID = subscrGroup.addElement(CreateSPAN(), nodeID);
+            subscrGroup.addElementParam(enumirationNodeID, "class", "subscription-enumeration");
+            subscrGroup.addElementParam(enumirationNodeID, ".style", "font-weight: bold;");
+
+            int textNodeID = subscrGroup.addElement(CreateSPAN(), nodeID);
+            subscrGroup.addElementParam(textNodeID, "class", "subscription-text");
+            subscrGroup.getElement(textNodeID).InnerString = subscr;
+            subscrGroup.addElementParam(textNodeID, ".style", "background-color:" + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";text-align:center;font-size:"
                 +HTMLsettings.getSetting(HTMLSettings.ContentFontSize)+";");
-
-            nodeID = subscrGroup.addElement(CreateSPAN(), nodeID);
-            subscrGroup.addElementParam(nodeID, "class", "subscription-enumeration");
-            subscrGroup.addElementParam(nodeID, ".style", "font-weight: bold;");
-
 
             return subscrGroup;
         }
 
-        public static TagElementsGroup CreateGridHolder(int rows, int coloms)
-        {
-            TagElementsGroup grholder = CreateTable(coloms, rows, new string[] {});
-
-            string style_width = "width : " + (100.0 / coloms).ToString() + "%";
-
-            string css = grholder.getElementParam(grholder.RootID, "id") + "+width : 100%;border-collapse : collapse;text-align : center;+" +
-                         grholder.getElementParam(grholder.RootID, "id") + " td+border : none;" + style_width + ";+" +
-                         grholder.getElementParam(grholder.RootID, "id") + " th+border : none;";
-
-            grholder.addElementParam(grholder.RootID, "##style", css);
-            return grholder;
-        }
-        
-        public static void EditTableCell(TagElementsGroup table, int row, int col, string val)
-        {
-            if (col < 0 || row < 0)
-            {
-                return;
-            }
-
-            int [] tableChildrens = table.getNode(table.RootID).getChildrenIDs();
-
-            if (tableChildrens.Length - 1 < row)
-            {
-                row = tableChildrens.Length - 1;
-            }
-                tableChildrens = table.getNode(tableChildrens[row + 1]).getChildrenIDs();//cells
-
-            if (tableChildrens.Length  < col)
-            {
-                col = tableChildrens.Length - 1 ;
-            }
-
-            Node<ITagElement> n = table.getNode(tableChildrens[col]);
-
-            n.getData().InnerString = val;
-        }
     }
 }

@@ -6,7 +6,7 @@ namespace HTMLCodeBuilder.HTMLelements
 {
    public class PageBuildProcess : INodeProcess<ITagElement, string>
     {
-        string tabCode = "";
+        private int startLevel;
 
         private StringBuilder code;
 
@@ -15,38 +15,26 @@ namespace HTMLCodeBuilder.HTMLelements
             return code.ToString();
         }
 
-        private string GetTab(int level)
-        {
-              return new string('\t', level);
-        }
-
         public void onStart(int level, Node<ITagElement> n)
         {
-            tabCode = GetTab( level);
- 
-            if (n.getChildren().Count != 0)
+            if (n.getChildren().Count!= 0)
             {
-                code.Append(tabCode);
-                code.Append(n.getData().expandElementOpenTag());
+                code.Append(n.getData().expandOpenTag(startLevel + level));
                 code.Append("\n");
                 return;
             }
-            code.Append(tabCode);
-            code.Append(n.getData().expandElementOpenTag());
+            code.Append(n.getData().expandOpenTag(startLevel + level));
         }
 
         public void onEnd(int level, Node<ITagElement> n)
         {
-            tabCode = GetTab(level);
-
             if (n.getChildren().Count != 0)
             {
-                code.Append(tabCode);
-                code.Append(n.getData().expandElementCloseTag());
+                code.Append(n.getData().expandCloseTag(startLevel+level));
                 code.Append("\n");
                 return;
             }
-            code.Append(n.getData().expandElementCloseTag());
+            code.Append(n.getData().expandCloseTag(0));
             code.Append("\n");
         }
 
@@ -55,8 +43,15 @@ namespace HTMLCodeBuilder.HTMLelements
            
         }
 
+        public PageBuildProcess(int start_level)
+        {
+            startLevel = start_level;
+            code = new StringBuilder();
+        }
+
         public PageBuildProcess()
         {
+         startLevel = 0;
          code = new StringBuilder();
         }
     }

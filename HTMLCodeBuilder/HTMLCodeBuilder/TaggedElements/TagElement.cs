@@ -18,9 +18,17 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public string InnerString { get; set; }
 
+        protected int TabLevel = 0;
+
         protected bool autoCloseTag = false;
 
         protected string elementTabLevel;
+
+        protected string getTab(int level)
+        {
+            return new string('\t', level);
+        }
+
 
         public void appendParam(string param, string val)
         {
@@ -32,9 +40,9 @@ namespace HTMLCodeBuilder.TaggedElements
             elementSettings.Add(param, val);
         }
 
-        public abstract string expandElementOpenTag();
+        public abstract string expandOpenTag(int tab);
 
-        public abstract string expandElementCloseTag();
+        public abstract string expandCloseTag(int tab);
 
         public string getParam(string key)
         {

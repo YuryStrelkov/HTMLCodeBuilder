@@ -23,16 +23,33 @@ namespace HTMLBuilderExecutable
                             "This is text block " + i.ToString() + ".", true);
                     }
 
-                  TagElementsGroup table = page.addTable(page.HTMLBodyID,"Хуи",true, 3, 4,new string[3]{ "1","2","3" });
-
-                    HTMLElements.EditTableCell(table, 0, 0, "хуууй");
-                    HTMLElements.EditTableCell(table, 0, 1, "хуууй");
-                    HTMLElements.EditTableCell(table, 0, 2, "хуууй");
+    HTMLTable table = page.addTable(page.HTMLBodyID,"Хуи",true,new string[3]{ "1","2","3" });
+            table.appendRecord("a");
+            table.appendRecord("a");
+            table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+            table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
+      
+            /*HTMLElements.EditTableCell(table, 0, 0, "хуууй");
+            HTMLElements.EditTableCell(table, 0, 1, "хуууй");
+            HTMLElements.EditTableCell(table, 0, 2, "хуууй");*/
 
             //page.addGraph(page.HTMLBodyID,new double[] { 0, 1, 2}, new double[] { 0,1,2 },"x","y","t"); 
             page.addGraphic(page.HTMLBodyID,170,100);
-            //для всех графиков должны буть одинаковые x
-            //для всех графиков должны буть одинаковые y
+            //для всех графиков должны быть одинаковые x
+            //для всех графиков должны быть одинаковые y
             page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0,   1,   1.2 },"1");
             page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0,  .1, 1.2 },  "2");
             page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1.4,  1.2 }, "3");

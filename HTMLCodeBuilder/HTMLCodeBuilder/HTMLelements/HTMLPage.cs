@@ -35,7 +35,7 @@ namespace HTMLCodeBuilder.HTMLelements
         
         private TagElementsGroup LastGraphic;
 
-        private TagElementsGroup LastTable;
+        private HTMLTable LastTable;
 
         private TagElementsGroup LastTextBlock;
         
@@ -78,7 +78,7 @@ namespace HTMLCodeBuilder.HTMLelements
             styles.Add(codeID, new style(selectorName, code));
         }
 
-        public TagElementsGroup addTable(int parentID, string subscr, bool enumirate, int w, int h,string[] headers)
+        public HTMLTable addTable(int parentID, string subscr, bool enumirate, string[] headers)
         {
             int holderID = addElement(HTMLElements.CreateCenterAlign(180), parentID);
 
@@ -97,9 +97,9 @@ namespace HTMLCodeBuilder.HTMLelements
 
             addElement(HTMLElements.CreateVerticalIndent(2.5), holderID);
 
-            TagElementsGroup table = HTMLElements.CreateTable( w, h, headers);
+            HTMLTable table = new HTMLTable( headers);
 
-            mergeHTML(holderID, table);
+            addElement(table, holderID);
 
             addElement(HTMLElements.CreateVerticalIndent(2.5), parentID);
 
@@ -145,11 +145,6 @@ namespace HTMLCodeBuilder.HTMLelements
             return content;
         }   
 
-        public void addGrap2D()
-        {
-
-        }
-
         public void GraphicTitle(string t)
         {
             if (LastGraphic != null)
@@ -188,14 +183,43 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             SVGElements.GraphicYLabel(Graphic, t);
         }
- 
+
+        /*public void TagElementsGroup createGridHolder(int nodeID)
+        {
+            TagElementsGroup holder;
+        }*/
+
         public TagElementsGroup addGraphic(int parent, double w, double h)
         {
             TagElementsGroup container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
+
             TagElementsGroup Graphic = SVGElements.CreateSVGGraphicXY(w, h);
+
             container.mergeGroups(Graphic);
+
             mergeHTML(parent, container);
+
+            if (getElement(parent).getParam("class").Equals("grid-holder"))
+            {
+                HTMLElement spantext = HTMLElements.CreateSPAN();
+                spantext.appendParam("class", "subscription-enumeration");
+                spantext.InnerString = "a";
+                container.addElement(spantext);
+            }
+
+
+            TagElementsGroup  ss = HTMLElements.CreateSubscription("Picture");
+
+            int ss_num = ss.getElementByClass("subscription-enumeration")[0];
+
+            ImagesCount++;
+
+            ss.getElement(ss_num).InnerString = "Pic. № "+ ImagesCount+". ";
+
+            mergeHTML(container.RootID, ss);
+
             LastGraphic = Graphic;
+
             return Graphic;
         }
 
@@ -205,8 +229,11 @@ namespace HTMLCodeBuilder.HTMLelements
             {
                 return addGraphic(HTMLBodyID, 100, 100);
             }
+
             SVGElements.AppendSVGGraphic(ref LastGraphic, x, y,legend,color);
+
             mergeHTML(LastGraphic.getNode(LastGraphic.RootID).getParentID(), LastGraphic);
+
             return LastGraphic;
         }
         
@@ -216,8 +243,11 @@ namespace HTMLCodeBuilder.HTMLelements
             {
                 return addGraphic(HTMLBodyID, 100, 100);
             }
+
             SVGElements.AppendSVGGraphic(ref LastGraphic, x, y, z);
+
             mergeHTML(LastGraphic.getNode(LastGraphic.RootID).getParentID(), LastGraphic);
+
             return LastGraphic;
         }
 

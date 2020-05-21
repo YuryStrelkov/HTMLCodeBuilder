@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace HTMLCodeBuilder.Nodes
 {
     public class Node<T> : ICopy<Node<T>> where T : ICopy<T>
     {
-
         /// <summary>
         /// Возвращает ID, который можно добавить сейчас, но не использует его
         /// </summary>

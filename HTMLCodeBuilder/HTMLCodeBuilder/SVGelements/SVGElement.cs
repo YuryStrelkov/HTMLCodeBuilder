@@ -339,8 +339,10 @@ namespace HTMLCodeBuilder.SVGelements
             transformModified = true;
         }
 
-        public override string expandElementOpenTag()
+        public override string expandOpenTag(int tab)
         {
+            TabLevel = tab;
+            code.Append(getTab(TabLevel));
              code.Append(OpenTag);
 
             foreach (string key in elementSettings.Keys)
@@ -389,9 +391,9 @@ namespace HTMLCodeBuilder.SVGelements
                       
         }
 
-        public override string expandElementCloseTag()
+        public override string expandCloseTag(int tab)
         {
-            return InnerString + CloseTag;
+            return getTab(tab) +InnerString + CloseTag;
         }
 
         public override string ToString()

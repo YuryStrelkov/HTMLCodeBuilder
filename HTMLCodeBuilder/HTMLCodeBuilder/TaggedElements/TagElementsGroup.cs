@@ -2,7 +2,7 @@
 using HTMLCodeBuilder.Nodes;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace HTMLCodeBuilder.TaggedElements
 {
@@ -39,7 +39,7 @@ namespace HTMLCodeBuilder.TaggedElements
             {
                 return null;
             }
-            return TagVsID[tag].Keys.ToList(); ;
+            return TagVsID[tag].Keys.ToList();
         }
 
         public List<int> getElementByClass(string className)
@@ -136,13 +136,24 @@ namespace HTMLCodeBuilder.TaggedElements
             System.IO.File.WriteAllText(path, Code);
         }
 
+        public string buildCode(int tab)
+        {
+            PageBuildProcess process = new PageBuildProcess(tab);
+
+            processNodes(process);
+
+            Code = process.getProcessResult();
+
+            return Code;
+        }
+
         public string buildCode()
         {
             PageBuildProcess process = new PageBuildProcess();
             
             processNodes(process);
 
-            Code += process.getProcessResult();
+            Code = process.getProcessResult();
 
             return Code;
         }
@@ -207,24 +218,27 @@ namespace HTMLCodeBuilder.TaggedElements
         public new TagElementsGroup getSubListCopy(int nodeID)
         {
             TagElementsGroup group = new TagElementsGroup(base.getSubListCopy(nodeID));
-            group.ClassVsID = new Dictionary<string, Dictionary<int, int>>(ClassVsID);
-            group.TagVsID = new Dictionary<string, Dictionary<int, int>>(TagVsID);
-            return group;
+              return group;
         }
 
         public new TagElementsGroup getSubList(int nodeID)
         {
             TagElementsGroup group = new TagElementsGroup(base.getSubList(nodeID));
-            group.ClassVsID = ClassVsID;
-            group.TagVsID = TagVsID;
             return group;
         }
 
         private TagElementsGroup(NodeList<ITagElement, string> gr) :base()
         {  
             Nodes = gr.Nodes;
+
             RootID = gr.RootID;
-            lastID = gr.lastID;
+
+            ClassVsID = new Dictionary<string, Dictionary<int, int>>();
+
+            TagVsID = new Dictionary<string, Dictionary<int, int>>();
+
+            Parallel.ForEach(Nodes,(node)=> { updateClassAndTags(node.Value); });
+
             Code = ""; 
         }
 
