@@ -24,13 +24,12 @@ namespace HTMLCodeBuilder.TaggedElements
 
         protected string elementTabLevel;
 
-        protected string getTab(int level)
+        protected string GetTab(int level)
         {
             return new string('\t', level);
         }
 
-
-        public void appendParam(string param, string val)
+        public void AddParam(string param, string val)
         {
             if (elementSettings.ContainsKey(param))
             {
@@ -40,11 +39,11 @@ namespace HTMLCodeBuilder.TaggedElements
             elementSettings.Add(param, val);
         }
 
-        public abstract string expandOpenTag(int tab);
+        public abstract string ExpandOpenTag(int tab);
 
-        public abstract string expandCloseTag(int tab);
+        public abstract string ExpandCloseTag(int tab);
 
-        public string getParam(string key)
+        public string GetParam(string key)
         {
             if (elementSettings.ContainsKey(key))
             {
@@ -53,22 +52,22 @@ namespace HTMLCodeBuilder.TaggedElements
             return "";
         }
 
-        public void remParam(string key)
+        public void RemoveParam(string key)
         {
-            if (hasParam(key))
+            if (HasParam(key))
             {
                 elementSettings.Remove(key);
             }
         }
 
-        public bool hasParam(string key)
+        public bool HasParam(string key)
         {
             return elementSettings.ContainsKey(key);
         }
 
-        public bool hasParamVal(string key, string val)
+        public bool HasParamVal(string key, string val)
         {
-            if (!hasParam(key))
+            if (!HasParam(key))
             {
                 return false;
             }

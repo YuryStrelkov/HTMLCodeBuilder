@@ -5,11 +5,11 @@ namespace HTMLCodeBuilder.HTMLelements
 {
     public class HTMLElement : TagElement
     {
-        public override string expandOpenTag(int tab)
+        public override string ExpandOpenTag(int tab)
         {
             TabLevel = tab;
 
-            code.Append(getTab(TabLevel));
+            code.Append(GetTab(TabLevel));
 
             code.Append(OpenTag);
 
@@ -43,14 +43,14 @@ namespace HTMLCodeBuilder.HTMLelements
             return code.ToString();
         }
 
-        public override string expandCloseTag(int tab)
+        public override string ExpandCloseTag(int tab)
         {
-            return getTab(tab) + InnerString + CloseTag;
+            return GetTab(tab) + InnerString + CloseTag;
         }
 
         public HTMLElement(string openTag, string closeTag):base(openTag, closeTag)
         {
-            appendParam("class", openTag.Substring(1, openTag.Length-2));
+            AddParam("class", openTag.Substring(1, openTag.Length-2));
 
             OpenTag = openTag.Remove(openTag.Length - 1, 1); ;
  

@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace HTMLCodeBuilder.Nodes
 {
-    public class Node<T> : ICopy<Node<T>> where T : ICopy<T>
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Node<T> : IDisposable, IEquatable<Node<T>>, ICopy<Node<T>> where T : ICopy<T>
     {
+        /// <summary>
+        /// Счётчик количества созданных объектов на данный момент
+        /// </summary>
+        private static readonly InstanceCounter instanceCounter = new InstanceCounter();
         /// <summary>
         /// Возвращает ID, который можно добавить сейчас, но не использует его
         /// </summary>
@@ -13,15 +21,7 @@ namespace HTMLCodeBuilder.Nodes
         {
             return instanceCounter.getInstanceIdAvailable();
         }
-        /// <summary>
-        /// Счётчик количества созданных объектов на данный момент
-        /// </summary>
-        private static InstanceCounter instanceCounter = new InstanceCounter();
-        /// <summary>
-        /// Хранимые данные
-        /// </summary>
-        private T data;
-        /// <summary>
+          /// <summary>
         /// Родительский ID
         /// </summary>
         private int parentId;
@@ -33,6 +33,10 @@ namespace HTMLCodeBuilder.Nodes
         /// ID дочерних элементов
         /// </summary>
         private Dictionary<int, int> childrens;
+        /// <summary>
+        /// Хранимые данные
+        /// </summary>
+        private T data;
         /// <summary>
         /// Метод доступа для обращения к хранимым данным
         /// </summary>
@@ -176,11 +180,16 @@ namespace HTMLCodeBuilder.Nodes
             return "ID : " + getID() + " data : " + data.ToString(); 
         }
 
-        ~Node()
+        public void Dispose()
         {
-          instanceCounter.removeInstance(Id);
+            instanceCounter.removeInstance(Id);
         }
 
-   }
+        /*~Node()
+        {
+         instanceCounter.removeInstance(Id);
+        }*/
+
+    }
 
 }

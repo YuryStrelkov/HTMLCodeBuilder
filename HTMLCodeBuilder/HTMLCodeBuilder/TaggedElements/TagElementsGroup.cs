@@ -23,17 +23,17 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public string Code { get; protected set; }
 
-        public bool hasTag(string tag)
+        public bool HasTag(string tag)
         {
             return TagVsID.ContainsKey(tag);
         }
 
-        public bool hasClass(string tag)
+        public bool HasClass(string tag)
         {
             return ClassVsID.ContainsKey(tag);
         }
 
-        public List<int> getElementByTag(string tag)
+        public List<int> GetElementByTag(string tag)
         {
             if (!TagVsID.ContainsKey(tag))
             {
@@ -42,7 +42,7 @@ namespace HTMLCodeBuilder.TaggedElements
             return TagVsID[tag].Keys.ToList();
         }
 
-        public List<int> getElementByClass(string className)
+        public List<int> GetElementByClass(string className)
         {
             if (!ClassVsID.ContainsKey(className))
             {
@@ -69,7 +69,7 @@ namespace HTMLCodeBuilder.TaggedElements
                 TagVsID[param].Add(elementNode.getID(), elementNode.getID());
             }
             
-            param = elementNode.getData().getParam("class");
+            param = elementNode.getData().GetParam("class");
 
             if (ClassVsID.ContainsKey(param))
             {
@@ -86,44 +86,44 @@ namespace HTMLCodeBuilder.TaggedElements
             }
         }
 
-        public ITagElement getElement(int id)
+        public ITagElement GetElement(int id)
         {
-            if (containsNode(id))
+            if (ContainsNode(id))
             {
-                return getNode(id).getData();
+                return GetNode(id).getData();
             }
-            return getNode(RootID).getData();
+            return GetNode(RootID).getData();
         }
 
-        public int addElement(ITagElement element)
+        public int AddElement(ITagElement element)
         {
-            return addElement(element, RootID);
+            return AddElement(element, RootID);
         }
 
-        public int addElement(ITagElement element, int parentID)
+        public int AddElement(ITagElement element, int parentID)
         {
-            int id = addNode(element, parentID);
+            int id = AddNode(element, parentID);
 
-            updateClassAndTags(getNode(id));
+            updateClassAndTags(GetNode(id));
 
             LastElement = element;
 
             return id;
         }
 
-        public void addElementParam(int elemID, string paramKey, string paramVal)
+        public void AddElementParam(int elemID, string paramKey, string paramVal)
         {
-            getNode(elemID).getData().appendParam(paramKey, paramVal);
+            GetNode(elemID).getData().AddParam(paramKey, paramVal);
 
             if (paramKey.Equals("class"))
             {
-                updateClassAndTags(getNode(elemID));
+                updateClassAndTags(GetNode(elemID));
             }
         }
 
-        public string getElementParam(int elemID, string paramKey)
+        public string GetElementParam(int elemID, string paramKey)
         {
-            return getNode(elemID).getData().getParam(paramKey);
+            return GetNode(elemID).getData().GetParam(paramKey);
         }
  
         public void saveCode(string path)
@@ -136,94 +136,59 @@ namespace HTMLCodeBuilder.TaggedElements
             System.IO.File.WriteAllText(path, Code);
         }
 
-        public string buildCode(int tab)
+        public string BuildCode(int tab)
         {
             PageBuildProcess process = new PageBuildProcess(tab);
 
-            processNodes(process);
+            ProcessNodes(process);
 
             Code = process.getProcessResult();
 
             return Code;
         }
 
-        public string buildCode()
+        public string BuildCode()
         {
             PageBuildProcess process = new PageBuildProcess();
-            
-            processNodes(process);
+
+            ProcessNodes(process);
 
             Code = process.getProcessResult();
 
             return Code;
         }
 
-        public void mergeGroups(TagElementsGroup list)
+        public void MergeGroups(TagElementsGroup list)
         {
-            mergeGroups(RootID, list);
+            MergeGroups(RootID, list);
         }
 
-        public void mergeGroups(int nodeID, TagElementsGroup list)
+        public void MergeGroups(int nodeID, TagElementsGroup list)
         {
-            if (!containsNode(nodeID))
+            if (!ContainsNode(nodeID))
             {
                 nodeID = RootID;
             }
 
             LastGroup = list;
 
-            foreach (int key in list.getNodeKeys())
+            foreach (int key in list.GetNodeKeys())
             {
-                addNodeDirect(list.getNode(key));
+                AddNodeDirect(list.GetNode(key));
+                updateClassAndTags(list.GetNode(key));
             }
-
-            foreach (string key in list.ClassVsID.Keys)
-            {
-                if (ClassVsID.ContainsKey(key))
-                {
-                    foreach (int paramKey in list.ClassVsID[key].Keys)
-                    {
-                        if (ClassVsID[key].ContainsKey(paramKey))
-                        {
-                            continue;
-                        }
-                        ClassVsID[key].Add(paramKey, paramKey);
-                    }
-                    continue;
-                }
-
-                ClassVsID.Add(key, list.ClassVsID[key]);
-            }
-
-
-            foreach (string key in list.TagVsID.Keys)
-            {
-                if (TagVsID.ContainsKey(key))
-                {
-                    foreach (int paramKey in list.TagVsID[key].Keys)
-                    {
-                        if (TagVsID[key].ContainsKey(paramKey))
-                        {
-                            continue;
-                        }
-                        TagVsID[key].Add(paramKey, paramKey);
-                    }
-                    continue;
-                }
-                TagVsID.Add(key, list.TagVsID[key]);
-            }
-            getNode(nodeID).addChild(getNode(list.RootID));
+            GetNode(nodeID).addChild(GetNode(list.RootID));
         }
      
-        public new TagElementsGroup getSubListCopy(int nodeID)
+        public new TagElementsGroup GetSubListCopy(int nodeID)
         {
-            TagElementsGroup group = new TagElementsGroup(base.getSubListCopy(nodeID));
+            TagElementsGroup group = new TagElementsGroup(base.GetSubListCopy(nodeID));
               return group;
         }
 
-        public new TagElementsGroup getSubList(int nodeID)
+        public new TagElementsGroup GetSubList(int nodeID)
         {
-            TagElementsGroup group = new TagElementsGroup(base.getSubList(nodeID));
+            TagElementsGroup group = new TagElementsGroup(base.GetSubList(nodeID));
             return group;
         }
 
@@ -252,7 +217,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
             RootID = node.getID();
 
-            lastID = addNode(node);
+            LastID = AddNode(node);
 
             updateClassAndTags(node);
                   

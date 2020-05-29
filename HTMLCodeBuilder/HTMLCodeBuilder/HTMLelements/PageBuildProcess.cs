@@ -19,22 +19,22 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             if (n.getChildren().Count!= 0)
             {
-                code.Append(n.getData().expandOpenTag(startLevel + level));
+                code.Append(n.getData().ExpandOpenTag(startLevel + level));
                 code.Append("\n");
                 return;
             }
-            code.Append(n.getData().expandOpenTag(startLevel + level));
+            code.Append(n.getData().ExpandOpenTag(startLevel + level));
         }
 
         public void onEnd(int level, Node<ITagElement> n)
         {
             if (n.getChildren().Count != 0)
             {
-                code.Append(n.getData().expandCloseTag(startLevel+level));
+                code.Append(n.getData().ExpandCloseTag(startLevel+level));
                 code.Append("\n");
                 return;
             }
-            code.Append(n.getData().expandCloseTag(0));
+            code.Append(n.getData().ExpandCloseTag(0));
             code.Append("\n");
         }
 

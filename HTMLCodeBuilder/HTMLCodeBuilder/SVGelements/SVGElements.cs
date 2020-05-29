@@ -46,12 +46,12 @@ namespace HTMLCodeBuilder.SVGelements
 
         private static double parseSize2Pix(double x)
         {
-            return x * SVGElement.PIXEL_PER_MM;
+            return x * Vec2D.PIXEL_PER_MM;
         }
 
         private static string parseSize2PixString(double x)
         {
-            return num2str(x * SVGElement.PIXEL_PER_MM);
+            return num2str(x * Vec2D.PIXEL_PER_MM);
         }
 
         private static string parseSize2MMString(double x)
@@ -62,11 +62,11 @@ namespace HTMLCodeBuilder.SVGelements
         public static SVGElement CreateSVGLine(double x1, double y1, double x2, double y2, string style)
         {
             SVGElement line = new SVGElement("<line>", "</line>");
-            line.appendParam("x1", parseSize2PixString(x1));
-            line.appendParam("x2", parseSize2PixString(x2));
-            line.appendParam("y1", parseSize2PixString(y1));
-            line.appendParam("y2", parseSize2PixString(y2));
-            line.appendParam("style", style);
+            line.AddParam("x1", parseSize2PixString(x1));
+            line.AddParam("x2", parseSize2PixString(x2));
+            line.AddParam("y1", parseSize2PixString(y1));
+            line.AddParam("y2", parseSize2PixString(y2));
+            line.AddParam("style", style);
             return line;
         }
       
@@ -84,7 +84,7 @@ namespace HTMLCodeBuilder.SVGelements
         {
              SVGElement node = new SVGElement("<g>", "</g>");
 
-            node.appendParam("class", "transform-node");
+            node.AddParam("class", "transform-node");
 
             node.Move(x, y);
 
@@ -101,16 +101,16 @@ namespace HTMLCodeBuilder.SVGelements
             Text.Rotate(rot);
             Text.Move(xc, yc);
             Text.InnerString = text;
-            Text.appendParam("font-size", "14pt");
-            Text.appendParam("font-family", "Times New Roman");
-            Text.appendParam("style", "text-anchor : middle;");
+            Text.AddParam("font-size", "14pt");
+            Text.AddParam("font-family", "Times New Roman");
+            Text.AddParam("style", "text-anchor : middle;");
             return Text;
         }
 
         public static SVGElement CreateSVGText(string text, double xc, double yc, double rot, string style)
         {
             SVGElement Text = CreateSVGText(text, xc, yc, rot);
-            Text.appendParam("style", style);
+            Text.AddParam("style", style);
             return Text;
         }
 
@@ -119,7 +119,7 @@ namespace HTMLCodeBuilder.SVGelements
             SVGElement rect = new SVGElement("<rect>", "</rect>");
             rect.Move(x, y);
             rect.setSizes(w, h);
-            rect.appendParam("style", style);
+            rect.AddParam("style", style);
             return rect;
         }
 
@@ -133,7 +133,7 @@ namespace HTMLCodeBuilder.SVGelements
 
                 line.Scale(1, -1);
 
-                line.appendParam("class", "poly-line");
+                line.AddParam("class", "poly-line");
 
                 StringBuilder points=new StringBuilder();
 
@@ -147,8 +147,8 @@ namespace HTMLCodeBuilder.SVGelements
                 points.Append(num2str(x[x.Length - 1]));
                 points.Append(" ");
                 points.Append(num2str(y[y.Length - 1]));
-                line.appendParam( "points", points.ToString());
-                line.appendParam( "style", style);
+                line.AddParam( "points", points.ToString());
+                line.AddParam( "style", style);
                
             }
             catch (Exception e)
@@ -163,10 +163,10 @@ namespace HTMLCodeBuilder.SVGelements
         public static SVGElement CreateSVGDashedLine(double x1, double y1, double x2, double y2, string style)
         {
             SVGElement line = new SVGElement("<path>", "</path>");
-            line.appendParam("fill", "none");
-            line.appendParam("style", style);
-            line.appendParam("stroke-dasharray", "5,5");
-            line.appendParam("d", "M" + parseSize2PixString(x1) + " " + parseSize2PixString(y1) + " l" +
+            line.AddParam("fill", "none");
+            line.AddParam("style", style);
+            line.AddParam("stroke-dasharray", "5,5");
+            line.AddParam("d", "M" + parseSize2PixString(x1) + " " + parseSize2PixString(y1) + " l" +
                                         parseSize2PixString(x2 - x1) + " " + parseSize2PixString(y2 - y1));
             return line;
         }
@@ -175,11 +175,11 @@ namespace HTMLCodeBuilder.SVGelements
         {
             SVGElement image = new SVGElement("<image>", "</image>"); new SVGElement("<image>", "</image>");
 
-            image.appendParam("xlink:href", "");
+            image.AddParam("xlink:href", "");
 
-            image.appendParam("image-rendering", "optimizeSpeed");
+            image.AddParam("image-rendering", "optimizeSpeed");
 
-            image.appendParam("preserveAspectRatio", "none");
+            image.AddParam("preserveAspectRatio", "none");
 
             return image;
         }
@@ -188,7 +188,7 @@ namespace HTMLCodeBuilder.SVGelements
         {
             SVGElement image = CreateSVGImage();
 
-            image.appendParam("xlink:href", src);
+            image.AddParam("xlink:href", src);
 
             return image;
         }
@@ -205,7 +205,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             SVGElement image = CreateSVGImage(path);
 
-            image.setSizes(w / SVGElement.PIXEL_PER_MM, h / SVGElement.PIXEL_PER_MM);
+            image.setSizes(w / Vec2D.PIXEL_PER_MM, h / Vec2D.PIXEL_PER_MM);
 
             return image;
         }
@@ -218,7 +218,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             SVGElement image = CreateSVGImage(path);
 
-            image.setSizes(img.Width / SVGElement.PIXEL_PER_MM, img.Height / SVGElement.PIXEL_PER_MM);
+            image.setSizes(img.Width / Vec2D.PIXEL_PER_MM, img.Height / Vec2D.PIXEL_PER_MM);
 
             return image;
         }
@@ -235,7 +235,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             SVGElement image = CreateSVGImage(path);
 
-            image.setSizes(w / SVGElement.PIXEL_PER_MM, h / SVGElement.PIXEL_PER_MM);
+            image.setSizes(w / Vec2D.PIXEL_PER_MM, h / Vec2D.PIXEL_PER_MM);
 
             return image;
         }
@@ -262,9 +262,9 @@ namespace HTMLCodeBuilder.SVGelements
         {
             TagElementsGroup plotxy = CreateSVG(w, h);
 
-            plotxy.addElementParam(plotxy.RootID, "class", "graphicic-node");
+            plotxy.AddElementParam(plotxy.RootID, "class", "graphicic-node");
 
-            plotxy.addElementParam(plotxy.RootID, "id", "graphicic-node-" + plotxy.RootID.ToString());
+            plotxy.AddElementParam(plotxy.RootID, "id", "graphicic-node-" + plotxy.RootID.ToString());
 
             return plotxy;
 
@@ -272,7 +272,7 @@ namespace HTMLCodeBuilder.SVGelements
 
         public static void AppendSVGGraphic(ref TagElementsGroup graphic, double[] xs, double[] ys, string legendText = "", string lineStyle = "")
         {
-            if (!graphic.hasClass("graphicic-node"))
+            if (!graphic.HasClass("graphicic-node"))
             {
                 Console.WriteLine("It's not a graphicic handler...");
                 return;
@@ -288,7 +288,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             double ymax = ys.Max(), ymin = ys.Min();
 
-            if (!graphic.hasClass("axes"))
+            if (!graphic.HasClass("axes"))
             {
                 double[] axseXS = new double[11], axseYS = new double[11];
 
@@ -301,11 +301,11 @@ namespace HTMLCodeBuilder.SVGelements
                     axseXS[i] = xmin + i * dx;
                     axseYS[i] = ymin + i * dy;
                 }
-                SVGElement graphicBg = (SVGElement)graphic.getElement(graphic.getElementByClass("graphicic-node")[0]);
+                SVGElement graphicBg = (SVGElement)graphic.GetElement(graphic.GetElementByClass("graphicic-node")[0]);
 
                 TagElementsGroup axes = CreateSVGXYAxis(graphicBg.W, graphicBg.H, axseXS, axseYS);
 
-                graphic.mergeGroups(axes);
+                graphic.MergeGroups(axes);
 
             }
 
@@ -327,7 +327,7 @@ namespace HTMLCodeBuilder.SVGelements
 
         public static void AppendSVGGraphic(ref TagElementsGroup graphic, double[] xs, double[] ys, double[] zs)
         {
-            if (!graphic.hasClass("graphicic-node"))
+            if (!graphic.HasClass("graphicic-node"))
             {
                 Console.WriteLine("It's not a graphicic handler...");
                 return;
@@ -345,7 +345,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             double zmax = zs.Max(), zmin = zs.Min();
 
-            if (!graphic.hasClass("axes"))
+            if (!graphic.HasClass("axes"))
             {
                 double[] axseXS = new double[11], axseYS = new double[11], axseZS = new double[11]; ;
 
@@ -362,47 +362,47 @@ namespace HTMLCodeBuilder.SVGelements
                     axseZS[i] = zmin + i * dz;
                 }
 
-                int graphicBgID = graphic.getElementByClass("graphicic-node")[0];
+                int graphicBgID = graphic.GetElementByClass("graphicic-node")[0];
 
-                SVGElement graphicBg = (SVGElement)graphic.getElement(graphicBgID);
+                SVGElement graphicBg = (SVGElement)graphic.GetElement(graphicBgID);
 
                 TagElementsGroup axes = CreateSVGXYZAxis(graphicBg.W, graphicBg.H, axseXS, axseYS, axseZS);
 
-                graphic.mergeGroups(axes);
+                graphic.MergeGroups(axes);
 
                 ///Данные цветовой схемы отображения
 
-                int HolderID = graphic.getElementByClass("graphic-color-bar")[0];
+                int HolderID = graphic.GetElementByClass("graphic-color-bar")[0];
 
-                SVGElement holderElement = (SVGElement)graphic.getElement(HolderID);
+                SVGElement holderElement = (SVGElement)graphic.GetElement(HolderID);
 
-                if (graphic.hasChildrens(HolderID))
+                if (graphic.HasChildrens(HolderID))
                 {
-                    graphic.removeChildrens(HolderID);
+                    graphic.RemoveChildrens(HolderID);
                 }
 
                 SVGElement colorbar = CreateSVGImage(ImageProcessing.CreateJetColorMap());
 
                 colorbar.setSizes(holderElement.W, holderElement.H);
 
-                graphic.addElement(colorbar, HolderID);
+                graphic.AddElement(colorbar, HolderID);
 
                 ///Данные двумерного распределения
 
-                HolderID = graphic.getElementByClass("graphic-data")[0];
+                HolderID = graphic.GetElementByClass("graphic-data")[0];
 
-                holderElement = (SVGElement)graphic.getElement(HolderID);
+                holderElement = (SVGElement)graphic.GetElement(HolderID);
 
-                if (graphic.hasChildrens(HolderID))
+                if (graphic.HasChildrens(HolderID))
                 {
-                    graphic.removeChildrens(HolderID);
+                    graphic.RemoveChildrens(HolderID);
                 }
 
                 SVGElement data = CreateSVGImage(xs.Length, ys.Length, zs, ColorMaps.JET);
 
                 data.setSizes(holderElement.W, holderElement.H);
 
-                graphic.addElement(data, HolderID);
+                graphic.AddElement(data, HolderID);
 
             }
 
@@ -415,55 +415,55 @@ namespace HTMLCodeBuilder.SVGelements
             {
                 return;
             } 
-            if (!graphic.hasClass("legend-holder"))
+            if (!graphic.HasClass("legend-holder"))
             {
                 CreateSVGgraphicLegend(ref graphic);
             }
-            int legendNodeID = graphic.getElementByClass("legend-node")[0];
+            int legendNodeID = graphic.GetElementByClass("legend-node")[0];
 
-            int legendRectID = graphic.getElementByClass("legend-holder")[0];
+            int legendRectID = graphic.GetElementByClass("legend-holder")[0];
 
-            SVGElement legendRect = (SVGElement)graphic.getElement(legendRectID);
+            SVGElement legendRect = (SVGElement)graphic.GetElement(legendRectID);
 
             SVGElement legendRecord = CreateSVGText(legendText, -4.5, legendRect.H + 4.75, 0);
-            legendRecord.appendParam("style", "text-anchor:end; ");
+            legendRecord.AddParam("style", "text-anchor:end; ");
 
             legendRect.setSizes(Math.Max(Math.Max(legendRect.W, legendText.Length * 2.75),8), legendRect.H + 6.5);
             legendRect.setPosition(-legendRect.W, legendRect.Y);
-            graphic.addElement(legendRecord, legendNodeID);
-            graphic.addElement(CreateSVGLine(-4, legendRect.H - 3.25, -1, legendRect.H - 3.25, "stroke-width : 0.5mm; stroke : " + style), legendNodeID);
+            graphic.AddElement(legendRecord, legendNodeID);
+            graphic.AddElement(CreateSVGLine(-4, legendRect.H - 3.25, -1, legendRect.H - 3.25, "stroke-width : 0.5mm; stroke : " + style), legendNodeID);
         }
 
         public static void GraphicTitle(TagElementsGroup graphic, string title)
         {
-            if (!graphic.hasClass("title"))
+            if (!graphic.HasClass("title"))
             {
                 return;
             }
-            graphic.getElement(graphic.getElementByClass("title")[0]).InnerString = title;
+            graphic.GetElement(graphic.GetElementByClass("title")[0]).InnerString = title;
         }
 
         public static void GraphicXLabel(TagElementsGroup graphic, string xlabel)
         {
-            if (!graphic.hasClass("x-label"))
+            if (!graphic.HasClass("x-label"))
             {
                 return;
             }
-            graphic.getElement(graphic.getElementByClass("x-label")[0]).InnerString = xlabel;
+            graphic.GetElement(graphic.GetElementByClass("x-label")[0]).InnerString = xlabel;
         }
 
         public static void GraphicYLabel(TagElementsGroup graphic, string ylabel)
         {
-            if (!graphic.hasClass("y-label"))
+            if (!graphic.HasClass("y-label"))
             {
                 return;
             }
-            graphic.getElement(graphic.getElementByClass("y-label")[0]).InnerString = ylabel;
+            graphic.GetElement(graphic.GetElementByClass("y-label")[0]).InnerString = ylabel;
         }
 
         private static void DrawSVGPolyLine(ref TagElementsGroup axes, double[] xs, double[] ys, double xmin, double xmax, double ymin, double ymax, string style = "")
         {
-            SVGElement elem = (SVGElement)axes.getElement(axes.getElementByClass("graphic-backround")[0]);
+            SVGElement elem = (SVGElement)axes.GetElement(axes.GetElementByClass("graphic-backround")[0]);
 
             double xOff = 1 / (xmax - xmin) * elem.Wpix;
 
@@ -481,23 +481,23 @@ namespace HTMLCodeBuilder.SVGelements
 
             if (string.IsNullOrEmpty(style))
             {
-                line = CreateSVGPolyLine(elem.X0 - xOff / SVGElement.PIXEL_PER_MM,
-                                                          elem.Y0 + yOff / SVGElement.PIXEL_PER_MM, ref xs, ref ys, "fill:none;stroke-width:2px;stroke:rgb(0,0,0);");
+                line = CreateSVGPolyLine(elem.X0 - xOff / Vec2D.PIXEL_PER_MM,
+                                                          elem.Y0 + yOff / Vec2D.PIXEL_PER_MM, ref xs, ref ys, "fill:none;stroke-width:2px;stroke:rgb(0,0,0);");
 
-                axes.addElement(line, axes.getElementByClass("charts-list-node")[0]);
+                axes.AddElement(line, axes.GetElementByClass("charts-list-node")[0]);
 
                 return;
             }
 
-            line = CreateSVGPolyLine(elem.X0 - xOff / SVGElement.PIXEL_PER_MM,
-                                                       elem.Y0 + yOff / SVGElement.PIXEL_PER_MM, ref xs, ref ys, style);
+            line = CreateSVGPolyLine(elem.X0 - xOff / Vec2D.PIXEL_PER_MM,
+                                                       elem.Y0 + yOff / Vec2D.PIXEL_PER_MM, ref xs, ref ys, style);
 
-            axes.addElement(line, axes.getElementByClass("charts-list-node")[0]);
+            axes.AddElement(line, axes.GetElementByClass("charts-list-node")[0]);
         }
 
         private static void CreateSVGgraphicLegend(ref TagElementsGroup axes)
         {
-            List<int> nodes = axes.getElementByClass("legend-node");
+            List<int> nodes = axes.GetElementByClass("legend-node");
 
             if (nodes == null)
             {
@@ -505,9 +505,9 @@ namespace HTMLCodeBuilder.SVGelements
             }
             SVGElement legend = CreateSVGRect(0, 0, 0, 0, "fill:rgb(255,255,255);stroke-width:1px;stroke:rgb(0,0,0)");
 
-            legend.appendParam("class", "legend-holder");
+            legend.AddParam("class", "legend-holder");
 
-            axes.addElement(legend, nodes[0]);
+            axes.AddElement(legend, nodes[0]);
         
         }
 
@@ -529,66 +529,66 @@ namespace HTMLCodeBuilder.SVGelements
 
             axNodeBack.setSizes(AX_W_H[0], AX_W_H[1]);
 
-            axNodeBack.appendParam("class", "graphic-backround");
+            axNodeBack.AddParam("class", "graphic-backround");
 
             TagElementsGroup axNodeBackground = new TagElementsGroup(axNodeBack); 
 
             SVGElement charts = new SVGElement("<g>", "</g>"); 
 
-            charts.appendParam("class", "charts-list-node");
+            charts.AddParam("class", "charts-list-node");
 
-            axNodeBackground.addElement(charts);
+            axNodeBackground.AddElement(charts);
 
 
             TagElementsGroup axTitle = new TagElementsGroup(CreateSVGNode());
 
-            axTitle.addElementParam(axTitle.RootID,"class", "axes-subscriptions");
+            axTitle.AddElementParam(axTitle.RootID,"class", "axes-subscriptions");
                 
             SVGElement title = CreateSVGText("", AX_CENTER_W_H[0], -0.025 * h, 0);
-            title.appendParam("class", "title-node");
-            title.appendParam("class", "title");
-            title.appendParam("font-size", "14pt");
-            axTitle.addElement(title);
+            title.AddParam("class", "title-node");
+            title.AddParam("class", "title");
+            title.AddParam("font-size", "14pt");
+            axTitle.AddElement(title);
 
             SVGElement xlabel = CreateSVGText("", AX_CENTER_W_H[0], AX_Y_TEXT_POS[0], 0);
-            xlabel.appendParam( "class", "x-label-node");
-            xlabel.appendParam("class", "x-label");
-            xlabel.appendParam("font-size", "14pt");
-            axTitle.addElement(xlabel);
+            xlabel.AddParam( "class", "x-label-node");
+            xlabel.AddParam("class", "x-label");
+            xlabel.AddParam("font-size", "14pt");
+            axTitle.AddElement(xlabel);
 
             SVGElement ylabel = CreateSVGText("", AX_X_TEXT_POS[0], AX_CENTER_W_H[1], -90);
-            ylabel.appendParam( "class", "y-label-node");
-            ylabel.appendParam( "class", "y-label");
-            ylabel.appendParam("font-size", "14pt");
-            axTitle.addElement(ylabel);
+            ylabel.AddParam( "class", "y-label-node");
+            ylabel.AddParam( "class", "y-label");
+            ylabel.AddParam("font-size", "14pt");
+            axTitle.AddElement(ylabel);
            
-            axNodeBackground.mergeGroups(axTitle);
+            axNodeBackground.MergeGroups(axTitle);
 
             TagElementsGroup axesNode = new TagElementsGroup(CreateSVGNode());
 
-            axesNode.addElementParam(axesNode.RootID,"class", "axes");
+            axesNode.AddElementParam(axesNode.RootID,"class", "axes");
 
             double[] powAxis = rescaleAxis(ref xs, ref ys);
 
             if (powAxis[0] != 0)
             {
                 SVGElement text = CreateSVGText("+", AX_W_H[0] - 5, AX_Y_TEXT_POS[0] + 0.5, 45);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 text = CreateSVGText("10", AX_W_H[0], AX_Y_TEXT_POS[0], 0);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 if (powAxis[0] != 1)
                 {
                     text = CreateSVGText(powAxis[0].ToString(), AX_W_H[0], AX_Y_TEXT_POS[0] - 2, 0);
-                    text.appendParam( "font-size", "7pt");
-                    text.appendParam( "class", "ax-x-mult");
-                    text.appendParam("style", "text-anchor:start");
-                    axesNode.addElement(text);
+                    text.AddParam( "font-size", "7pt");
+                    text.AddParam( "class", "ax-x-mult");
+                    text.AddParam("style", "text-anchor:start");
+                    axesNode.AddElement(text);
                 }
 
             }
@@ -596,22 +596,22 @@ namespace HTMLCodeBuilder.SVGelements
             if (powAxis[1] != 0)
             {
                 SVGElement text = CreateSVGText("+", 1, -0.5, 45);
-                text.appendParam( "font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam( "font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 text = CreateSVGText("10", 6, -1, 0);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 if (powAxis[1] != 1)
                 {
                     text = CreateSVGText(powAxis[1].ToString(), 6, -3, 0);
-                    text.appendParam( "font-size", "7pt");
-                    text.appendParam("style", "text-anchor:start");
-                    text.appendParam("class", "ax-y-mult");
-                    axesNode.addElement(text);
+                    text.AddParam( "font-size", "7pt");
+                    text.AddParam("style", "text-anchor:start");
+                    text.AddParam("class", "ax-y-mult");
+                    axesNode.AddElement(text);
                 }
 
             }
@@ -640,17 +640,17 @@ namespace HTMLCodeBuilder.SVGelements
                 numAlongX(ref axesNode, xs[i].ToString(), x_curr,           AX_Y_TEXT_POS[1], x_curr,         AX_W_H[1], 0, "stroke-width: 0.5mm; stroke: black;");
             }
 
-            axesNode.addElement(CreateSVGRect(0, 0, AX_W_H[0], AX_W_H[1], "fill:none;stroke-width:1px;stroke:rgb(0,0,0)"));
+            axesNode.AddElement(CreateSVGRect(0, 0, AX_W_H[0], AX_W_H[1], "fill:none;stroke-width:1px;stroke:rgb(0,0,0)"));
 
-            axNodeBackground.mergeGroups(axesNode);
+            axNodeBackground.MergeGroups(axesNode);
             
             SVGElement legendnode = new SVGElement("<g>", "</g>");
 
-            legendnode.appendParam("class", "legend-node");
+            legendnode.AddParam("class", "legend-node");
 
-            legendnode.Move(AX_W_H[0] - 5 / SVGElement.PIXEL_PER_MM, 5 / SVGElement.PIXEL_PER_MM);
+            legendnode.Move(AX_W_H[0] - 5 / Vec2D.PIXEL_PER_MM, 5 / Vec2D.PIXEL_PER_MM);
 
-            axNodeBackground.addElement(legendnode);
+            axNodeBackground.AddElement(legendnode);
 
             return axNodeBackground;
         }
@@ -674,60 +674,60 @@ namespace HTMLCodeBuilder.SVGelements
 
             axNodeBack.setSizes(AX_W_H[0], AX_W_H[1]);
 
-            axNodeBack.appendParam("class", "graphic-backround");
+            axNodeBack.AddParam("class", "graphic-backround");
 
             TagElementsGroup axNodeBackground = new TagElementsGroup(axNodeBack);
             
 
             TagElementsGroup axTitle = new TagElementsGroup(CreateSVGNode());
 
-            axTitle.addElementParam(axTitle.RootID, "class", "axes-subscriptions");
+            axTitle.AddElementParam(axTitle.RootID, "class", "axes-subscriptions");
 
             SVGElement title = CreateSVGText("", AX_CENTER_W_H[0], -0.025 * h, 0);
-            title.appendParam("class", "title-node");
-            title.appendParam("class", "title");
-            title.appendParam("font-size", "14pt");
-            axTitle.addElement(title);
+            title.AddParam("class", "title-node");
+            title.AddParam("class", "title");
+            title.AddParam("font-size", "14pt");
+            axTitle.AddElement(title);
 
             SVGElement xlabel = CreateSVGText("", AX_CENTER_W_H[0], AX_Y_TEXT_POS[0], 0);
-            xlabel.appendParam("class", "x-label-node");
-            xlabel.appendParam("class", "x-label");
-            xlabel.appendParam("font-size", "14pt");
-            axTitle.addElement(xlabel);
+            xlabel.AddParam("class", "x-label-node");
+            xlabel.AddParam("class", "x-label");
+            xlabel.AddParam("font-size", "14pt");
+            axTitle.AddElement(xlabel);
 
             SVGElement ylabel = CreateSVGText("", -AX_UP_LEFT[0]*0.75, AX_CENTER_W_H[1], -90);
-            ylabel.appendParam("class", "y-label-node");
-            ylabel.appendParam("class", "y-label");
-            ylabel.appendParam("font-size", "14pt");
-            axTitle.addElement(ylabel);
+            ylabel.AddParam("class", "y-label-node");
+            ylabel.AddParam("class", "y-label");
+            ylabel.AddParam("font-size", "14pt");
+            axTitle.AddElement(ylabel);
 
-            axNodeBackground.mergeGroups(axTitle);
+            axNodeBackground.MergeGroups(axTitle);
 
             TagElementsGroup axesNode = new TagElementsGroup(CreateSVGNode());
 
-            axesNode.addElementParam(axesNode.RootID, "class", "axes");
+            axesNode.AddElementParam(axesNode.RootID, "class", "axes");
 
             double[] powAxis = rescaleAxis(ref xs, ref ys, ref zs);
 
             if (powAxis[0] != 0)
             {
                 SVGElement text = CreateSVGText("+", AX_W_H[0] - 5, AX_Y_TEXT_POS[0] + 0.5, 45);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 text = CreateSVGText("10", AX_W_H[0], AX_Y_TEXT_POS[0], 0);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 if (powAxis[0] != 1)
                 {
                     text = CreateSVGText(powAxis[0].ToString(), AX_W_H[0], AX_Y_TEXT_POS[0] - 2, 0);
-                    text.appendParam("font-size", "7pt");
-                    text.appendParam("class", "ax-x-mult");
-                    text.appendParam("style", "text-anchor:start");
-                    axesNode.addElement(text);
+                    text.AddParam("font-size", "7pt");
+                    text.AddParam("class", "ax-x-mult");
+                    text.AddParam("style", "text-anchor:start");
+                    axesNode.AddElement(text);
                 }
 
             }
@@ -735,22 +735,22 @@ namespace HTMLCodeBuilder.SVGelements
             if (powAxis[1] != 0)
             {
                 SVGElement text = CreateSVGText("+", 1, -0.5, 45);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 text = CreateSVGText("10", 6, -1, 0);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 if (powAxis[1] != 1)
                 {
                     text = CreateSVGText(powAxis[1].ToString(), 6, -3, 0);
-                    text.appendParam("font-size", "7pt");
-                    text.appendParam("style", "text-anchor:start");
-                    text.appendParam("class", "ax-y-mult");
-                    axesNode.addElement(text);
+                    text.AddParam("font-size", "7pt");
+                    text.AddParam("style", "text-anchor:start");
+                    text.AddParam("class", "ax-y-mult");
+                    axesNode.AddElement(text);
                 }
 
             }
@@ -760,22 +760,22 @@ namespace HTMLCodeBuilder.SVGelements
             if (powAxis[2] != 0)
             {
                 SVGElement text = CreateSVGText("+", cmapoff + 2, -0.5, 45);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 text = CreateSVGText("10", cmapoff + 7, -2, 0);
-                text.appendParam("font-size", "12pt");
-                text.appendParam("style", "text-anchor:end");
-                axesNode.addElement(text);
+                text.AddParam("font-size", "12pt");
+                text.AddParam("style", "text-anchor:end");
+                axesNode.AddElement(text);
 
                 if (powAxis[2] != 1)
                 {
                     text = CreateSVGText(powAxis[2].ToString(), cmapoff + 7, -4, 0);
-                    text.appendParam("font-size", "7pt");
-                    text.appendParam("style", "text-anchor:start");
-                    text.appendParam("class", "ax-z-mult");
-                    axesNode.addElement(text);
+                    text.AddParam("font-size", "7pt");
+                    text.AddParam("style", "text-anchor:start");
+                    text.AddParam("class", "ax-z-mult");
+                    axesNode.AddElement(text);
                 }
 
             }
@@ -812,19 +812,19 @@ namespace HTMLCodeBuilder.SVGelements
                 numAlongX(ref axesNode, xs[i].ToString(), x_curr, AX_Y_TEXT_POS[1], x_curr, AX_W_H[1], 0, "stroke-width: 0.5mm; stroke: black;");
             }
 
-            axesNode.addElement(CreateSVGRect(0, 0, AX_W_H[0], AX_W_H[1], "fill:none;stroke-width:1px;stroke:rgb(0,0,0)"));
+            axesNode.AddElement(CreateSVGRect(0, 0, AX_W_H[0], AX_W_H[1], "fill:none;stroke-width:1px;stroke:rgb(0,0,0)"));
 
-            axesNode.addElement(CreateSVGRect(AX_W_H[0] * 1.01, 0, 0.025 * AX_W_H[0], AX_W_H[1], "fill:none;stroke-width:1px;stroke:rgb(0,0,0)"));
+            axesNode.AddElement(CreateSVGRect(AX_W_H[0] * 1.01, 0, 0.025 * AX_W_H[0], AX_W_H[1], "fill:none;stroke-width:1px;stroke:rgb(0,0,0)"));
 
-            /// axesNode.addElement(CreateSVGRect(-AX_UP_LEFT[0], -AX_UP_LEFT[1], w, h, "fill:none;stroke-width:1px;stroke:rgb(255,0,0)"));
+            /// axesNode.AddElement(CreateSVGRect(-AX_UP_LEFT[0], -AX_UP_LEFT[1], w, h, "fill:none;stroke-width:1px;stroke:rgb(255,0,0)"));
 
             SVGElement axNodeData = new SVGElement("<g>", "</g>");
 
             axNodeData.setSizes(AX_W_H[0], AX_W_H[1]);
 
-            axNodeData.appendParam("class", "graphic-data");
+            axNodeData.AddParam("class", "graphic-data");
 
-            axNodeBackground.addElement(axNodeData);
+            axNodeBackground.AddElement(axNodeData);
 
 
             SVGElement axсColorBarNode = new SVGElement("<g>", "</g>");
@@ -833,12 +833,12 @@ namespace HTMLCodeBuilder.SVGelements
 
             axсColorBarNode.Move(AX_W_H[0] * 1.01, 0);
 
-            axсColorBarNode.appendParam("class", "graphic-color-bar");
+            axсColorBarNode.AddParam("class", "graphic-color-bar");
 
-            axNodeBackground.addElement(axсColorBarNode);
+            axNodeBackground.AddElement(axсColorBarNode);
 
 
-            axNodeBackground.mergeGroups(axesNode);
+            axNodeBackground.MergeGroups(axesNode);
 
             return axNodeBackground;
         }
@@ -846,32 +846,32 @@ namespace HTMLCodeBuilder.SVGelements
         private static void numAlongZ(ref TagElementsGroup parentGroup, string val, double xText, double yText, double xGrid, double yGrid, double dMarker, string style)
         {
             SVGElement text = CreateSVGText(val, xText, yText, 0);
-            text.appendParam("font-size", "12pt");
-            text.appendParam("class", "z-grid-val");
-            text.appendParam("style", "text-anchor:start;");
-            parentGroup.addElement(text);
-            parentGroup.addElement(CreateSVGLine(xGrid - 0.25, yGrid+ dMarker+0.25, xGrid - 0.25 , yGrid + dMarker - 0.25, style));
+            text.AddParam("font-size", "12pt");
+            text.AddParam("class", "z-grid-val");
+            text.AddParam("style", "text-anchor:start;");
+            parentGroup.AddElement(text);
+            parentGroup.AddElement(CreateSVGLine(xGrid - 0.25, yGrid+ dMarker+0.25, xGrid - 0.25 , yGrid + dMarker - 0.25, style));
         }
 
         private static void numAlongY(ref TagElementsGroup parentGroup, string val, double xText, double yText, double xGrid, double yGrid, double dMarker,string style)
         {
             SVGElement text = CreateSVGText(val, xText, yText, 0);
-            text.appendParam("font-size", "12pt");
-            text.appendParam("class", "y-grid-val");
-            text.appendParam("style", "text-anchor:end");
-            parentGroup.addElement(text);
-            parentGroup.addElement(CreateSVGLine(0.25, yGrid + 0.25 + dMarker, 0.25, yGrid - 0.25 + dMarker, style));
-            parentGroup.addElement(CreateSVGDashedLine(0, yGrid, xGrid, yGrid, "stroke-width: 0.125mm; stroke: black;"));
+            text.AddParam("font-size", "12pt");
+            text.AddParam("class", "y-grid-val");
+            text.AddParam("style", "text-anchor:end");
+            parentGroup.AddElement(text);
+            parentGroup.AddElement(CreateSVGLine(0.25, yGrid + 0.25 + dMarker, 0.25, yGrid - 0.25 + dMarker, style));
+            parentGroup.AddElement(CreateSVGDashedLine(0, yGrid, xGrid, yGrid, "stroke-width: 0.125mm; stroke: black;"));
         }
 
         private static void numAlongX(ref TagElementsGroup parentGroup, string val, double xText, double yText, double xGrid, double yGrid, double dMarker, string style)
         {
             SVGElement text = CreateSVGText(val, xText, yText, 0);
-            text.appendParam("font-size", "12pt");
-            text.appendParam("class", "x-grid-val");
-            parentGroup.addElement(text);
-            parentGroup.addElement( CreateSVGLine(xGrid + dMarker, yGrid, xGrid + dMarker, yGrid - 0.5, style));
-            parentGroup.addElement(CreateSVGDashedLine(xGrid, yGrid, xGrid, 0, "stroke-width: 0.125mm; stroke: black;"));
+            text.AddParam("font-size", "12pt");
+            text.AddParam("class", "x-grid-val");
+            parentGroup.AddElement(text);
+            parentGroup.AddElement( CreateSVGLine(xGrid + dMarker, yGrid, xGrid + dMarker, yGrid - 0.5, style));
+            parentGroup.AddElement(CreateSVGDashedLine(xGrid, yGrid, xGrid, 0, "stroke-width: 0.125mm; stroke: black;"));
         }
         
         private static double[] rescaleAxis(ref double[] valsX, ref double[] valsY)

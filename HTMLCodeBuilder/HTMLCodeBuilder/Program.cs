@@ -1,5 +1,4 @@
 ﻿using HTMLCodeBuilder.HTMLelements;
-using HTMLCodeBuilder.TaggedElements;
 using System;
 
 namespace HTMLBuilderExecutable
@@ -10,7 +9,7 @@ namespace HTMLBuilderExecutable
         {
             HTMLPage page = new HTMLPage();
 
-            page.addElement(HTMLElements.CreateTitle("Титул"), page.HTMLHeadID);
+            page.AddElement(HTMLElements.CreateTitle("Титул"), page.HTMLHeadID);
             page.addContent(page.HTMLBodyID, "Оглавление");
 
                     for (int i = 1 ; i <= 3;i++)

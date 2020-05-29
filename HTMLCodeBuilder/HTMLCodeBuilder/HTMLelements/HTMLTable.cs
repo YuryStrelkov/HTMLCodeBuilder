@@ -22,7 +22,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public ITagElement getCellData(int i, int j)
         {
-            return table.getElement(getCellID(i, j));
+            return table.GetElement(getCellID(i, j));
         }
 
         public int getCellID(int i, int j)
@@ -56,11 +56,11 @@ namespace HTMLCodeBuilder.HTMLelements
             getCellData(i, j).InnerString = val;
         }
 
-        public override string expandOpenTag(int tab)
+        public override string ExpandOpenTag(int tab)
         {
             TabLevel = tab;
 
-            code.Append(getTab(TabLevel));
+            code.Append(GetTab(TabLevel));
 
             code.Append(OpenTag);
 
@@ -82,20 +82,20 @@ namespace HTMLCodeBuilder.HTMLelements
             return code.ToString();
         }
 
-        public override string expandCloseTag(int tab)
+        public override string ExpandCloseTag(int tab)
         {
-            return table.buildCode(TabLevel) +  getTab(TabLevel) + CloseTag;
+            return table.BuildCode(TabLevel) +  GetTab(TabLevel) + CloseTag;
         }
 
         private void addHeadersRow(string [] headedrs)
         {
-            table.addElementParam(table.RootID, "##style", CSS);
+            table.AddElementParam(table.RootID, "##style", CSS);
 
             W = headedrs.Length;
 
             H++;
 
-            int tr = table.addElement(new HTMLElement("<tr>", "</tr>"), table.RootID);
+            int tr = table.AddElement(new HTMLElement("<tr>", "</tr>"), table.RootID);
 
             rows.Add(tr);
 
@@ -103,21 +103,21 @@ namespace HTMLCodeBuilder.HTMLelements
 
             for (int i = 0; i < W; i++)
             {
-                int td = table.addElement(new HTMLElement("<th>", "</th>"), tr);
+                int td = table.AddElement(new HTMLElement("<th>", "</th>"), tr);
                 cells[tr].Add(td);
-                table.getElement(td).InnerString = headedrs[i];
-                table.addElementParam(td, "class", "table-header-cell");
+                table.GetElement(td).InnerString = headedrs[i];
+                table.AddElementParam(td, "class", "table-header-cell");
             }
             records = W;
         }
 
         private void addRow()
         {
-            table.addElementParam(table.RootID, "##style", CSS);
+            table.AddElementParam(table.RootID, "##style", CSS);
 
             H++;
 
-            int tr = table.addElement(new HTMLElement("<tr>", "</tr>"), table.RootID);
+            int tr = table.AddElement(new HTMLElement("<tr>", "</tr>"), table.RootID);
 
             rows.Add(tr);
 
@@ -125,9 +125,9 @@ namespace HTMLCodeBuilder.HTMLelements
             
             for (int i = 0; i < W; i++)
                 {
-                    int td = table.addElement(new HTMLElement("<td>", "</td>"), tr);
+                    int td = table.AddElement(new HTMLElement("<td>", "</td>"), tr);
                     cells[tr].Add(td);
-                    table.addElementParam(td, "class", "table-cell");
+                    table.AddElementParam(td, "class", "table-cell");
                 }
     
         }
@@ -141,7 +141,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public  HTMLTable(string [] headers):base("<table>", "</table>")
         {
-            appendParam("class", OpenTag.Substring(1, OpenTag.Length - 2));
+            AddParam("class", OpenTag.Substring(1, OpenTag.Length - 2));
 
             OpenTag = OpenTag.Remove(OpenTag.Length - 1, 1); ;
             
@@ -155,17 +155,17 @@ namespace HTMLCodeBuilder.HTMLelements
 
             table = new TagElementsGroup(new HTMLElement("<tbody>", "</tbody>"));
 
-            table.addElementParam(table.RootID, "class", "table-data");
+            table.AddElementParam(table.RootID, "class", "table-data");
 
-            appendParam( "id", "table-" + new Random().NextDouble().GetHashCode().ToString());
+            AddParam( "id", "table-" + new Random().NextDouble().GetHashCode().ToString());
 
             string style_width = "width : " + (100.0 / headers.Length).ToString().Replace(',', '.') + "%";
 
-            CSS        = getParam("id")+ "+width:100%;border-collapse: collapse;text-align : center;+" +
-                         getParam("id") + " td+border:1px solid " + HTMLElements.HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";" + style_width + ";+" +
-                         getParam("id") + " th+border:1px solid " + HTMLElements.HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";";
+            CSS        = GetParam("id")+ "+width:100%;border-collapse: collapse;text-align : center;+" +
+                         GetParam("id") + " td+border:1px solid " + HTMLElements.HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";" + style_width + ";+" +
+                         GetParam("id") + " th+border:1px solid " + HTMLElements.HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";";
 
-            appendParam( "##style", CSS);
+            AddParam( "##style", CSS);
 
             addHeadersRow(headers);
         }
@@ -177,8 +177,8 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public override ITagElement Copy()
         {
-            TagElementsGroup table_ = table.getSubListCopy(table.RootID);
-            HTMLTable element = (HTMLTable)table_.getElement(table_.RootID);
+            TagElementsGroup table_ = table.GetSubListCopy(table.RootID);
+            HTMLTable element = (HTMLTable)table_.GetElement(table_.RootID);
             return element;
         }
     }

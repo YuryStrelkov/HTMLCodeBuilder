@@ -12,18 +12,18 @@ namespace HTMLCodeBuilder.TaggedElements
 
         string Tag { get; }
 
-        void appendParam(string param, string val);
+        void AddParam(string param, string val);
 
-        string expandCloseTag(int tab);
+        string ExpandCloseTag(int tab);
 
-        string expandOpenTag(int tab);
+        string ExpandOpenTag(int tab);
 
-        string getParam(string key);
+        string GetParam(string key);
 
-        bool hasParam(string key);
+        bool HasParam(string key);
 
-        bool hasParamVal(string key, string val);
+        bool HasParamVal(string key, string val);
 
-        void remParam(string key);
+        void RemoveParam(string key);
     }
 }

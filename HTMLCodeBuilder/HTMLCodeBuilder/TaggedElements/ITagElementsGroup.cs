@@ -10,21 +10,21 @@ namespace HTMLCodeBuilder.TaggedElements
 
         Dictionary<string, Dictionary<int, int>> TagVsID { get; }
 
-        void addElementParam(int elemID, string paramKey, string paramVal);
+        void AddElementParam(int elemID, string paramKey, string paramVal);
 
-        int addHTMLelement(ITagElement element);
+        int AddElement(ITagElement element);
 
-        int addHTMLelement(ITagElement element, int parentID);
+        int AddElement(ITagElement element, int parentID);
 
-        ITagElement getElement(int id);
+        ITagElement GetElement(int id);
 
-        List<int> getElementByClass(string className);
+        List<int> GetElementByClass(string className);
         
-        List<int> getElementByTag(string tag);
+        List<int> GetElementByTag(string tag);
 
-        string getElementParam(int elemID, string paramKey);
+        string GetElementParam(int elemID, string paramKey);
 
-        void mergeLists(ITagElementsGroup list);
+        void MergeLists(ITagElementsGroup list);
 
         void buildCode();
         

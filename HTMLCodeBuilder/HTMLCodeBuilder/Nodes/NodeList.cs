@@ -6,38 +6,38 @@ namespace HTMLCodeBuilder.Nodes
     {
         public Dictionary<int, Node<T>> Nodes { get; protected set;}
 
-        public int lastID { get; protected set; }
+        public int LastID { get; protected set; }
 
         public int RootID { get; protected set; }
 
-        public bool tryToGetNode(out Node<T> n, int nodeID)
+        public bool TryToGetNode(out Node<T> n, int nodeID)
         {
-            if (containsNode(nodeID))
+            if (ContainsNode(nodeID))
             {
                 n= Nodes[nodeID];
 
                 return true;
             }
 
-            n = null;
+            n = new Node<T>();
 
             return false;
         }
 
-        public bool hasChildrens(int node)
+        public bool HasChildrens(int node)
         {
             return Nodes[node].getChildrenIDs().Length != 0;
         }
 
-        public void removeChildrens(int node)
+        public void RemoveChildrens(int node)
         {
             foreach (int i in Nodes[node].getChildrenIDs())
             {
-                removeNode(i);
+                RemoveNode(i);
             }
         }
 
-        public Node<T> getNode(int nodeID)
+        public Node<T> GetNode(int nodeID)
         {
             if (Nodes.ContainsKey(nodeID))
             {
@@ -46,80 +46,80 @@ namespace HTMLCodeBuilder.Nodes
             return Nodes[RootID];
         }
 
-        public T getNodeData(int nodeID)
+        public T GetNodeData(int nodeID)
         {
-            return getNode(nodeID).getData();
+            return GetNode(nodeID).getData();
         }
 
-        public Dictionary<int, Node<T>>.KeyCollection getNodeKeys()
+        public Dictionary<int, Node<T>>.KeyCollection GetNodeKeys()
         {
             return Nodes.Keys;
         }
 
-        protected void addNodeDirect(Node<T>n)
+        protected void AddNodeDirect(Node<T>n)
         {
-            if (!containsNode(n.getID()))
+            if (!ContainsNode(n.getID()))
             {
                 Nodes.Add(n.getID(), n);
             }
         }
 
-        public int addNode(T data)
+        public int AddNode(T data)
         {
-            return addNode(data, RootID);
+            return AddNode(data, RootID);
         }
 
-        protected int addNode(Node<T> node)
+        protected int AddNode(Node<T> node)
         {
-            return addNode(node, RootID);
+            return AddNode(node, RootID);
         }
 
-        public int addNode(T data, int parentID)
+        public int AddNode(T data, int parentID)
         {
     
             Node<T> n = new Node<T>(data);
 
-            return addNode(n, parentID);
+            return AddNode(n, parentID);
         }
 
-        protected int addNode( Node<T> node, int parentID)
+        protected int AddNode( Node<T> node, int parentID)
         {
-            if (containsNode(parentID))
+            if (ContainsNode(parentID))
             {
                 node.setParentID(parentID);
                 Nodes.Add(node.getID(), node);
                 Nodes[parentID].addChild(node);
-                lastID = node.getID();
-                return lastID;
+                LastID = node.getID();
+                return LastID;
             }
             node.setParentID(RootID);
             Nodes.Add(node.getID(), node);
             Nodes[RootID].addChild(node);
-            lastID = node.getID();
-            return lastID;
+            LastID = node.getID();
+            return LastID;
         }
 
-        protected bool containsNode(int key)
+        protected bool ContainsNode(int key)
         {
             return Nodes.ContainsKey(key);
         }
 
-        protected void mergeNodeLists(int nodeID, NodeList<T, NodeProcessResult> list )
+        protected void MergeNodeLists(int nodeID, NodeList<T, NodeProcessResult> list )
         {
             if (!Nodes.ContainsKey(nodeID))
             {
                 nodeID = RootID;
             }
 
-            getNode(nodeID).addChild(list.getNode(list.RootID));
+            GetNode(nodeID).addChild(list.GetNode(list.RootID));
 
-            foreach (int key in list.getNodeKeys())
+            foreach (int key in list.GetNodeKeys())
             {
-                Nodes.Add(key, list.getNode(key));
+                Nodes.Add(key, list.GetNode(key));
             }
         }
 
-        protected void removeNode(int nodeID )
+        protected void RemoveNode(int nodeID )
         {
             if (!Nodes.ContainsKey(nodeID))
             {
@@ -127,7 +127,7 @@ namespace HTMLCodeBuilder.Nodes
             }
             foreach (int key in Nodes[nodeID].getChildren().Keys)
             {
-                removeNode(key);
+                RemoveNode(key);
             }
             Nodes.Remove(nodeID);
         }
@@ -136,7 +136,7 @@ namespace HTMLCodeBuilder.Nodes
         /// </summary>
         /// <param name="nodeID"></param>
         /// <returns></returns>
-        protected NodeList<T, NodeProcessResult> getSubList(int nodeID)
+        protected NodeList<T, NodeProcessResult> GetSubList(int nodeID)
         {
             if (!Nodes.ContainsKey(nodeID))
             {
@@ -145,17 +145,17 @@ namespace HTMLCodeBuilder.Nodes
 
             NodeList<T, NodeProcessResult> result = new NodeList<T, NodeProcessResult>(Nodes[nodeID]);
 
-            subListsReference(ref result, nodeID);
+            SubListsReference(ref result, nodeID);
 
             return result;
         }
 
-        private void subListsReference(ref NodeList<T, NodeProcessResult> list, int nodeID)
+        private void SubListsReference(ref NodeList<T, NodeProcessResult> list, int nodeID)
         {
             foreach (int key in Nodes[nodeID].getChildren().Keys)
             {
-                list.addNodeDirect(Nodes[key]);
-                subListsReference(ref list, key);
+                list.AddNodeDirect(Nodes[key]);
+                SubListsReference(ref list, key);
             }
         }
         /// <summary>
@@ -163,40 +163,40 @@ namespace HTMLCodeBuilder.Nodes
         /// </summary>
         /// <param name="nodeID"></param>
         /// <returns></returns>
-        protected NodeList<T, NodeProcessResult> getSubListCopy(int nodeID)
+        protected NodeList<T, NodeProcessResult> GetSubListCopy(int nodeID)
         {
             if (!Nodes.ContainsKey(nodeID))
             {
                 return null;
             }
             NodeList<T, NodeProcessResult> result = new NodeList<T, NodeProcessResult>(Nodes[nodeID].getData().Copy());
-            subListsCopy(ref result, nodeID, result.RootID);
+            SubListsCopy(ref result, nodeID, result.RootID);
             return result;
         }
 
-        protected void subListsCopy(ref NodeList<T, NodeProcessResult> list, int nodeID, int newParentID)
+        protected void SubListsCopy(ref NodeList<T, NodeProcessResult> list, int nodeID, int newParentID)
         {
             foreach (int key in Nodes[nodeID].getChildrenIDs())
             {
                 Node<T> newNode = Nodes[key].Copy();
 
-                list.getNode(newParentID).addChild(newNode);
+                list.GetNode(newParentID).addChild(newNode);
 
-                list.addNodeDirect(newNode);
+                list.AddNodeDirect(newNode);
 
-                subListsCopy(ref list, key, newNode.getID());
+                SubListsCopy(ref list, key, newNode.getID());
             }
         }
 
-        protected void processNodes(INodeProcess<T, NodeProcessResult> process)
+        protected void ProcessNodes(INodeProcess<T, NodeProcessResult> process)
         {
             int level = 0;
 
-            processNodes(level, Nodes[RootID], process);
+            ProcessNodes(level, Nodes[RootID], process);
 
         }
 
-        private void processNodes(int level,Node<T> node, INodeProcess<T, NodeProcessResult> process)
+        private void ProcessNodes(int level,Node<T> node, INodeProcess<T, NodeProcessResult> process)
         {
              process.onStart(level, node);
 
@@ -208,7 +208,7 @@ namespace HTMLCodeBuilder.Nodes
 
             foreach (int nodeKey in node.getChildren().Keys)
             {
-                processNodes(level + 1, Nodes[nodeKey], process);
+                ProcessNodes(level + 1, Nodes[nodeKey], process);
             }
 
             process.onEnd(level, node);
@@ -223,12 +223,12 @@ namespace HTMLCodeBuilder.Nodes
 
             Nodes.Add(n.getID(), n);
 
-            lastID = RootID;
+            LastID = RootID;
         }
 
         protected NodeList()
         {
-            lastID = -1;
+            LastID = -1;
             RootID = -1;
             Nodes = new Dictionary<int, Node<T>>();
         }
@@ -240,8 +240,8 @@ namespace HTMLCodeBuilder.Nodes
             Node<T> n = new Node<T>(data);
 
             RootID = n.getID();
-     
-            lastID = addNode(n, RootID); 
+
+            LastID = AddNode(n, RootID); 
        }
 
     }

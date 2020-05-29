@@ -26,7 +26,7 @@ namespace HTMLCodeBuilder.Utils
     /// <summary>
     /// Input value belongs to [0,1]
     /// </summary>
-    public class JET : ICmap
+    public struct JET : ICmap
     {
         public byte getA(double a)
         {
@@ -59,7 +59,7 @@ namespace HTMLCodeBuilder.Utils
 
     /// Input value belongs to [0,1]
 
-    public class GRAY : ICmap
+    public struct GRAY : ICmap
     {
         public byte getA(double a)
         {
@@ -81,6 +81,7 @@ namespace HTMLCodeBuilder.Utils
             return (byte)(255.0 * a);
         }
     }
+
     
     public static class ImageProcessing
     {

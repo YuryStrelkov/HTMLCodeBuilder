@@ -80,7 +80,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public HTMLTable addTable(int parentID, string subscr, bool enumirate, string[] headers)
         {
-            int holderID = addElement(HTMLElements.CreateCenterAlign(180), parentID);
+            int holderID = AddElement(HTMLElements.CreateCenterAlign(180), parentID);
 
             if (subscr.Length != 0)
             {
@@ -89,19 +89,19 @@ namespace HTMLCodeBuilder.HTMLelements
                 if (enumirate)
                 {
                     TablesCount += 1;
-                    List<int> nodes = subscrGroup.getElementByClass("subscription-enumeration");
-                    subscrGroup.getNode(nodes[0]).getData().InnerString = "Таблица № " + TablesCount.ToString() + ". ";
+                    List<int> nodes = subscrGroup.GetElementByClass("subscription-enumeration");
+                    subscrGroup.GetNode(nodes[0]).getData().InnerString = "Таблица № " + TablesCount.ToString() + ". ";
                 }
                 mergeHTML(holderID, subscrGroup);
             }
 
-            addElement(HTMLElements.CreateVerticalIndent(2.5), holderID);
+            AddElement(HTMLElements.CreateVerticalIndent(2.5), holderID);
 
             HTMLTable table = new HTMLTable( headers);
 
-            addElement(table, holderID);
+            AddElement(table, holderID);
 
-            addElement(HTMLElements.CreateVerticalIndent(2.5), parentID);
+            AddElement(HTMLElements.CreateVerticalIndent(2.5), parentID);
 
             LastTable = table;
 
@@ -136,7 +136,7 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             TagElementsGroup content = HTMLElements.CreatePageContent(contentTitle);
 
-            List<int> ids = content.getElementByTag("ul");
+            List<int> ids = content.GetElementByTag("ul");
 
             HTMLContentListID = ids[0]; 
 
@@ -195,26 +195,26 @@ namespace HTMLCodeBuilder.HTMLelements
 
             TagElementsGroup Graphic = SVGElements.CreateSVGGraphicXY(w, h);
 
-            container.mergeGroups(Graphic);
+            container.MergeGroups(Graphic);
 
             mergeHTML(parent, container);
 
-            if (getElement(parent).getParam("class").Equals("grid-holder"))
+            if (GetElement(parent).GetParam("class").Equals("grid-holder"))
             {
                 HTMLElement spantext = HTMLElements.CreateSPAN();
-                spantext.appendParam("class", "subscription-enumeration");
+                spantext.AddParam("class", "subscription-enumeration");
                 spantext.InnerString = "a";
-                container.addElement(spantext);
+                container.AddElement(spantext);
             }
 
 
             TagElementsGroup  ss = HTMLElements.CreateSubscription("Picture");
 
-            int ss_num = ss.getElementByClass("subscription-enumeration")[0];
+            int ss_num = ss.GetElementByClass("subscription-enumeration")[0];
 
             ImagesCount++;
 
-            ss.getElement(ss_num).InnerString = "Pic. № "+ ImagesCount+". ";
+            ss.GetElement(ss_num).InnerString = "Pic. № "+ ImagesCount+". ";
 
             mergeHTML(container.RootID, ss);
 
@@ -232,7 +232,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
             SVGElements.AppendSVGGraphic(ref LastGraphic, x, y,legend,color);
 
-            mergeHTML(LastGraphic.getNode(LastGraphic.RootID).getParentID(), LastGraphic);
+            mergeHTML(LastGraphic.GetNode(LastGraphic.RootID).getParentID(), LastGraphic);
 
             return LastGraphic;
         }
@@ -246,7 +246,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
             SVGElements.AppendSVGGraphic(ref LastGraphic, x, y, z);
 
-            mergeHTML(LastGraphic.getNode(LastGraphic.RootID).getParentID(), LastGraphic);
+            mergeHTML(LastGraphic.GetNode(LastGraphic.RootID).getParentID(), LastGraphic);
 
             return LastGraphic;
         }
@@ -262,62 +262,62 @@ namespace HTMLCodeBuilder.HTMLelements
                 return;
             }
 
-            int contentRecord = addNode(HTMLElements.Create("<li>"), HTMLContentListID);
+            int contentRecord = AddNode(HTMLElements.Create("<li>"), HTMLContentListID);
 
-            addElementParam(contentRecord, "class", "content-record");
+            AddElementParam(contentRecord, "class", "content-record");
 
-            int contentRef = addNode(HTMLElements.Create("<a>"), contentRecord);
+            int contentRef = AddNode(HTMLElements.Create("<a>"), contentRecord);
 
-            addElementParam(contentRef, "href", "#" + getNode(nodeID).getData().getParam("id"));
+            AddElementParam(contentRef, "href", "#" + GetNode(nodeID).getData().GetParam("id"));
 
-            getNode(contentRef).getData().InnerString = getNode(nodeID).getData().getParam("#title");
+            GetNode(contentRef).getData().InnerString = GetNode(nodeID).getData().GetParam("#title");
         }
 
         private void mergeStyle(ITagElement element)
         {
 
-            if (element.hasParam(".style"))
+            if (element.HasParam(".style"))
             {
-                updateStyle(StyleSelectorType.Class, element.getParam("class"), element.getParam(".style"));
+                updateStyle(StyleSelectorType.Class, element.GetParam("class"), element.GetParam(".style"));
 
-                element.remParam(".style");
+                element.RemoveParam(".style");
 
                 return;
             }
 
-            if (element.hasParam("#style"))
+            if (element.HasParam("#style"))
             {
-                updateStyle(StyleSelectorType.ID, element.getParam("id"), element.getParam("#style"));
+                updateStyle(StyleSelectorType.ID, element.GetParam("id"), element.GetParam("#style"));
 
-                element.remParam("#style");
+                element.RemoveParam("#style");
 
                 return;
             }
 
-            if (element.hasParam("..style"))
+            if (element.HasParam("..style"))
             {
-                string[] cssCode = element.getParam("..style").Split('+');
+                string[] cssCode = element.GetParam("..style").Split('+');
 
                 for (int i = 0; i < cssCode.Length; i += 2)
                 {
                     updateStyle(StyleSelectorType.Class, cssCode[i], cssCode[i + 1]);
                 }
 
-                element.remParam("..style");
+                element.RemoveParam("..style");
 
                 return;
             }
 
-            if (element.hasParam("##style"))
+            if (element.HasParam("##style"))
             {
-                string[] cssCode = element.getParam("##style").Split('+');
+                string[] cssCode = element.GetParam("##style").Split('+');
 
                 for (int i = 0; i < cssCode.Length; i += 2)
                 {
                     updateStyle(StyleSelectorType.ID, cssCode[i], cssCode[i + 1]);
                 }
 
-                element.remParam("##style");
+                element.RemoveParam("##style");
 
                 return;
             }
@@ -326,30 +326,30 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public  void mergeHTML(int nodeID, TagElementsGroup list)
         {
-            if (!containsNode(nodeID))
+            if (!ContainsNode(nodeID))
             {
                 nodeID = RootID;
             }
-            foreach (int key in list.getNodeKeys())
+            foreach (int key in list.GetNodeKeys())
             {
-                addNodeDirect(list.getNode(key));
+                AddNodeDirect(list.GetNode(key));
 
-                mergeStyle(list.getNode(key).getData());
+                mergeStyle(list.GetNode(key).getData());
 
             }
-            getNode(nodeID).addChild(list.RootID);
+            GetNode(nodeID).addChild(list.RootID);
         }
 
-        public new int addElement(ITagElement element)
+        public new int AddElement(ITagElement element)
         {
-            return addElement(element, HTMLBodyID);
+            return AddElement(element, HTMLBodyID);
         }
 
-        public new int addElement(ITagElement element, int parentID)
+        public new int AddElement(ITagElement element, int parentID)
         {
             mergeStyle(element);
 
-            return base.addElement(element, parentID);
+            return base.AddElement(element, parentID);
         }
 
         public new string buildCode()
@@ -372,9 +372,9 @@ namespace HTMLCodeBuilder.HTMLelements
 
             stylesStr.Append("\t\t");
 
-            getNode(HTMLStyleID).getData().InnerString = stylesStr.ToString();
+            GetNode(HTMLStyleID).getData().InnerString = stylesStr.ToString();
 
-            Code = "<!DOCTYPE html>\n" + base.buildCode();
+            Code = "<!DOCTYPE html>\n" + base.BuildCode();
 
             DateTime end = DateTime.Now;
 
@@ -388,13 +388,13 @@ namespace HTMLCodeBuilder.HTMLelements
             HTMLContentListID = -1;
             styles = new Dictionary<int, style>();
             HTMLPageID = RootID;
-            HTMLHeadID = addElement(HTMLElements.CreateHead());
-            addElement(HTMLElements.CreateMeta(),  HTMLHeadID);
-            HTMLStyleID = addElement(HTMLElements.CreateStyle(), HTMLHeadID);
-            addElement(HTMLElements.CreateBody());
+            HTMLHeadID = AddElement(HTMLElements.CreateHead());
+            AddElement(HTMLElements.CreateMeta(),  HTMLHeadID);
+            HTMLStyleID = AddElement(HTMLElements.CreateStyle(), HTMLHeadID);
+            AddElement(HTMLElements.CreateBody());
             TagElementsGroup pageContainer = HTMLElements.CreatePageContainer();
             mergeHTML(HTMLBodyID,pageContainer);
-            HTMLBodyID = pageContainer.lastID;
+            HTMLBodyID = pageContainer.LastID;
        }
     
     }
