@@ -2,12 +2,12 @@
 {
     public interface INodeProcess<T,ResultType> where T : ICopy<T>
     {
-        ResultType getProcessResult();
+        ResultType GetProcessResult();
 
-        void onStart(int level, Node<T> n);
+        void OnStart(int level, Node<T> n);
 
-        void process(int level, Node<T> n);
+        void Process(int level, Node<T> n);
 
-        void onEnd  (int level, Node<T> n);
+        void OnEnd  (int level, Node<T> n);
     }
 }

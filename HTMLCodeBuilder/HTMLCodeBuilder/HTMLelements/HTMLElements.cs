@@ -97,7 +97,7 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             HTMLElement element = new HTMLElement("<body>", "</body>");
             element.AddParam("id","doucment-body");
-            element.AddParam("#style", "background-color : " + HTMLsettings.getSetting(HTMLSettings.PageBackgroundColor));
+            element.AddParam("#style", "background-color : " + HTMLsettings.GetSetting(HTMLSettings.PageBackgroundColor));
             return element;
         }
 
@@ -131,7 +131,7 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             HTMLElement element = CreateDIV();
             element.AddParam("class", "center-align");
-            element.AddParam(".style", "margin : 0 auto;width : 100%;background-color : " + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor)+";");
+            element.AddParam(".style", "margin : 0 auto;width : 100%;background-color : " + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor)+";");
             return element;
         }
 
@@ -140,7 +140,7 @@ namespace HTMLCodeBuilder.HTMLelements
             HTMLElement element = CreateDIV();
             element.AddParam("class", "center-align-"+ width.ToString().Replace(',', '_')+"mm");
             element.AddParam(".style", "margin : 0 auto;width : "+ width.ToString().Replace(',','.') + "mm;background-color : "
-                                                            + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";");
+                                                            + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";");
             return element;
         }
 
@@ -149,7 +149,7 @@ namespace HTMLCodeBuilder.HTMLelements
             HTMLElement element = CreateDIV();
             element.AddParam("class", "center-align-" + width.ToString().Replace(',', '_') + "mm");
             element.AddParam(".style", "margin : 0 auto;width : " + width + "mm;background-color : "
-                                                            + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";");
+                                                            + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";");
             return element;
         }
 
@@ -173,14 +173,14 @@ namespace HTMLCodeBuilder.HTMLelements
         public static TagElementsGroup CreatePageContainer()
         {
             TagElementsGroup container = new TagElementsGroup(CreateDIV());
-            container.AddElementParam(container.RootID,".style", "width : " + HTMLsettings.getSetting(HTMLSettings.PageWigth) + ";padding : 0;margin : 0 auto;background-color : " +
-                                                                                       HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";");
+            container.AddElementParam(container.RootID,".style", "width : " + HTMLsettings.GetSetting(HTMLSettings.PageWigth) + ";padding : 0;margin : 0 auto;background-color : " +
+                                                                                       HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";");
             container.AddElementParam(container.RootID, "class", "page-container");
-            container.AddElement(CreateVerticalIndent(HTMLsettings.getSetting(HTMLSettings.PageTopIndent)));
+            container.AddElement(CreateVerticalIndent(HTMLsettings.GetSetting(HTMLSettings.PageTopIndent)));
             int id = container.AddElement(CreateDIV());
             container.AddElementParam(id, "class", "page-fields-container");
-            container.AddElementParam(id, ".style", "width : " + HTMLsettings.getSetting(HTMLSettings.PageContentWidth) + ";padding-left : "+
-                                                                        HTMLsettings.getSetting(HTMLSettings.PageLeftIndent) + ";margin: 0;");
+            container.AddElementParam(id, ".style", "width : " + HTMLsettings.GetSetting(HTMLSettings.PageContentWidth) + ";padding-left : "+
+                                                                        HTMLsettings.GetSetting(HTMLSettings.PageLeftIndent) + ";margin: 0;");
             return container;
         }
 
@@ -198,10 +198,10 @@ namespace HTMLCodeBuilder.HTMLelements
                 block.AddElementParam(blockID, "class", "paragraph");
                 block.AddElementParam(blockID, "id", "text-block-paragraph-" + block.RootID.ToString());
                 block.GetElement(blockID).InnerString = title;
-                block.AddElementParam(blockID, ".style", "font-size: " + HTMLsettings.getSetting(HTMLSettings.ParagraphTitleFontSize)
+                block.AddElementParam(blockID, ".style", "font-size: " + HTMLsettings.GetSetting(HTMLSettings.ParagraphTitleFontSize)
                                                                        + ";text-indent : 10mm;text-align : left;line-height:1.2;margin: 0 auto;background-color : "
-                                                                       + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor)+ ";color : "
-                                                                       + HTMLsettings.getSetting(HTMLSettings.ParagraphFontColor) + ";");
+                                                                       + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor)+ ";color : "
+                                                                       + HTMLsettings.GetSetting(HTMLSettings.ParagraphFontColor) + ";");
 
             }
             if (!string.IsNullOrEmpty(text))
@@ -209,10 +209,10 @@ namespace HTMLCodeBuilder.HTMLelements
                 int textNodeID = block.AddElement(CreateDIV());//addNode(HTMLElements.CreateDIV(), BlockID);
                 block.GetElement(textNodeID).InnerString = text;
                 block.AddElementParam(textNodeID, "class", "paragraph-text");
-                block.AddElementParam(textNodeID, ".style", "font-size : " + HTMLsettings.getSetting(HTMLSettings.FontSize) 
+                block.AddElementParam(textNodeID, ".style", "font-size : " + HTMLsettings.GetSetting(HTMLSettings.FontSize) 
                                                                            + ";text-indent : 10mm;text-align : justify;margin : 0 auto;line-height : 1.4;background-color : "
-                                                                           + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";color : "
-                                                                           + HTMLsettings.getSetting(HTMLSettings.ContentFontColor) + ";");
+                                                                           + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";color : "
+                                                                           + HTMLsettings.GetSetting(HTMLSettings.ContentFontColor) + ";");
             }
 
             block.AddElement(CreateVerticalIndent(2.5));
@@ -232,10 +232,10 @@ namespace HTMLCodeBuilder.HTMLelements
 
             content.AddElementParam(nodeID, "id", "doc-content");
 
-            string css = "content-list +font-size : " + HTMLsettings.getSetting(HTMLSettings.ContentFontSize) + ";list-style-type:none;+"+
-                         "content-list a +text-decoration : none;display : block;text-align : left;line-height : 1.4;overflow: hidden;color : "+HTMLsettings.getSetting(HTMLSettings.ContentFontColor)+";+" +
-                         "content-list a:hover +background-color : "+HTMLsettings.getSetting(HTMLSettings.ContentHoverColor) +";+" +
-                         "content-list a:visited +color : "+ HTMLsettings.getSetting(HTMLSettings.ContentFontColor) + ";";
+            string css = "content-list +font-size : " + HTMLsettings.GetSetting(HTMLSettings.ContentFontSize) + ";list-style-type:none;+"+
+                         "content-list a +text-decoration : none;display : block;text-align : left;line-height : 1.4;overflow: hidden;color : "+HTMLsettings.GetSetting(HTMLSettings.ContentFontColor)+";+" +
+                         "content-list a:hover +background-color : "+HTMLsettings.GetSetting(HTMLSettings.ContentHoverColor) +";+" +
+                         "content-list a:visited +color : "+ HTMLsettings.GetSetting(HTMLSettings.ContentFontColor) + ";";
 
             content.AddElementParam(nodeID, "..style", css);
 
@@ -273,8 +273,8 @@ namespace HTMLCodeBuilder.HTMLelements
             int textNodeID = subscrGroup.AddElement(CreateSPAN(), nodeID);
             subscrGroup.AddElementParam(textNodeID, "class", "subscription-text");
             subscrGroup.GetElement(textNodeID).InnerString = subscr;
-            subscrGroup.AddElementParam(textNodeID, ".style", "background-color:" + HTMLsettings.getSetting(HTMLSettings.ContentBackgroundColor) + ";text-align:center;font-size:"
-                +HTMLsettings.getSetting(HTMLSettings.ContentFontSize)+";");
+            subscrGroup.AddElementParam(textNodeID, ".style", "background-color:" + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";text-align:center;font-size:"
+                +HTMLsettings.GetSetting(HTMLSettings.ContentFontSize)+";");
 
             return subscrGroup;
         }

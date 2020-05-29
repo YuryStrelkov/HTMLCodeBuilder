@@ -142,7 +142,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
             ProcessNodes(process);
 
-            Code = process.getProcessResult();
+            Code = process.GetProcessResult();
 
             return Code;
         }
@@ -153,7 +153,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
             ProcessNodes(process);
 
-            Code = process.getProcessResult();
+            Code = process.GetProcessResult();
 
             return Code;
         }

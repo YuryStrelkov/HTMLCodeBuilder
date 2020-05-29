@@ -32,7 +32,7 @@ namespace HTMLCodeBuilder.HTMLelements
     {
         private Dictionary<HTMLSettings, string> settings;
 
-        public void save(string pach)
+        public void Save(string pach)
         {
             string settingsStr = "";
 
@@ -44,7 +44,7 @@ namespace HTMLCodeBuilder.HTMLelements
             System.IO.File.WriteAllText(pach,settingsStr);
         }
 
-        public void load(string pach)
+        public void Load(string pach)
         {
             string[] lines = System.IO.File.ReadAllLines(pach);
 
@@ -53,11 +53,11 @@ namespace HTMLCodeBuilder.HTMLelements
             for (int i=0;i<lines.Length ;i++)
             {
                 splitLine = lines[i].Split(' ');
-                setSetting((HTMLSettings)int.Parse(splitLine[1]), splitLine[2]);
+                SetSetting((HTMLSettings)int.Parse(splitLine[1]), splitLine[2]);
             }
         }
 
-        public string getSetting(HTMLSettings setting)
+        public string GetSetting(HTMLSettings setting)
         {
             if (settings.ContainsKey(setting))
             {
@@ -66,7 +66,7 @@ namespace HTMLCodeBuilder.HTMLelements
             return "";
         }
 
-        public void setSetting(HTMLSettings setting, string val)
+        public void SetSetting(HTMLSettings setting, string val)
         {
             if (settings.ContainsKey(setting))
             {
@@ -76,54 +76,54 @@ namespace HTMLCodeBuilder.HTMLelements
             settings.Add(setting, val);
         }
 
-        private void useDefault()
+        private void UseDefault()
         {
-            setSetting(HTMLSettings.ContentFontSize, "14pt");
-            setSetting(HTMLSettings.FontSize, "14pt");
-            setSetting(HTMLSettings.ParagraphFontSize, "14pt");
-            setSetting(HTMLSettings.ParagraphTitleFontSize, "20pt");
+            SetSetting(HTMLSettings.ContentFontSize, "14pt");
+            SetSetting(HTMLSettings.FontSize, "14pt");
+            SetSetting(HTMLSettings.ParagraphFontSize, "14pt");
+            SetSetting(HTMLSettings.ParagraphTitleFontSize, "20pt");
 
 
-            setSetting(HTMLSettings.PageHeight, "300mm");
-            setSetting(HTMLSettings.PageWigth, "200mm");
+            SetSetting(HTMLSettings.PageHeight, "300mm");
+            SetSetting(HTMLSettings.PageWigth, "200mm");
 
-            setSetting(HTMLSettings.PageLeftIndent, "15mm");
-            setSetting(HTMLSettings.PageContentWidth, "180mm");
-            setSetting(HTMLSettings.PageTopIndent, "15mm");
-            setSetting(HTMLSettings.PageContentHeight, "270мм");
-            setSetting(HTMLSettings.TitleFontSize, "30pt");
+            SetSetting(HTMLSettings.PageLeftIndent, "15mm");
+            SetSetting(HTMLSettings.PageContentWidth, "180mm");
+            SetSetting(HTMLSettings.PageTopIndent, "15mm");
+            SetSetting(HTMLSettings.PageContentHeight, "270мм");
+            SetSetting(HTMLSettings.TitleFontSize, "30pt");
 
             /*
                 PageBackgroundColor = 10,
         ContentBackgroundColor = 11,
         TableBoderColor = 12,ContentHoverColor
              */
-            setSetting(HTMLSettings.PageBackgroundColor, "rgba(205,205,205,255)");
-            setSetting(HTMLSettings.ContentHoverColor, "rgba(225,225,225,255)");
-            setSetting(HTMLSettings.ContentBackgroundColor, "rgba(250,250,250,255)");
-            setSetting(HTMLSettings.TableBoderColor, "rgba(200,200,200,255)");
+            SetSetting(HTMLSettings.PageBackgroundColor, "rgba(205,205,205,255)");
+            SetSetting(HTMLSettings.ContentHoverColor, "rgba(225,225,225,255)");
+            SetSetting(HTMLSettings.ContentBackgroundColor, "rgba(250,250,250,255)");
+            SetSetting(HTMLSettings.TableBoderColor, "rgba(200,200,200,255)");
             /*
             ParagraphFontColor = 14,
             ContentFontColor = 15,
             ContentHoverColor = 16,
             ParagraphTitleFontColor = 17,
              */
-            setSetting(HTMLSettings.ParagraphFontColor, "rgba(0,0,0,255)");
-            setSetting(HTMLSettings.ContentFontColor, "rgba(0,0,0,255)");
-            setSetting(HTMLSettings.ContentHoverColor, "rgba(225,225,225,255)");
-            setSetting(HTMLSettings.ParagraphTitleFontColor, "rgba(0,0,0,255)");
+            SetSetting(HTMLSettings.ParagraphFontColor, "rgba(0,0,0,255)");
+            SetSetting(HTMLSettings.ContentFontColor, "rgba(0,0,0,255)");
+            SetSetting(HTMLSettings.ContentHoverColor, "rgba(225,225,225,255)");
+            SetSetting(HTMLSettings.ParagraphTitleFontColor, "rgba(0,0,0,255)");
 
         }
 
         public HTMLDocSettings()
         {
             settings = new Dictionary<HTMLSettings, string>();
-            useDefault();
+            UseDefault();
             try {
-                load("defaulSettings.txt");
+                Load("defaulSettings.txt");
             } catch(Exception e)
             {
-                save("defaulSettings.txt");
+                Save("defaulSettings.txt");
                 Console.Write("Something wrong with document settings file...\n");
                 Console.Write("Default settings will be aplied...\n");
             }

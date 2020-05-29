@@ -10,12 +10,12 @@ namespace HTMLCodeBuilder.HTMLelements
 
         private StringBuilder code;
 
-        public string getProcessResult()
+        public string GetProcessResult()
         {
             return code.ToString();
         }
 
-        public void onStart(int level, Node<ITagElement> n)
+        public void OnStart(int level, Node<ITagElement> n)
         {
             if (n.GetChildren().Count!= 0)
             {
@@ -26,7 +26,7 @@ namespace HTMLCodeBuilder.HTMLelements
             code.Append(n.GetData().ExpandOpenTag(startLevel + level));
         }
 
-        public void onEnd(int level, Node<ITagElement> n)
+        public void OnEnd(int level, Node<ITagElement> n)
         {
             if (n.GetChildren().Count != 0)
             {
@@ -38,7 +38,7 @@ namespace HTMLCodeBuilder.HTMLelements
             code.Append("\n");
         }
 
-        public void process(int level, Node<ITagElement> n)
+        public void Process(int level, Node<ITagElement> n)
         {
            
         }

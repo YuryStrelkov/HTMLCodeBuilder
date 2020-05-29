@@ -162,8 +162,8 @@ namespace HTMLCodeBuilder.HTMLelements
             string style_width = "width : " + (100.0 / headers.Length).ToString().Replace(',', '.') + "%";
 
             CSS        = GetParam("id")+ "+width:100%;border-collapse: collapse;text-align : center;+" +
-                         GetParam("id") + " td+border:1px solid " + HTMLElements.HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";" + style_width + ";+" +
-                         GetParam("id") + " th+border:1px solid " + HTMLElements.HTMLsettings.getSetting(HTMLSettings.TableBoderColor) + ";";
+                         GetParam("id") + " td+border:1px solid " + HTMLElements.HTMLsettings.GetSetting(HTMLSettings.TableBoderColor) + ";" + style_width + ";+" +
+                         GetParam("id") + " th+border:1px solid " + HTMLElements.HTMLsettings.GetSetting(HTMLSettings.TableBoderColor) + ";";
 
             AddParam( "##style", CSS);
 

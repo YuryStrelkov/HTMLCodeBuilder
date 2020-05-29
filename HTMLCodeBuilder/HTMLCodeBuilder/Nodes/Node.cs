@@ -13,14 +13,6 @@ namespace HTMLCodeBuilder.Nodes
         /// Счётчик количества созданных объектов на данный момент
         /// </summary>
         private static readonly InstanceCounter instanceCounter = new InstanceCounter();
-        /// <summary>
-        /// Возвращает ID, который можно добавить сейчас, но не использует его
-        /// </summary>
-        /// <returns>ID</returns>
-        public static int getAvailableID()
-        {
-            return instanceCounter.getInstanceIdAvailable();
-        }
           /// <summary>
         /// Родительский ID
         /// </summary>
@@ -147,7 +139,7 @@ namespace HTMLCodeBuilder.Nodes
 
             childrens = new Dictionary<int, int>(n.childrens);
 
-            Id = instanceCounter.getInstanceId();
+            Id = instanceCounter.GetInstanceId();
         }
 
         public Node( int parentID, T data_)
@@ -159,7 +151,7 @@ namespace HTMLCodeBuilder.Nodes
 
             childrens = new Dictionary<int, int>();
 
-            Id = instanceCounter.getInstanceId();
+            Id = instanceCounter.GetInstanceId();
         }
         
         public Node(T data_)
@@ -171,7 +163,7 @@ namespace HTMLCodeBuilder.Nodes
 
             childrens = new Dictionary<int, int>();
 
-            Id = instanceCounter.getInstanceId();
+            Id = instanceCounter.GetInstanceId();
 
         }
 
@@ -182,7 +174,7 @@ namespace HTMLCodeBuilder.Nodes
 
         public void Dispose()
         {
-            instanceCounter.removeInstance(Id);
+            instanceCounter.RemoveInstance(Id);
         }
 
         /*~Node()

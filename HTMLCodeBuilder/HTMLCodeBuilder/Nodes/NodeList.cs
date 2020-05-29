@@ -198,11 +198,11 @@ namespace HTMLCodeBuilder.Nodes
 
         private void ProcessNodes(int level,Node<T> node, INodeProcess<T, NodeProcessResult> process)
         {
-             process.onStart(level, node);
+             process.OnStart(level, node);
 
             if (node.GetChildren().Count == 0)
             {
-              process.onEnd(level, node);
+              process.OnEnd(level, node);
               return;
             }
 
@@ -211,7 +211,7 @@ namespace HTMLCodeBuilder.Nodes
                 ProcessNodes(level + 1, Nodes[nodeKey], process);
             }
 
-            process.onEnd(level, node);
+            process.OnEnd(level, node);
 
         }
         

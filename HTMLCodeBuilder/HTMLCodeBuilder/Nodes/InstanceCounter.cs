@@ -13,7 +13,7 @@ namespace HTMLCodeBuilder.Nodes
 
         private Stack<int> deletedInstances;
 
-        public void removeInstance(int id)
+        public void RemoveInstance(int id)
         {
             lock (mutex)
             {
@@ -22,7 +22,7 @@ namespace HTMLCodeBuilder.Nodes
             }
         }
 
-        public int getInstanceIdAvailable()
+        public int GetInstanceIdAvailable()
         {
 
             lock (mutex)
@@ -36,7 +36,7 @@ namespace HTMLCodeBuilder.Nodes
             }
         }
 
-        public int getInstanceId()
+        public int GetInstanceId()
         {
             lock (mutex)
             {
