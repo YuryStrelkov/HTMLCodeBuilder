@@ -41,7 +41,7 @@ namespace HTMLCodeBuilder.Nodes
         /// Метод доступа для обращения к хранимым данным
         /// </summary>
         /// <returns>хранимые данные</returns>
-        public T getData()
+        public T GetData()
         {
             return data;
         }
@@ -49,7 +49,7 @@ namespace HTMLCodeBuilder.Nodes
         /// Метод доступа для получения собственного ID
         /// </summary>
         /// <returns>собственный ID</returns>
-        public int getID()
+        public int GetID()
         {
             return Id;
         }
@@ -57,35 +57,35 @@ namespace HTMLCodeBuilder.Nodes
         /// Метод доступа для установки родительского нода
         /// </summary>
         /// <param name="n">новый родительский нод</param>
-        public void setParentID(Node<T> n)
+        public void SetParentID(Node<T> n)
         {
-            parentId = n.getID();
+            parentId = n.GetID();
         }
         /// <summary>
         /// Метод доступа для установки родительского ID
         /// </summary>
         /// <param name="id">новый родительский ID</param>
-        public void setParentID(int id)
+        public void SetParentID(int id)
         {
             parentId = id;
         }
 
-        public int getParentID()
+        public int GetParentID()
         {
             return parentId;
         }
 
-        public int[] getChildrenIDs()
+        public int[] GetChildrenIDs()
         {
             return childrens.Keys.ToArray();
         }
 
-        public Dictionary<int, int> getChildren()
+        public Dictionary<int, int> GetChildren()
         {
             return childrens;
         }
 
-        public void removeChild(int id)
+        public void RemoveChild(int id)
         {
             if (!childrens.ContainsKey(id))
             {
@@ -94,16 +94,16 @@ namespace HTMLCodeBuilder.Nodes
             childrens.Remove(id);
         }
 
-        public void addChild(Node<T> child)
+        public void AddChild(Node<T> child)
         {
-            addChild(child.getID());
-            child.parentId = getID();
+            AddChild(child.GetID());
+            child.parentId = GetID();
         }
 
-        public void addChild(int id)
+        public void AddChild(int id)
         {
             // исключение зацикливания
-            if (id == getID())
+            if (id == GetID())
             {
                 return;
             }
@@ -177,7 +177,7 @@ namespace HTMLCodeBuilder.Nodes
 
         public override string ToString()
         {
-            return "ID : " + getID() + " data : " + data.ToString(); 
+            return "ID : " + GetID() + " data : " + data.ToString(); 
         }
 
         public void Dispose()

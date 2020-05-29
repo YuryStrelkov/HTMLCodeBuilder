@@ -90,7 +90,7 @@ namespace HTMLCodeBuilder.HTMLelements
                 {
                     TablesCount += 1;
                     List<int> nodes = subscrGroup.GetElementByClass("subscription-enumeration");
-                    subscrGroup.GetNode(nodes[0]).getData().InnerString = "Таблица № " + TablesCount.ToString() + ". ";
+                    subscrGroup.GetNode(nodes[0]).GetData().InnerString = "Таблица № " + TablesCount.ToString() + ". ";
                 }
                 mergeHTML(holderID, subscrGroup);
             }
@@ -232,7 +232,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
             SVGElements.AppendSVGGraphic(ref LastGraphic, x, y,legend,color);
 
-            mergeHTML(LastGraphic.GetNode(LastGraphic.RootID).getParentID(), LastGraphic);
+            mergeHTML(LastGraphic.GetNode(LastGraphic.RootID).GetParentID(), LastGraphic);
 
             return LastGraphic;
         }
@@ -246,7 +246,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
             SVGElements.AppendSVGGraphic(ref LastGraphic, x, y, z);
 
-            mergeHTML(LastGraphic.GetNode(LastGraphic.RootID).getParentID(), LastGraphic);
+            mergeHTML(LastGraphic.GetNode(LastGraphic.RootID).GetParentID(), LastGraphic);
 
             return LastGraphic;
         }
@@ -268,9 +268,9 @@ namespace HTMLCodeBuilder.HTMLelements
 
             int contentRef = AddNode(HTMLElements.Create("<a>"), contentRecord);
 
-            AddElementParam(contentRef, "href", "#" + GetNode(nodeID).getData().GetParam("id"));
+            AddElementParam(contentRef, "href", "#" + GetNode(nodeID).GetData().GetParam("id"));
 
-            GetNode(contentRef).getData().InnerString = GetNode(nodeID).getData().GetParam("#title");
+            GetNode(contentRef).GetData().InnerString = GetNode(nodeID).GetData().GetParam("#title");
         }
 
         private void mergeStyle(ITagElement element)
@@ -334,10 +334,10 @@ namespace HTMLCodeBuilder.HTMLelements
             {
                 AddNodeDirect(list.GetNode(key));
 
-                mergeStyle(list.GetNode(key).getData());
+                mergeStyle(list.GetNode(key).GetData());
 
             }
-            GetNode(nodeID).addChild(list.RootID);
+            GetNode(nodeID).AddChild(list.RootID);
         }
 
         public new int AddElement(ITagElement element)
@@ -352,7 +352,7 @@ namespace HTMLCodeBuilder.HTMLelements
             return base.AddElement(element, parentID);
         }
 
-        public new string buildCode()
+        public new string BuildCode()
         {
             DateTime start = DateTime.Now;
 
@@ -372,7 +372,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
             stylesStr.Append("\t\t");
 
-            GetNode(HTMLStyleID).getData().InnerString = stylesStr.ToString();
+            GetNode(HTMLStyleID).GetData().InnerString = stylesStr.ToString();
 
             Code = "<!DOCTYPE html>\n" + base.BuildCode();
 

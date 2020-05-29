@@ -53,36 +53,36 @@ namespace HTMLCodeBuilder.TaggedElements
 
         private void updateClassAndTags(Node<ITagElement> elementNode)
         {
-            string param = elementNode.getData().Tag;
+            string param = elementNode.GetData().Tag;
 
             if (TagVsID.ContainsKey(param))
             {
-                if (!TagVsID[param].ContainsKey(elementNode.getID()))
+                if (!TagVsID[param].ContainsKey(elementNode.GetID()))
                 {
-                    TagVsID[param].Add(elementNode.getID(), elementNode.getID());
+                    TagVsID[param].Add(elementNode.GetID(), elementNode.GetID());
                 }
             }
             else
             {
                 TagVsID.Add(param, new Dictionary<int, int>());
 
-                TagVsID[param].Add(elementNode.getID(), elementNode.getID());
+                TagVsID[param].Add(elementNode.GetID(), elementNode.GetID());
             }
             
-            param = elementNode.getData().GetParam("class");
+            param = elementNode.GetData().GetParam("class");
 
             if (ClassVsID.ContainsKey(param))
             {
-                if (!ClassVsID[param].ContainsKey(elementNode.getID()))
+                if (!ClassVsID[param].ContainsKey(elementNode.GetID()))
                 {
-                    ClassVsID[param].Add(elementNode.getID(), elementNode.getID());
+                    ClassVsID[param].Add(elementNode.GetID(), elementNode.GetID());
                 }
             }
             else
             {
                 ClassVsID.Add(param, new Dictionary<int, int>());
 
-                ClassVsID[param].Add(elementNode.getID(), elementNode.getID());
+                ClassVsID[param].Add(elementNode.GetID(), elementNode.GetID());
             }
         }
 
@@ -90,9 +90,9 @@ namespace HTMLCodeBuilder.TaggedElements
         {
             if (ContainsNode(id))
             {
-                return GetNode(id).getData();
+                return GetNode(id).GetData();
             }
-            return GetNode(RootID).getData();
+            return GetNode(RootID).GetData();
         }
 
         public int AddElement(ITagElement element)
@@ -113,7 +113,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public void AddElementParam(int elemID, string paramKey, string paramVal)
         {
-            GetNode(elemID).getData().AddParam(paramKey, paramVal);
+            GetNode(elemID).GetData().AddParam(paramKey, paramVal);
 
             if (paramKey.Equals("class"))
             {
@@ -123,7 +123,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public string GetElementParam(int elemID, string paramKey)
         {
-            return GetNode(elemID).getData().GetParam(paramKey);
+            return GetNode(elemID).GetData().GetParam(paramKey);
         }
  
         public void saveCode(string path)
@@ -177,7 +177,7 @@ namespace HTMLCodeBuilder.TaggedElements
                 AddNodeDirect(list.GetNode(key));
                 updateClassAndTags(list.GetNode(key));
             }
-            GetNode(nodeID).addChild(GetNode(list.RootID));
+            GetNode(nodeID).AddChild(GetNode(list.RootID));
         }
      
         public new TagElementsGroup GetSubListCopy(int nodeID)
@@ -215,7 +215,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
             Node<ITagElement> node = new Node<ITagElement>(data);
 
-            RootID = node.getID();
+            RootID = node.GetID();
 
             LastID = AddNode(node);
 

@@ -94,7 +94,7 @@ namespace HTMLBuilderExecutable
             page.GraphicYLabel("y");
 
 
-            page.buildCode();
+            page.BuildCode();
 
             page.saveCode("page.html");
 

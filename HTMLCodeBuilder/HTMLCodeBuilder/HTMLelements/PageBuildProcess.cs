@@ -17,24 +17,24 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public void onStart(int level, Node<ITagElement> n)
         {
-            if (n.getChildren().Count!= 0)
+            if (n.GetChildren().Count!= 0)
             {
-                code.Append(n.getData().ExpandOpenTag(startLevel + level));
+                code.Append(n.GetData().ExpandOpenTag(startLevel + level));
                 code.Append("\n");
                 return;
             }
-            code.Append(n.getData().ExpandOpenTag(startLevel + level));
+            code.Append(n.GetData().ExpandOpenTag(startLevel + level));
         }
 
         public void onEnd(int level, Node<ITagElement> n)
         {
-            if (n.getChildren().Count != 0)
+            if (n.GetChildren().Count != 0)
             {
-                code.Append(n.getData().ExpandCloseTag(startLevel+level));
+                code.Append(n.GetData().ExpandCloseTag(startLevel+level));
                 code.Append("\n");
                 return;
             }
-            code.Append(n.getData().ExpandCloseTag(0));
+            code.Append(n.GetData().ExpandCloseTag(0));
             code.Append("\n");
         }
 
