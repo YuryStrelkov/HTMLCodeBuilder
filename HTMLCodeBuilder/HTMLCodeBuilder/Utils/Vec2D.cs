@@ -13,10 +13,23 @@ namespace HTMLCodeBuilder.Utils
         IN = 5,
         NONE = 6
     }
+
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vec2D : IEquatable<Vec2D>
     {
+        public static readonly Vec2D ZERO = new Vec2D(0,0);
+
+        public static readonly Vec2D LEFT = new Vec2D(-1, 0);
+
+        public static readonly Vec2D RIGHT = new Vec2D(1, 0);
+
+        public static readonly Vec2D UP = new Vec2D(0, 1);
+
+        public static readonly Vec2D DOWN = new Vec2D(0, -1);
+
+        public static readonly Vec2D ONE = new Vec2D(1, 1);
+
         public static readonly double PIXEL_PER_MM = 3.7795275591;
 
         public static readonly double PIXEL_PER_CM = 37.795275591;
