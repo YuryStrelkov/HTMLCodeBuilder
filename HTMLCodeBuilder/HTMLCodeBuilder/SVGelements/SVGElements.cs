@@ -46,12 +46,12 @@ namespace HTMLCodeBuilder.SVGelements
 
         private static double parseSize2Pix(double x)
         {
-            return x * Vec2D.PIXEL_PER_MM;
+            return x * PixPerUnit.PIXEL_PER_MM;
         }
 
         private static string parseSize2PixString(double x)
         {
-            return num2str(x * Vec2D.PIXEL_PER_MM);
+            return num2str(x * PixPerUnit.PIXEL_PER_MM);
         }
 
         private static string parseSize2MMString(double x)
@@ -205,7 +205,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             SVGElement image = CreateSVGImage(path);
 
-            image.setSizes(w / Vec2D.PIXEL_PER_MM, h / Vec2D.PIXEL_PER_MM);
+            image.setSizes(w / PixPerUnit.PIXEL_PER_MM, h / PixPerUnit.PIXEL_PER_MM);
 
             return image;
         }
@@ -218,7 +218,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             SVGElement image = CreateSVGImage(path);
 
-            image.setSizes(img.Width / Vec2D.PIXEL_PER_MM, img.Height / Vec2D.PIXEL_PER_MM);
+            image.setSizes(img.Width / PixPerUnit.PIXEL_PER_MM, img.Height / PixPerUnit.PIXEL_PER_MM);
 
             return image;
         }
@@ -235,7 +235,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             SVGElement image = CreateSVGImage(path);
 
-            image.setSizes(w / Vec2D.PIXEL_PER_MM, h / Vec2D.PIXEL_PER_MM);
+            image.setSizes(w / PixPerUnit.PIXEL_PER_MM, h / PixPerUnit.PIXEL_PER_MM);
 
             return image;
         }
@@ -481,16 +481,16 @@ namespace HTMLCodeBuilder.SVGelements
 
             if (string.IsNullOrEmpty(style))
             {
-                line = CreateSVGPolyLine(elem.X0 - xOff / Vec2D.PIXEL_PER_MM,
-                                                          elem.Y0 + yOff / Vec2D.PIXEL_PER_MM, ref xs, ref ys, "fill:none;stroke-width:2px;stroke:rgb(0,0,0);");
+                line = CreateSVGPolyLine(elem.X0 - xOff / PixPerUnit.PIXEL_PER_MM,
+                                                          elem.Y0 + yOff / PixPerUnit.PIXEL_PER_MM, ref xs, ref ys, "fill:none;stroke-width:2px;stroke:rgb(0,0,0);");
 
                 axes.AddElement(line, axes.GetElementByClass("charts-list-node")[0]);
 
                 return;
             }
 
-            line = CreateSVGPolyLine(elem.X0 - xOff / Vec2D.PIXEL_PER_MM,
-                                                       elem.Y0 + yOff / Vec2D.PIXEL_PER_MM, ref xs, ref ys, style);
+            line = CreateSVGPolyLine(elem.X0 - xOff / PixPerUnit.PIXEL_PER_MM,
+                                                       elem.Y0 + yOff / PixPerUnit.PIXEL_PER_MM, ref xs, ref ys, style);
 
             axes.AddElement(line, axes.GetElementByClass("charts-list-node")[0]);
         }
@@ -648,7 +648,7 @@ namespace HTMLCodeBuilder.SVGelements
 
             legendnode.AddParam("class", "legend-node");
 
-            legendnode.Move(AX_W_H[0] - 5 / Vec2D.PIXEL_PER_MM, 5 / Vec2D.PIXEL_PER_MM);
+            legendnode.Move(AX_W_H[0] - 5 / PixPerUnit.PIXEL_PER_MM, 5 / PixPerUnit.PIXEL_PER_MM);
 
             axNodeBackground.AddElement(legendnode);
 

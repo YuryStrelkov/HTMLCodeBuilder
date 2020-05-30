@@ -4,10 +4,14 @@ using System.Runtime.InteropServices;
 namespace HTMLCodeBuilder.Utils
 {
     [Serializable]
-    [StructLayout(LayoutKind.Sequential)]
-    public struct XYWH : IEquatable<XYWH>
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 288)]
+     public struct XYWH : IEquatable<XYWH>
     {
-        private Vec2D xy, wh;
+        [FieldOffset(0)]
+        private Vec2D xy;
+
+        [FieldOffset(144)]
+        private Vec2D wh;
 
         public Vec2D XY { get { return xy; } }
 

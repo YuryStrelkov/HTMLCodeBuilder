@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace HTMLCodeBuilder.Utils
 {
-    public enum Units
+    public enum Units: ushort
     {
         MM = 1,
         CM = 2,
@@ -14,10 +14,22 @@ namespace HTMLCodeBuilder.Utils
         NONE = 6
     }
 
+    public static class PixPerUnit
+    {
+        public static readonly double PIXEL_PER_MM = 3.7795275591;
+
+        public static readonly double PIXEL_PER_CM = 37.795275591;
+
+        public static readonly double PIXEL_PER_M = 3779.5275591;
+
+        public static readonly double PIXEL_PER_INCH = 96.000000001139995;
+    }
+
     [Serializable]
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 142)]
     public struct Vec2D : IEquatable<Vec2D>
     {
+        #region Default vectors
         public static readonly Vec2D ZERO = new Vec2D(0,0);
 
         public static readonly Vec2D LEFT = new Vec2D(-1, 0);
@@ -29,42 +41,74 @@ namespace HTMLCodeBuilder.Utils
         public static readonly Vec2D DOWN = new Vec2D(0, -1);
 
         public static readonly Vec2D ONE = new Vec2D(1, 1);
+        #endregion
+          
+        #region fields
+        [FieldOffset(0)]
+        private double x;//8 bytes
 
-        public static readonly double PIXEL_PER_MM = 3.7795275591;
+        [FieldOffset(8)] //8 bytes - offset
+        private double y;//8 bytes
 
-        public static readonly double PIXEL_PER_CM = 37.795275591;
+        [FieldOffset(16)] //16 bytes - offset
+        private double xpix;//8 bytes
 
-        public static readonly double PIXEL_PER_M = 3779.5275591;
+        [FieldOffset(24)] //24 bytes - offset
+        private double ypix;//8 bytes
 
-        public static readonly double PIXEL_PER_INCH = 96.000000001139995;
+        [FieldOffset(32)] //32 bytes - offset
+        private double ex;//8 bytes
 
-        private double x, y;
+        [FieldOffset(40)] //40 bytes - offset
+        private double ey;//8 bytes
 
-        private double UnitsScale;
+        [FieldOffset(48)] //48 bytes - offset
+        private double length;//8 bytes
 
-        private Units vecUnits;
+        [FieldOffset(56)] //56 bytes - offset
+        private char[] unitsChar; // 2 - chars; each char size 2 bytes
 
-        private string UnitsStr;
+        [FieldOffset(60)] //64 bytes - offset
+        private char[] xs; // 16 - chars; each char size 2 bytes
 
+        [FieldOffset(92)] //96 bytes - offset
+        private char[] ys; // 16 - chars; each char size 2 bytes
+
+        [FieldOffset(124)] //128 bytes - offset
+        private double unitsScale;//8 bytes
+
+        [FieldOffset(132)]
+        private Units vecUnits;//2- bytes
+
+        [FieldOffset(134)]
+        private int xChars;//4- bytes
+
+        [FieldOffset(138)]
+        private int yChars;//4- bytes
+
+        #endregion
+
+        #region Getters ans setters
         public Units VecUnits { get { return vecUnits; } set { { UpdateUnits(value); } } }
 
         public double X { get { return x; } set { setX(value); } }
 
         public double Y { get { return y; } set { setY(value); } }
 
-        public string Xs { get; private set; }
+        public string Xs { get { return new string(xs, 16 - xChars, xChars); }}
 
-        public string Ys { get; private set; }
+        public string Ys { get { return new string(ys, 16 - yChars, yChars); }}
 
-        public double Xpix { get; private set; }
+        public double Xpix { get { return xpix; } private set { xpix = value; } }
 
-        public double Ypix { get; private set; }
+        public double Ypix { get { return ypix; } private set { ypix = value; } }
 
-        public double Ex { get; private set; }
+        public double Ex { get { return ex; } private set { ex = value; } }
 
-        public double Ey { get; private set; }
+        public double Ey { get { return ey; } private set { ey = value; } }
 
-        public double Norm { get; private set; }
+        public double Norm { get { return length; } private set { length = value; } }
+        #endregion
 
         public static double dot(Vec2D a, Vec2D b)
         {
@@ -116,15 +160,67 @@ namespace HTMLCodeBuilder.Utils
         private void setX(double x_)
         {
             x = x_;
-            Xpix = x * UnitsScale;
-            Xs = SVGElements.num2str(x) + UnitsStr;
+
+            Xpix = x * unitsScale;
+
+            updateXs();
         }
 
         private void setY(double y_)
         {
             y = y_;
-            Ypix = y * UnitsScale;
-            Ys = SVGElements.num2str(y) + UnitsStr;
+
+            Ypix = y * unitsScale;
+
+            updateYs();
+        }
+
+        private void updateXs()
+        {
+            xs = new string((char) 0, 16).ToCharArray();
+
+            string tmp = SVGElements.num2str(x);
+
+            if (VecUnits == Units.NONE)
+            {
+                xChars = Math.Min(14, tmp.Length);
+
+                Array.Copy(tmp.ToCharArray(), 0, xs, xs.Length - xChars, xChars);
+
+                return;
+            }
+
+            xChars = Math.Min(14, tmp.Length) + 2;
+
+            Array.Copy(tmp.ToCharArray(), 0, xs, xs.Length- xChars, xChars-2);
+
+            xs[xs.Length - 1] = unitsChar[1];
+
+            xs[xs.Length - 2] = unitsChar[0];
+        }
+
+        private void updateYs()
+        {
+            ys = new string((char) 0, 16).ToCharArray();
+
+            string tmp = SVGElements.num2str(y);
+
+            if (VecUnits == Units.NONE)
+            {
+                yChars = Math.Min(14, tmp.Length);
+
+                Array.Copy(tmp.ToCharArray(), 0, ys, ys.Length - yChars, yChars);
+
+                return;
+            }
+
+            yChars = Math.Min(14, tmp.Length) + 2;
+
+            Array.Copy(tmp.ToCharArray(), 0, ys, ys.Length - yChars, yChars-2);
+
+            ys[ys.Length - 1] = unitsChar[1];
+
+            ys[ys.Length - 2] = unitsChar[0];
         }
 
         private void UpdateUnits(Units newUnits)
@@ -140,71 +236,72 @@ namespace HTMLCodeBuilder.Utils
             {
                 case Units.CM:
 
-                    UnitsScale = PIXEL_PER_CM;
+                    unitsScale = PixPerUnit.PIXEL_PER_CM;
 
-                    UnitsStr = "cm";
+                    unitsChar[0] = 'c'; unitsChar[1] = 'm';
 
-                    Xpix = X * UnitsScale;
+                    Xpix = X * unitsScale;
 
-                    Ypix = Y * UnitsScale;
+                    Ypix = Y * unitsScale;
 
-                    Xs = SVGElements.num2str(x) + UnitsStr;
+                    updateXs();
 
-                    Ys = SVGElements.num2str(y) + UnitsStr;
+                    updateYs();
+
                     break;
                 case Units.MM:
-                    UnitsScale = PIXEL_PER_MM;
+                    unitsScale = PixPerUnit.PIXEL_PER_MM;
 
-                    UnitsStr = "mm";
+                    unitsChar[0] = 'm'; unitsChar[1] = 'm';
 
-                    Xpix = X * UnitsScale;
+                    Xpix = X * unitsScale;
 
-                    Ypix = Y * UnitsScale;
+                    Ypix = Y * unitsScale;
 
-                    Xs = SVGElements.num2str(x) + UnitsStr;
+                    updateXs();
 
-                    Ys = SVGElements.num2str(y) + UnitsStr;
+                    updateYs();
                     break;
                 case Units.M:
 
-                    UnitsScale = PIXEL_PER_M;
+                    unitsScale = PixPerUnit.PIXEL_PER_M;
 
-                    UnitsStr = "m";
+                    unitsChar[0] = 'm'; unitsChar[1] = (char) 0;
 
-                    Xpix = X * UnitsScale;
+                    Xpix = X * unitsScale;
 
-                    Ypix = Y * UnitsScale;
+                    Ypix = Y * unitsScale;
 
-                    Xs = SVGElements.num2str(x) + UnitsStr;
+                    updateXs();
 
-                    Ys = SVGElements.num2str(y) + UnitsStr;
+                    updateYs();
                     break;
                 case Units.IN:
-                    UnitsScale = PIXEL_PER_INCH;
+                    unitsScale = PixPerUnit.PIXEL_PER_INCH;
 
-                    UnitsStr = "in";
+                    unitsChar[0] = 'i'; unitsChar[1] = 'n';
 
-                    Xpix = X * UnitsScale;
+                    Xpix = X * unitsScale;
 
-                    Ypix = Y * UnitsScale;
+                    Ypix = Y * unitsScale;
 
-                    Xs = SVGElements.num2str(x) + UnitsStr;
+                    updateXs();
 
-                    Ys = SVGElements.num2str(y) + UnitsStr;
+                    updateYs();
                     break;
 
                 case Units.NONE:
-                    UnitsScale = 1;
+                    unitsScale = 1;
 
-                    UnitsStr = "";
+                    unitsChar[0] = (char) 0; unitsChar[1] = (char) 0;
 
-                    Xpix = X * UnitsScale;
+                    Xpix = X * unitsScale;
 
-                    Ypix = Y * UnitsScale;
+                    Ypix = Y * unitsScale;
 
-                    Xs = SVGElements.num2str(x) + UnitsStr;
+                    updateXs();
 
-                    Ys = SVGElements.num2str(y) + UnitsStr;
+                    updateYs();
                     break;
             }
         }
@@ -230,29 +327,51 @@ namespace HTMLCodeBuilder.Utils
         public Vec2D(double x_, double y_)
         {
             vecUnits = Units.MM;
+            
+            unitsScale = PixPerUnit.PIXEL_PER_MM;
 
-            UnitsStr = "mm";
+            unitsChar = new char[2];
 
-            UnitsScale = PIXEL_PER_MM;
+            unitsChar[0] = 'm'; unitsChar[1] = 'm';
 
             x = x_;
 
             y = y_;
 
-            Norm = Math.Sqrt(x * x + y * y);
+            length = Math.Sqrt(x * x + y * y);
 
-            Ex = x / Norm;
+            ex = x / length;
 
-            Ey = y / Norm;
+            ey = y / length;
 
-            Xs = SVGElements.num2str(x) + UnitsStr;
+            xpix = x * unitsScale;
 
-            Ys = SVGElements.num2str(y) + UnitsStr;
+            ypix = y * unitsScale;
 
-            Xpix = x * UnitsScale;
+            xs = new string((char) 0, 16).ToCharArray();
 
-            Ypix = y * UnitsScale;
+            string tmp = SVGElements.num2str(x);
 
+            xChars = Math.Min(14, tmp.Length)+2;
+
+            Array.Copy(tmp.ToCharArray(), 0, xs, xs.Length - xChars, xChars-2);
+
+            xs[xs.Length - 1] = unitsChar[1];
+
+            xs[xs.Length - 2] = unitsChar[0];
+
+
+            ys = new string((char) 0, 16).ToCharArray();
+
+            tmp = SVGElements.num2str(y);
+
+            yChars = Math.Min(14, tmp.Length)+2;
+
+            Array.Copy(tmp.ToCharArray(), 0, ys, ys.Length - yChars, yChars - 2);
+
+            ys[ys.Length - 1] = unitsChar[1];
+
+            ys[ys.Length - 2] = unitsChar[0];
         }
 
     }

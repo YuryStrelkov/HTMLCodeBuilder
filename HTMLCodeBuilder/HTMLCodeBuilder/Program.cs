@@ -1,5 +1,9 @@
 ﻿using HTMLCodeBuilder.HTMLelements;
+using HTMLCodeBuilder.Utils;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace HTMLBuilderExecutable
 {
@@ -7,7 +11,7 @@ namespace HTMLBuilderExecutable
     {
         static void Main(string[] args)
         {
-            HTMLPage page = new HTMLPage();
+          HTMLPage page = new HTMLPage();
 
             page.AddElement(HTMLElements.CreateTitle("Титул"), page.HTMLHeadID);
             page.addContent(page.HTMLBodyID, "Оглавление");
@@ -41,11 +45,6 @@ namespace HTMLBuilderExecutable
             table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
             table.appendRecord("a"); table.appendRecord("a"); table.appendRecord("a");
       
-            /*HTMLElements.EditTableCell(table, 0, 0, "хуууй");
-            HTMLElements.EditTableCell(table, 0, 1, "хуууй");
-            HTMLElements.EditTableCell(table, 0, 2, "хуууй");*/
-
-            //page.addGraph(page.HTMLBodyID,new double[] { 0, 1, 2}, new double[] { 0,1,2 },"x","y","t"); 
             page.addGraphic(page.HTMLBodyID,170,100);
             //для всех графиков должны быть одинаковые x
             //для всех графиков должны быть одинаковые y
@@ -97,10 +96,76 @@ namespace HTMLBuilderExecutable
             page.BuildCode();
 
             page.saveCode("page.html");
-
             Console.ReadKey();
 
-              
+            /*   List<HTMLElement> elems1=new List<HTMLElement>();
+               Stopwatch sw = new Stopwatch();
+               int size = 100000;
+               sw.Start();
+
+               for (int i=0;i< size; i++)
+               {
+                   elems1.Add(HTMLElements.CreateCenterAlign());
+               }
+               sw.Stop();
+               Console.WriteLine("List time : "+sw.Elapsed);
+
+               sw.Reset();
+
+               sw.Start();
+               HTMLElement[] elems2=new HTMLElement[size];
+
+               for (int i = 0; i < size; i++)
+               {
+                   elems2[i] = HTMLElements.CreateCenterAlign();
+               }
+               sw.Stop();
+               Console.WriteLine("Array time : " + sw.Elapsed);
+
+
+               char[] arrayC = new char[100000];
+
+               for (int i=0;i<arrayC.Length ;i+=5)
+               {
+                   arrayC[i] = 'S';
+                   arrayC[i + 1] = 'y';
+                   arrayC[i + 2] = 'k';
+                   arrayC[i + 3] = 'a';
+                   arrayC[i + 4] = '\n';
+               }
+               sw.Reset();
+               sw.Start();
+
+               arrayC.ToString();
+               sw.Stop();
+               Console.WriteLine("ToString time : " + sw.Elapsed);
+               ///Console.WriteLine(arrayC);
+       */
+
+            char[] arrayC = new char[20];
+
+            for (int i = 0; i < arrayC.Length; i += 10)
+            {
+                arrayC[i] = 'S';
+                arrayC[i + 1] = 'y';
+                arrayC[i + 2] = 'k';
+                arrayC[i + 3] = 'a';
+                arrayC[i + 4] = '\n';
+                arrayC[i + 5] = '\0';
+                arrayC[i + 6] = '\0';
+                arrayC[i + 7] = '\0';
+                arrayC[i + 8] = '\0';
+                arrayC[i + 9] = '\0';
+            }
+            Console.WriteLine(arrayC);
+
+            //    Console.WriteLine(Marshal.SizeOf(arrayC) + " bytes");
+        unsafe
+            {
+                Console.WriteLine(Marshal.SizeOf(typeof(XYWH)) + " bytes");
+            }
+
+            Console.ReadKey();
         }
     }
 }
