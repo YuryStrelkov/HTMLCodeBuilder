@@ -243,12 +243,14 @@ namespace HTMLCodeBuilder.HTMLelements
 
             return content;
         }
+
         public static TagElementsGroup CreateImageGridHolder(int rowCapacity)
         {
             TagElementsGroup holder = new TagElementsGroup(CreateDIV());
             holder.AddElementParam(holder.RootID, "class", "grid-holder");
             holder.AddElementParam(holder.RootID, "id", "grid-holder-"+ holder.RootID);
             holder.AddElementParam(holder.RootID, "#style div", "float : left; width : "+100.0/rowCapacity + "%");
+            holder.MergeGroups(CreateSubscription("lololo"));
             return holder;
         }
 

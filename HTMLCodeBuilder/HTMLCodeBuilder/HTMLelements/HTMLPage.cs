@@ -184,30 +184,47 @@ namespace HTMLCodeBuilder.HTMLelements
             SVGElements.GraphicYLabel(Graphic, t);
         }
 
-        /*public void TagElementsGroup createGridHolder(int nodeID)
-        {
-            TagElementsGroup holder;
-        }*/
-
+ 
         public TagElementsGroup addGraphic(int parent, double w, double h)
         {
-            TagElementsGroup container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
+            TagElementsGroup container;
 
-            TagElementsGroup Graphic = SVGElements.CreateSVGGraphicXY(w, h);
+            TagElementsGroup Graphic;
+
+            if (GetElement(parent).GetParam("class").Equals("grid-holder"))
+            {
+                TagElementsGroup gridHolder =  GetSubList(parent);
+
+                container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
+
+                Graphic = SVGElements.CreateSVGGraphicXY(w, h);
+
+                container.MergeGroups(Graphic);
+
+                gridHolder.MergeGroups(container);
+
+                int elemID =  gridHolder.GetElementByClass("subscription-enumeration")[0];
+
+                gridHolder.GetElement(elemID).InnerString = "Pic. № " + ImagesCount;
+
+                elemID = gridHolder.GetElementByClass("subscription-text")[0];
+
+                gridHolder.GetElement(elemID).InnerString = "SomeText";
+
+                LastGraphic = Graphic;
+
+                return Graphic;
+            }
+
+
+             container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
+
+             Graphic = SVGElements.CreateSVGGraphicXY(w, h);
 
             container.MergeGroups(Graphic);
 
             mergeHTML(parent, container);
-
-            if (GetElement(parent).GetParam("class").Equals("grid-holder"))
-            {
-                HTMLElement spantext = HTMLElements.CreateSPAN();
-                spantext.AddParam("class", "subscription-enumeration");
-                spantext.InnerString = "a";
-                container.AddElement(spantext);
-            }
-
-
+                        
             TagElementsGroup  ss = HTMLElements.CreateSubscription("Picture");
 
             int ss_num = ss.GetElementByClass("subscription-enumeration")[0];
@@ -225,7 +242,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public TagElementsGroup appendGraphic(double[] x, double[] y, string legend = "", string color = "")
         {
-            if (LastGraphic==null)
+            if (LastGraphic == null)
             {
                 return addGraphic(HTMLBodyID, 100, 100);
             }

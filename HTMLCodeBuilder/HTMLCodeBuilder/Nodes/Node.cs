@@ -175,7 +175,7 @@ namespace HTMLCodeBuilder.Nodes
         public void Dispose()
         {
             instanceCounter.RemoveInstance(Id);
-        }
+         }
 
         /*~Node()
         {

@@ -23,15 +23,15 @@ namespace HTMLCodeBuilder.Utils
         public double H { get { return wh.Y; } set { wh.Y = value; } }
 
 
-        public double Xpix { get { return xy.Xpix; } private set { } }
-        public double Ypix { get { return xy.Ypix; } private set { } }
-        public double Wpix { get { return wh.Xpix; } private set { } }
-        public double Hpix { get { return wh.Ypix; } private set { } }
+        public double Xpix { get { return xy.Xpix; }}
+        public double Ypix { get { return xy.Ypix; }}
+        public double Wpix { get { return wh.Xpix; }}
+        public double Hpix { get { return wh.Ypix; }}
 
-        public string Xs { get { return xy.Xs; } private set { } }
-        public string Ys { get { return xy.Ys; } private set { } }
-        public string Ws { get { return wh.Xs; } private set { } }
-        public string Hs { get { return wh.Ys; } private set { } }
+        public string Xs { get { return xy.Xs; }}
+        public string Ys { get { return xy.Ys; }}
+        public string Ws { get { return wh.Xs; }}
+        public string Hs { get { return wh.Ys; }}
 
         public XYWH(double x, double y, double w, double h)
         {

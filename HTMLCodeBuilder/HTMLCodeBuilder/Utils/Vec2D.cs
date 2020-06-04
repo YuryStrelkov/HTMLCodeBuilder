@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace HTMLCodeBuilder.Utils
-{
+{   
     public enum Units: ushort
     {
         MM = 1,
@@ -13,6 +13,7 @@ namespace HTMLCodeBuilder.Utils
         IN = 5,
         NONE = 6
     }
+ 
 
     public static class PixPerUnit
     {
@@ -89,15 +90,11 @@ namespace HTMLCodeBuilder.Utils
         #endregion
 
         #region Getters ans setters
-        public Units VecUnits { get { return vecUnits; } set { { UpdateUnits(value); } } }
+        public Units VecUnits { get { return vecUnits; } set { { updateUnits(value); } } }
 
         public double X { get { return x; } set { setX(value); } }
 
         public double Y { get { return y; } set { setY(value); } }
-
-        public string Xs { get { return new string(xs, 16 - xChars, xChars); }}
-
-        public string Ys { get { return new string(ys, 16 - yChars, yChars); }}
 
         public double Xpix { get { return xpix; } private set { xpix = value; } }
 
@@ -108,28 +105,40 @@ namespace HTMLCodeBuilder.Utils
         public double Ey { get { return ey; } private set { ey = value; } }
 
         public double Norm { get { return length; } private set { length = value; } }
+
+        public string Xs { get { return new string(xs, 16 - xChars, xChars); } }
+
+        public string Ys { get { return new string(ys, 16 - yChars, yChars); } }
         #endregion
 
-        public static double dot(Vec2D a, Vec2D b)
+        public static double Dot(Vec2D a, Vec2D b)
         {
             return a.X * b.X + a.Y * b.Y;
         }
 
-        public double dot(Vec2D b)
+        public static Vec2D operator +(Vec2D a, double b)
         {
-            return X * b.X + Y * b.Y;
+            return new Vec2D(a.X + b, a.Y + b);
+        }
+
+        public static Vec2D operator +(double b, Vec2D a)
+        {
+            return new Vec2D(a.X + b, a.Y + b);
+        }
+
+        public static Vec2D operator -(Vec2D a, double b)
+        {
+            return new Vec2D(a.X - b, a.Y - b);
+        }
+
+        public static Vec2D operator -(double b, Vec2D a)
+        {
+            return new Vec2D( b - a.X,  b - a.Y);
         }
 
         public static Vec2D operator *(Vec2D a, double b)
         {
             return new Vec2D(a.X * b, a.Y * b);
-        }
-
-        public void normalize()
-        {
-            Norm = Math.Sqrt(X * X + Y * Y);
-            Ex = X / Norm;
-            Ey = Y / Norm;
         }
 
         public static Vec2D operator *(double b, Vec2D a)
@@ -156,6 +165,36 @@ namespace HTMLCodeBuilder.Utils
         {
             return new Vec2D(a.X / b, a.Y / b);
         }
+        
+        public double Dot(Vec2D b)
+        {
+            return X * b.X + Y * b.Y;
+        }
+
+        public void Normalize()
+        {
+            Norm = Math.Sqrt(X * X + Y * Y);
+            Ex = X / Norm;
+            Ey = Y / Norm;
+        }
+
+        public bool Equals(Vec2D other)
+        {
+            if (other.VecUnits != VecUnits)
+            {
+                return false;
+            }
+            if (other.X != X)
+            {
+                return false;
+            }
+            if (other.Y != Y)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         private void setX(double x_)
         {
@@ -177,22 +216,22 @@ namespace HTMLCodeBuilder.Utils
 
         private void updateXs()
         {
-            xs = new string((char) 0, 16).ToCharArray();
+            xs.Initialize();
 
-            string tmp = SVGElements.num2str(x);
+            char[] tmp = SVGElements.num2str(x).ToCharArray();
 
             if (VecUnits == Units.NONE)
             {
                 xChars = Math.Min(14, tmp.Length);
 
-                Array.Copy(tmp.ToCharArray(), 0, xs, xs.Length - xChars, xChars);
+                Array.Copy(tmp, 0, xs, xs.Length - xChars, xChars);
 
                 return;
             }
 
             xChars = Math.Min(14, tmp.Length) + 2;
 
-            Array.Copy(tmp.ToCharArray(), 0, xs, xs.Length- xChars, xChars-2);
+            Array.Copy(tmp, 0, xs, xs.Length- xChars, xChars-2);
 
             xs[xs.Length - 1] = unitsChar[1];
 
@@ -201,29 +240,29 @@ namespace HTMLCodeBuilder.Utils
 
         private void updateYs()
         {
-            ys = new string((char) 0, 16).ToCharArray();
-
-            string tmp = SVGElements.num2str(y);
+            ys.Initialize();
+       
+            char[] tmp = SVGElements.num2str(y).ToCharArray();
 
             if (VecUnits == Units.NONE)
             {
                 yChars = Math.Min(14, tmp.Length);
 
-                Array.Copy(tmp.ToCharArray(), 0, ys, ys.Length - yChars, yChars);
+                Array.Copy(tmp, 0, ys, ys.Length - yChars, yChars);
 
                 return;
             }
 
             yChars = Math.Min(14, tmp.Length) + 2;
 
-            Array.Copy(tmp.ToCharArray(), 0, ys, ys.Length - yChars, yChars-2);
+            Array.Copy(tmp, 0, ys, ys.Length - yChars, yChars-2);
 
             ys[ys.Length - 1] = unitsChar[1];
 
             ys[ys.Length - 2] = unitsChar[0];
         }
 
-        private void UpdateUnits(Units newUnits)
+        private void updateUnits(Units newUnits)
         {
             if (newUnits == VecUnits)
             {
@@ -304,24 +343,6 @@ namespace HTMLCodeBuilder.Utils
                     updateYs();
                     break;
             }
-        }
-
-        public bool Equals(Vec2D other)
-        {
-            if (other.VecUnits != VecUnits)
-            {
-                return false;
-            }
-            if (other.X != X)
-            {
-                return false;
-            }
-            if (other.Y != Y)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public Vec2D(double x_, double y_)

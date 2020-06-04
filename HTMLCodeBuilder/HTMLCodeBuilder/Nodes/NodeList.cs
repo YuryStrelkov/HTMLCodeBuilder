@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HTMLCodeBuilder.Nodes
 {
-    public class NodeList <T,NodeProcessResult>  where T:ICopy<T>
+    public class NodeList <T,NodeProcessResult> : IDisposable  where T : ICopy<T>
     {
         public Dictionary<int, Node<T>> Nodes { get; protected set;}
 
@@ -194,6 +195,7 @@ namespace HTMLCodeBuilder.Nodes
 
             ProcessNodes(level, Nodes[RootID], process);
 
+            GC.Collect();
         }
 
         private void ProcessNodes(int level,Node<T> node, INodeProcess<T, NodeProcessResult> process)
@@ -214,7 +216,18 @@ namespace HTMLCodeBuilder.Nodes
             process.OnEnd(level, node);
 
         }
-        
+
+        public void Dispose()
+        {
+            foreach (int key in Nodes.Keys)
+            {
+                Nodes[key].Dispose();
+            }
+            Nodes.Clear();
+            Nodes = null;
+            GC.Collect();
+        }
+
         private NodeList(Node<T> n)
         {
             Nodes = new Dictionary<int, Node<T>>();
