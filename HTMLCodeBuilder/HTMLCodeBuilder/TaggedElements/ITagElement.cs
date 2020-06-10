@@ -1,4 +1,5 @@
 ﻿using HTMLCodeBuilder.Nodes;
+using System;
 
 namespace HTMLCodeBuilder.TaggedElements
 {

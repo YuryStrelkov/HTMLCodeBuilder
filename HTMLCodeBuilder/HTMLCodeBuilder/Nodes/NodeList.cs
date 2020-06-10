@@ -223,10 +223,15 @@ namespace HTMLCodeBuilder.Nodes
             {
                 Nodes[key].Dispose();
             }
+
             Nodes.Clear();
+
             Nodes = null;
-            GC.Collect();
+ 
+            GC.SuppressFinalize(this);
         }
+ 
+
 
         private NodeList(Node<T> n)
         {

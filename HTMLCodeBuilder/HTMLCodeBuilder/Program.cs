@@ -82,6 +82,8 @@ namespace HTMLBuilderExecutable
 
             page.BuildCode();
 
+            Console.ReadKey();
+
             page.saveCode("page.html");
 
             page.Dispose();

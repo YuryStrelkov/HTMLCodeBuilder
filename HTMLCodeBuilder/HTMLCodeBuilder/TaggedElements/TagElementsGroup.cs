@@ -1,5 +1,6 @@
 ﻿using HTMLCodeBuilder.HTMLelements;
 using HTMLCodeBuilder.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace HTMLCodeBuilder.TaggedElements
 {
     public class TagElementsGroup : NodeList<ITagElement, string>
         {
+       /// private TagElementsGroup parent;
         /// <summary>
         /// Список всех ID группы рассортированных по классам
         /// </summary>
@@ -53,6 +55,11 @@ namespace HTMLCodeBuilder.TaggedElements
 
         private void updateClassAndTags(Node<ITagElement> elementNode)
         {
+            /*if (parent != null)
+            {
+                parent.updateClassAndTags(elementNode);
+            }*/
+
             string param = elementNode.GetData().Tag;
 
             if (TagVsID.ContainsKey(param))
@@ -188,7 +195,9 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public new TagElementsGroup GetSubList(int nodeID)
         {
+
             TagElementsGroup group = new TagElementsGroup(base.GetSubList(nodeID));
+          //  group.parent = this;
             return group;
         }
 
@@ -223,6 +232,15 @@ namespace HTMLCodeBuilder.TaggedElements
                   
             Code = "";
              
+        }
+
+        public new void Dispose()
+        {
+            ClassVsID.Clear();
+            TagVsID.Clear();
+            Code = null;
+            base.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

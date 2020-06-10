@@ -1,10 +1,11 @@
 ﻿using HTMLCodeBuilder.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HTMLCodeBuilder.TaggedElements
 {
-    public abstract class TagElement : ICopy<ITagElement>, ITagElement
+    public abstract class TagElement : ICopy<ITagElement>, ITagElement, IDisposable
     {
         protected Dictionary<string, string> elementSettings;
 
@@ -122,5 +123,14 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public abstract ITagElement Copy();
 
+        public void Dispose()
+        {
+            OpenTag = null;
+            CloseTag = null;
+            Tag = null;
+            InnerString = null;
+            elementSettings.Clear();
+            GC.SuppressFinalize(this);
+        }
     }
 }

@@ -172,10 +172,13 @@ namespace HTMLCodeBuilder.Nodes
             return "ID : " + GetID() + " data : " + data.ToString(); 
         }
 
+      
+
         public void Dispose()
         {
             instanceCounter.RemoveInstance(Id);
-         }
+            GC.SuppressFinalize(this);
+        }
 
         /*~Node()
         {
