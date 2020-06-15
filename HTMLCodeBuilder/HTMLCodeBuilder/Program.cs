@@ -27,15 +27,24 @@ namespace HTMLBuilderExecutable
     HTMLTable table = page.addTable(page.HTMLBodyID,"Хуи",true,new string[3]{ "1","2","3" });
             table.appendRecord("a");table.appendRecord("a");table.appendRecord("a");table.appendRecord("a"); table.appendRecord("a");
 
-            page.addGraphic(page.HTMLBodyID,170,100);
+            page.addGraphic(page.HTMLBodyID,170,50);
             //для всех графиков должны быть одинаковые x
             //для всех графиков должны быть одинаковые y
-            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0,   1,   1.2 },"1");
-            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0,  .1, 1.2 },  "2");
-            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1.4,  1.2 }, "3");
+            page.appendGraphic(new double[] { 100, 200, 300 }, new double[] { 0,   1,   1.2 },"1");
+            page.appendGraphic(new double[] { 100, 200, 300 }, new double[] { 0,  .1, 1.2 },  "2");
+            page.appendGraphic(new double[] { 100, 200, 300 }, new double[] { 0, 1.4,  1.2 }, "3");
             page.GraphicTitle("A");
             page.GraphicXLabel("x");
             page.GraphicYLabel("y");
+
+
+
+            page.addGraphic(page.HTMLBodyID, 170, 100);
+            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
+            page.GraphicTitle("A");
+            page.GraphicXLabel("x");
+            page.GraphicYLabel("y");
+
             page.addGraphic(page.HTMLBodyID, 170, 100);
 
             int M = 600, N = 800;
@@ -70,15 +79,30 @@ namespace HTMLBuilderExecutable
             page.GraphicYLabel("y");
 
             TagElementsGroup gridholder = HTMLElements.CreateImageGridHolder(3);
-            page.MergeGroups(page.HTMLBodyID, gridholder);
 
-           /// page.addGraphic(gridholder.RootID, 170, 100);
+            page.mergeHTML(page.HTMLBodyID, gridholder);
+            
+             page.addGraphic(gridholder.RootID, 170, 50);
 
-            //page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
 
-            //page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
 
-            //page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
+            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
+
+
+            page.addGraphic(gridholder.RootID, 170, 50);
+
+            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
+
+            page.addGraphic(gridholder.RootID, 170, 50);
+            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
+            page.addGraphic(gridholder.RootID, 170, 50);
+            page.appendGraphic(new double[] { 0, 1, 2 }, new double[] { 0, 1, 1.2 }, "1");
+
+            page.addGraphic(gridholder.RootID, 170, 50);
+            page.appendGraphic(arrayX, arrayY, array);
+
+            page.addGraphic(gridholder.RootID, 170, 50);
+            page.appendGraphic(arrayX, arrayY, array);
 
             page.BuildCode();
 

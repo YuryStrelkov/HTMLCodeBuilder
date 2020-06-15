@@ -193,23 +193,43 @@ namespace HTMLCodeBuilder.HTMLelements
 
             if (GetElement(parent).GetParam("class").Equals("grid-holder"))
             {
-                TagElementsGroup gridHolder =  GetSubList(parent);
+                double rowCapacity = double.Parse(GetElementParam(parent, "#row-capacity"));//#row-capacity
 
-                container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
+                int characterMarker = int.Parse(GetElementParam(parent, "#char"));
 
-                Graphic = SVGElements.CreateSVGGraphicXY(w, h);
+                AddElementParam(parent, "#char", (characterMarker + 1).ToString());//.ToCharArray()[0];
 
-                container.MergeGroups(Graphic);
+                int containerID = GetElementByClass(parent, "container")[0];
 
-                gridHolder.MergeGroups(container);
+                int div = AddElement (HTMLElements.CreateDIV(), containerID);
 
-                int elemID =  gridHolder.GetElementByClass("subscription-enumeration")[0];
+                AddElementParam(div, "class", "graphic-holder");
 
-                gridHolder.GetElement(elemID).InnerString = "Pic. № " + ImagesCount;
+                Graphic = SVGElements.CreateSVGGraphicXY(w / rowCapacity, h);
+                
+                mergeHTML(div, Graphic);
 
-                elemID = gridHolder.GetElementByClass("subscription-text")[0];
+                int span = AddElement(HTMLElements.CreateSPAN(), div);
 
-                gridHolder.GetElement(elemID).InnerString = "SomeText";
+                AddElementParam(span, "class", "subscription-enumeration");
+
+                GetElement(span).InnerString = "("+ Convert.ToChar(characterMarker) + ")";
+
+                GetElement(span).AddParam("class", "grid-letter-pointer");
+
+                updateStyle(StyleSelectorType.Class, "grid-letter-pointer", "font-weight : bold;");
+
+                updateStyle(StyleSelectorType.Class, "graphic-holder", "width : " + (100 / rowCapacity).ToString().Replace(',', '.')+ "%; float : left;");
+                
+
+
+                int elemID =  GetElementByClass(parent, "subscription-enumeration")[0];
+
+                GetElement(elemID).InnerString = "Pic. № " + ImagesCount;
+
+                elemID = GetElementByClass(parent,"subscription-text")[0];
+
+                GetElement(elemID).InnerString = "SomeText";
 
                 LastGraphic = Graphic;
 
@@ -217,9 +237,9 @@ namespace HTMLCodeBuilder.HTMLelements
             }
 
 
-             container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
+            container = new TagElementsGroup(HTMLElements.CreateCenterAlign());
 
-             Graphic = SVGElements.CreateSVGGraphicXY(w, h);
+            Graphic = SVGElements.CreateSVGGraphicXY(w, h);
 
             container.MergeGroups(Graphic);
 

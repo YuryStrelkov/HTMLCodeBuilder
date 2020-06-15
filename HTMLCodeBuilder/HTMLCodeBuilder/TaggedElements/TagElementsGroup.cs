@@ -2,95 +2,173 @@
 using HTMLCodeBuilder.Nodes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HTMLCodeBuilder.TaggedElements
 {
     public class TagElementsGroup : NodeList<ITagElement, string>
-        {
-       /// private TagElementsGroup parent;
-        /// <summary>
-        /// Список всех ID группы рассортированных по классам
-        /// </summary>
-        public Dictionary<string, Dictionary<int,int>> ClassVsID { get; private set; }
-        /// <summary>
-        /// Список всех ID группы рассортированных по тегам
-        /// </summary>
-        public Dictionary<string, Dictionary<int,int>> TagVsID { get; private set; }
-
-        protected ITagElement LastElement;
-
-        protected TagElementsGroup LastGroup;
-
+    {
         public string Code { get; protected set; }
 
         public bool HasTag(string tag)
         {
-            return TagVsID.ContainsKey(tag);
+            return HasTag(RootID, tag);
         }
 
-        public bool HasClass(string tag)
+        public bool HasTag(int id, string tag)
         {
-            return ClassVsID.ContainsKey(tag);
+            if (GetNode(id).GetData().Tag.Equals(tag))
+            {
+                return true;
+            }
+
+            foreach (int ids in GetNode(id).GetChildren().Keys)
+            {
+                if (HasTag(ids, tag))
+                {
+                    return true;
+                };
+            }
+            return false;
+        }
+
+        public bool HasClass(string Class)
+        {
+            return HasClass(RootID, Class);
+        }
+
+        public bool HasClass(int id, string Class)
+        {
+            if (GetNode(id).GetData().HasParam("class"))
+            {
+                if (GetNode(id).GetData().GetParam("class").Equals(Class))
+                {
+                return true;
+                }
+            }
+
+            foreach (int ids in GetNode(id).GetChildren().Keys)
+            {
+                if (HasClass(ids, Class))
+                {
+                    return true;
+                };
+            }
+            return false;
+        }
+
+        public bool HasID(string ID)
+        {
+            return HasID(RootID, ID);
+        }
+
+        public bool HasID(int id, string ID)
+        {
+            if (GetNode(id).GetData().HasParam("id"))
+            {
+                if (GetNode(id).GetData().GetParam("id").Equals(ID))
+                {
+                    return true;
+                }
+            }
+
+            foreach (int ids in GetNode(id).GetChildren().Keys)
+            {
+                if (HasClass(ids, ID))
+                {
+                    return true;
+                };
+            }
+            return false;
+        }
+
+        public List<int> GetElementByID(string ID)
+        {
+            return GetElementByTag(RootID, ID);
+        }
+
+        public List<int> GetElementByID(int id, string ID)
+        {
+            List<int> elements = new List<int>();
+
+            GetElementByIdRecursive(ref elements, id, ID);
+
+            return elements;
         }
 
         public List<int> GetElementByTag(string tag)
         {
-            if (!TagVsID.ContainsKey(tag))
-            {
-                return null;
-            }
-            return TagVsID[tag].Keys.ToList();
+            return GetElementByTag(RootID, tag);
+        }
+
+        public List<int> GetElementByTag(int id, string tag)
+        {
+            List<int> elements = new List<int>();
+
+            GetElementByTagRecursive(ref elements, id, tag);
+
+            return elements;
         }
 
         public List<int> GetElementByClass(string className)
         {
-            if (!ClassVsID.ContainsKey(className))
-            {
-                return null;
-            }
-            return ClassVsID[className].Keys.ToList();
+            return  GetElementByClass(RootID, className);
         }
 
-        private void updateClassAndTags(Node<ITagElement> elementNode)
+        public List<int> GetElementByClass(int id, string className)
         {
-            /*if (parent != null)
-            {
-                parent.updateClassAndTags(elementNode);
-            }*/
+            List<int> elements = new List<int>();
 
-            string param = elementNode.GetData().Tag;
+            GetElementByClassRecursive(ref elements, id, className);
 
-            if (TagVsID.ContainsKey(param))
+            return elements;
+        }
+
+        private void GetElementByClassRecursive(ref List<int> elements, int node, string className)
+        {
+            if (GetElement(node).HasParam("class"))
             {
-                if (!TagVsID[param].ContainsKey(elementNode.GetID()))
+                if (GetElement(node).GetParam("class").Equals(className))
                 {
-                    TagVsID[param].Add(elementNode.GetID(), elementNode.GetID());
+                    elements.Add(node);
                 }
             }
-            else
-            {
-                TagVsID.Add(param, new Dictionary<int, int>());
 
-                TagVsID[param].Add(elementNode.GetID(), elementNode.GetID());
+            foreach (int id in GetNode(node).GetChildren().Keys)
+            {
+                GetElementByClassRecursive(ref elements, id, className);
             }
-            
-            param = elementNode.GetData().GetParam("class");
 
-            if (ClassVsID.ContainsKey(param))
-            {
-                if (!ClassVsID[param].ContainsKey(elementNode.GetID()))
+        }
+
+        private void GetElementByTagRecursive(ref List<int> elements, int node, string tagName)
+        {
+                         
+                if (GetElement(node).Tag.Equals(tagName))
                 {
-                    ClassVsID[param].Add(elementNode.GetID(), elementNode.GetID());
+                    elements.Add(node);
+                }
+
+            foreach (int id in GetNode(node).GetChildren().Keys)
+            {
+                GetElementByTagRecursive(ref elements, id, tagName);
+            }
+        }
+
+        private void GetElementByIdRecursive(ref List<int> elements, int node, string className)
+        {
+            if (GetElement(node).HasParam("id"))
+            {
+                if (GetElement(node).GetParam("id").Equals(className))
+                {
+                    elements.Add(node);
                 }
             }
-            else
-            {
-                ClassVsID.Add(param, new Dictionary<int, int>());
 
-                ClassVsID[param].Add(elementNode.GetID(), elementNode.GetID());
+            foreach (int id in GetNode(node).GetChildren().Keys)
+            {
+                GetElementByIdRecursive(ref elements, id, className);
             }
+
         }
 
         public ITagElement GetElement(int id)
@@ -111,21 +189,12 @@ namespace HTMLCodeBuilder.TaggedElements
         {
             int id = AddNode(element, parentID);
 
-            updateClassAndTags(GetNode(id));
-
-            LastElement = element;
-
             return id;
         }
 
         public void AddElementParam(int elemID, string paramKey, string paramVal)
         {
             GetNode(elemID).GetData().AddParam(paramKey, paramVal);
-
-            if (paramKey.Equals("class"))
-            {
-                updateClassAndTags(GetNode(elemID));
-            }
         }
 
         public string GetElementParam(int elemID, string paramKey)
@@ -176,13 +245,9 @@ namespace HTMLCodeBuilder.TaggedElements
             {
                 nodeID = RootID;
             }
-
-            LastGroup = list;
-
             foreach (int key in list.GetNodeKeys())
             {
                 AddNodeDirect(list.GetNode(key));
-                updateClassAndTags(list.GetNode(key));
             }
             GetNode(nodeID).AddChild(GetNode(list.RootID));
         }
@@ -190,14 +255,15 @@ namespace HTMLCodeBuilder.TaggedElements
         public new TagElementsGroup GetSubListCopy(int nodeID)
         {
             TagElementsGroup group = new TagElementsGroup(base.GetSubListCopy(nodeID));
-              return group;
+
+            return group;
         }
 
         public new TagElementsGroup GetSubList(int nodeID)
         {
 
             TagElementsGroup group = new TagElementsGroup(base.GetSubList(nodeID));
-          //  group.parent = this;
+
             return group;
         }
 
@@ -207,28 +273,17 @@ namespace HTMLCodeBuilder.TaggedElements
 
             RootID = gr.RootID;
 
-            ClassVsID = new Dictionary<string, Dictionary<int, int>>();
-
-            TagVsID = new Dictionary<string, Dictionary<int, int>>();
-
-            Parallel.ForEach(Nodes,(node)=> { updateClassAndTags(node.Value); });
-
             Code = ""; 
         }
 
         public TagElementsGroup(ITagElement data) : base()
         { 
-            ClassVsID = new Dictionary<string, Dictionary<int, int>>();
-
-            TagVsID = new Dictionary<string, Dictionary<int, int>>();
 
             Node<ITagElement> node = new Node<ITagElement>(data);
 
             RootID = node.GetID();
 
             LastID = AddNode(node);
-
-            updateClassAndTags(node);
                   
             Code = "";
              
@@ -236,8 +291,6 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public new void Dispose()
         {
-            ClassVsID.Clear();
-            TagVsID.Clear();
             Code = null;
             base.Dispose();
             GC.SuppressFinalize(this);

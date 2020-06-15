@@ -1,5 +1,4 @@
-﻿using HTMLCodeBuilder.Nodes;
-using HTMLCodeBuilder.TaggedElements;
+﻿using HTMLCodeBuilder.TaggedElements;
 using System;
 
 namespace HTMLCodeBuilder.HTMLelements
@@ -247,10 +246,35 @@ namespace HTMLCodeBuilder.HTMLelements
         public static TagElementsGroup CreateImageGridHolder(int rowCapacity)
         {
             TagElementsGroup holder = new TagElementsGroup(CreateDIV());
+
             holder.AddElementParam(holder.RootID, "class", "grid-holder");
+
             holder.AddElementParam(holder.RootID, "id", "grid-holder-"+ holder.RootID);
-            holder.AddElementParam(holder.RootID, "#style div", "float : left; width : "+100.0/rowCapacity + "%");
+
+            holder.AddElementParam(holder.RootID, "#style","width : 100%");
+
+            holder.AddElementParam(holder.RootID, "#row-capacity", rowCapacity.ToString());
+
+            holder.AddElementParam(holder.RootID, "#char", "65");
+            
+            HTMLElement container = CreateDIV();
+
+            container.AddParam("class", "container");
+
+            //clear: left;
+
+            HTMLElement containerLeftClear = CreateDIV();
+
+            containerLeftClear.AddParam(".style", "clear: left;");
+
+            container.AddParam(".style", "text-align : center;");
+
+            holder.AddElement(container, holder.RootID);
+
+            holder.AddElement(containerLeftClear, holder.RootID);
+
             holder.MergeGroups(CreateSubscription("lololo"));
+
             return holder;
         }
 

@@ -7,7 +7,11 @@ namespace HTMLCodeBuilder.SVGelements
    
     public class SVGElement : TagElement
     {
-              
+
+        public Units SVGUnits { get { return units; } set { setUnits(value); } }
+
+        private Units units;
+               
         public double W { get { return PosAndSize.W; } }
 
         public double H { get { return PosAndSize.H; } }
@@ -163,8 +167,45 @@ namespace HTMLCodeBuilder.SVGelements
             return element;
         }
 
+        private void setUnits(Units units)
+        {
+            this.units = units;
+         ///   translation.VecUnits = units;
+            PosAndSize.ElementUnits = units;
+        }
+
         private SVGElement():base()
         {
+        }
+
+
+
+        public SVGElement(string openTag, string closeTag, Units units) : base(openTag, closeTag)
+        {
+            PosAndSize = new XYWH(0, 0, 0, 0);
+
+            translation = new Vec2D(0, 0);
+
+            translation.VecUnits = Units.PX;
+
+            scale = new Vec2D(1, 1);
+
+            scale.VecUnits = Units.NONE;
+
+            rotation = 0;
+
+            SVGUnits = units;
+
+            AddParam("class", openTag.Substring(1, openTag.Length - 2));
+
+            OpenTag = openTag.Remove(openTag.Length - 1, 1); ;
+
+            if (closeTag.Length == 0)
+            {
+                CloseTag = "/>";
+                autoCloseTag = true;
+            }
+            Tag = OpenTag.Substring(1, OpenTag.Length - 1);
         }
 
         public SVGElement(string openTag, string closeTag) : base(openTag, closeTag)
@@ -185,10 +226,7 @@ namespace HTMLCodeBuilder.SVGelements
                 CloseTag = "/>";
                 autoCloseTag = true;
             }
-
             Tag = OpenTag.Substring(1, OpenTag.Length - 1);
-
-
         }
     }
 }

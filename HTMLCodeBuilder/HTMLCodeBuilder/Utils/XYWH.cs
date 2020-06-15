@@ -13,9 +13,9 @@ namespace HTMLCodeBuilder.Utils
         [FieldOffset(144)]
         private Vec2D wh;
 
-        public Vec2D XY { get { return xy; } }
+        //public Vec2D XY { get { return xy; } }
 
-        public Vec2D WH { get { return wh; } }
+        //public Vec2D WH { get { return wh; } }
 
         public double X { get { return xy.X; } set { xy.X = value; } }
         public double Y { get { return xy.Y; } set { xy.Y = value; } }
@@ -33,6 +33,14 @@ namespace HTMLCodeBuilder.Utils
         public string Ws { get { return wh.Xs; }}
         public string Hs { get { return wh.Ys; }}
 
+        public Units ElementUnits { get { return xy.VecUnits; } set { UpdateUnits(value); } } 
+        
+        private void UpdateUnits(Units units)
+        {
+            wh.VecUnits = units;
+            xy.VecUnits = units;
+        }
+
         public XYWH(double x, double y, double w, double h)
         {
             xy = new Vec2D(x, y);
@@ -41,11 +49,11 @@ namespace HTMLCodeBuilder.Utils
 
         public bool Equals(XYWH other)
         {
-            if (!XY.Equals(other.XY))
+            if (!xy.Equals(other.xy))
             {
                 return false;
             }
-            if (!WH.Equals(other.WH))
+            if (!wh.Equals(other.wh))
             {
                 return false;
             }

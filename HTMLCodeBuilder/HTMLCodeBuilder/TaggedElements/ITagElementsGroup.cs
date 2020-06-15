@@ -28,8 +28,8 @@ namespace HTMLCodeBuilder.TaggedElements
 
         void buildCode();
         
-    ///    ITagElementsGroup getSubList(int nodeID);
+        ITagElementsGroup getSubList(int nodeID);
 
-   ///     ITagElementsGroup getSubListCopy(int nodeID);
+        ITagElementsGroup getSubListCopy(int nodeID);
     }
 }
