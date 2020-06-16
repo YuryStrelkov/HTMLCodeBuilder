@@ -39,12 +39,12 @@ namespace HTMLCodeBuilder.SVGelements
    
         public static void ChangeEach<T>(this T[] array, Func<T, T> mutator)
         {
-
             Parallel.For(0, array.Length, index =>
             {
                 array[index] = mutator(array[index]);
             });
         }
+
 
         private static double parseSize2Pix(double x)
         {
