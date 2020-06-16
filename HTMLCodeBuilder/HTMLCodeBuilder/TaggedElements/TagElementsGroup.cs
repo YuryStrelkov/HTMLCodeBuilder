@@ -83,7 +83,7 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public List<int> GetElementByID(string ID)
         {
-            return GetElementByTag(RootID, ID);
+            return GetElementByID(RootID, ID);
         }
 
         public List<int> GetElementByID(int id, string ID)
