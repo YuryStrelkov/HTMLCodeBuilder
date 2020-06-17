@@ -4,10 +4,8 @@ using System.Collections.Generic;
 
 namespace HTMLCodeBuilder.SVGelements
 {
-   
     public class SVGElement : TagElement
     {
-
         public Units SVGUnits { get { return units; } set { setUnits(value); } }
 
         private Units units;

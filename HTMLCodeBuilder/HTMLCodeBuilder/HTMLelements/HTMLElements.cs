@@ -1,9 +1,7 @@
 ﻿using HTMLCodeBuilder.TaggedElements;
-using System;
 
 namespace HTMLCodeBuilder.HTMLelements
 {
-
     public static class HTMLElements
     {
         public static HTMLDocSettings HTMLsettings = new HTMLDocSettings();
@@ -130,7 +128,7 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             HTMLElement element = CreateDIV();
             element.AddParam("class", "center-align");
-            element.AddParam(".style", "margin : 0 auto;width : 100%;background-color : " + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor)+";");
+            element.AddParam(".style", "text-align : center;margin : 0 auto;width : 100%;background-color : " + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor)+";");
             return element;
         }
 
@@ -138,7 +136,7 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             HTMLElement element = CreateDIV();
             element.AddParam("class", "center-align-"+ width.ToString().Replace(',', '_')+"mm");
-            element.AddParam(".style", "margin : 0 auto;width : "+ width.ToString().Replace(',','.') + "mm;background-color : "
+            element.AddParam(".style", "text-align : center;margin : 0 auto;width : " + width.ToString().Replace(',','.') + "mm;background-color : "
                                                             + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";");
             return element;
         }
@@ -147,7 +145,7 @@ namespace HTMLCodeBuilder.HTMLelements
         {
             HTMLElement element = CreateDIV();
             element.AddParam("class", "center-align-" + width.ToString().Replace(',', '_') + "mm");
-            element.AddParam(".style", "margin : 0 auto;width : " + width + "mm;background-color : "
+            element.AddParam(".style", "text-align : center;margin : 0 auto;width : " + width + "mm;background-color : "
                                                             + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";");
             return element;
         }
@@ -261,8 +259,6 @@ namespace HTMLCodeBuilder.HTMLelements
 
             container.AddParam("class", "container");
 
-            //clear: left;
-
             HTMLElement containerLeftClear = CreateDIV();
 
             containerLeftClear.AddParam(".style", "clear: left;");
@@ -273,12 +269,22 @@ namespace HTMLCodeBuilder.HTMLelements
 
             holder.AddElement(containerLeftClear, holder.RootID);
 
-            holder.MergeGroups(CreateSubscription("lololo"));
+            holder.MergeGroups(CreateSubscription("lololo",2.5,2.5));
 
             return holder;
         }
 
         public static TagElementsGroup CreateSubscription(string subscr)
+        {
+            return CreateSubscription(subscr, 0, 0);
+        }
+
+        public static TagElementsGroup CreateSubscription(string subscr, double topIndent)
+        {
+            return CreateSubscription( subscr,  topIndent, 0);
+        }
+
+        public static TagElementsGroup CreateSubscription(string subscr,double topIndent, double bottonIndent)
         {
             TagElementsGroup subscrGroup = new TagElementsGroup(CreateCenterAlign());
 
@@ -286,7 +292,10 @@ namespace HTMLCodeBuilder.HTMLelements
 
             subscrGroup.AddElementParam(subscrGroup.RootID, ".style", "text-align:center;");
 
-           /// subscrGroup.AddElement(CreateVerticalIndent(2.5));
+            if (topIndent!=0)
+            {
+                subscrGroup.AddElement(CreateVerticalIndent(topIndent));
+            }
 
             int nodeID = subscrGroup.AddElement(CreateSPAN());
 
@@ -302,8 +311,11 @@ namespace HTMLCodeBuilder.HTMLelements
             subscrGroup.AddElementParam(textNodeID, ".style", "background-color:" + HTMLsettings.GetSetting(HTMLSettings.ContentBackgroundColor) + ";text-align:center;font-size:"
                 +HTMLsettings.GetSetting(HTMLSettings.ContentFontSize)+";");
 
+            if (bottonIndent != 0)
+            {
+                subscrGroup.AddElement(CreateVerticalIndent(topIndent));
+            }
             return subscrGroup;
         }
-
     }
 }

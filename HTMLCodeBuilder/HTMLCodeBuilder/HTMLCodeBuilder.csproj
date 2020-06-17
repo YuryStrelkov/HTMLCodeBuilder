@@ -45,14 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Document\ADocument.cs" />
     <Compile Include="HTMLelements\HTMLDocSettings.cs" />
     <Compile Include="HTMLelements\HTMLElements.cs" />
     <Compile Include="HTMLelements\HTMLElement.cs" />
     <Compile Include="HTMLelements\HTMLTable.cs" />
     <Compile Include="TaggedElements\TagElement.cs" />
     <Compile Include="TaggedElements\TagElementsGroup.cs" />
-    <Compile Include="HTMLelements\HTMLPage.cs" />
-    <Compile Include="TaggedElements\ITagElementsGroup.cs" />
+    <Compile Include="HTMLelements\HTMLDocument.cs" />
     <Compile Include="TaggedElements\ITagElement.cs" />
     <Compile Include="Nodes\ICopy.cs" />
     <Compile Include="Nodes\INodeProcess.cs" />

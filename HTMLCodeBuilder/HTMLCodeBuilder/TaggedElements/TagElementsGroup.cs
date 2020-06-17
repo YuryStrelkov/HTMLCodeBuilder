@@ -202,7 +202,7 @@ namespace HTMLCodeBuilder.TaggedElements
             return GetNode(elemID).GetData().GetParam(paramKey);
         }
  
-        public void saveCode(string path)
+        public void SaveCode(string path)
         {
 
             if (Code.Length == 0)
