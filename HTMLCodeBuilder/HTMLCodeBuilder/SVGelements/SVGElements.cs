@@ -60,7 +60,7 @@ namespace HTMLCodeBuilder.SVGelements
         {
             return num2str(x)+"mm";
         }
-
+        
         public static SVGElement CreateSVGLine(double x1, double y1, double x2, double y2, string style)
         {
             SVGElement line = new SVGElement("<line>", "</line>");
