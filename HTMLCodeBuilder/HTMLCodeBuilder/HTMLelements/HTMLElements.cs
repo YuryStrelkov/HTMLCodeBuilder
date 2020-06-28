@@ -80,6 +80,15 @@ namespace HTMLCodeBuilder.HTMLelements
             return new HTMLElement("<head>", "</head>");
         }
 
+
+        public static HTMLElement CreateObject(string dataRef, string dataType)
+        {
+            HTMLElement obj = new HTMLElement("<object>", "</object>");
+            obj.AddParam("data", dataRef);
+            obj.AddParam("type", dataType);
+            return obj;
+        }
+
         public static HTMLElement CreateHTML()
         {
             return new HTMLElement("<html>", "</html>");
