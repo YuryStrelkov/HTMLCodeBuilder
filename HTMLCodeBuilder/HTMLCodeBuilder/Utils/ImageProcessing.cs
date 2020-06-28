@@ -326,7 +326,8 @@ namespace HTMLCodeBuilder.Utils
                 int rowidx = row * w;
 
                 int cellidx = rowidx;
-                for (int i = 0; i < w*3; i+=3)
+
+                for (int i = 0; i < w * 3; i+=3)
                 {
                     cellidx = rowidx + i / 3;
                     bytes[rowStrideIdx + i]     = colorSetter.getR((array[cellidx] - min) / abs);
