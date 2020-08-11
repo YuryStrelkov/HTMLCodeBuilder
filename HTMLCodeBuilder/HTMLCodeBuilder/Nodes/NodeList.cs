@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HTMLCodeBuilder.Nodes
 {
-    public class NodeList <T,NodeProcessResult> : IDisposable  where T : ICopy<T>
+    public class NodeList <T> : IDisposable  where T : ICopy<T>
     {
         public Dictionary<int, Node<T>> Nodes { get; protected set;}
 
@@ -105,7 +105,7 @@ namespace HTMLCodeBuilder.Nodes
             return Nodes.ContainsKey(key);
         }
 
-        protected void MergeNodeLists(int nodeID, NodeList<T, NodeProcessResult> list )
+        protected void MergeNodeLists(int nodeID, NodeList<T> list )
         {
             if (!Nodes.ContainsKey(nodeID))
             {
@@ -137,21 +137,21 @@ namespace HTMLCodeBuilder.Nodes
         /// </summary>
         /// <param name="nodeID"></param>
         /// <returns></returns>
-        protected NodeList<T, NodeProcessResult> GetSubList(int nodeID)
+        protected NodeList<T> GetSubList(int nodeID)
         {
             if (!Nodes.ContainsKey(nodeID))
             {
                 return null;
             }
 
-            NodeList<T, NodeProcessResult> result = new NodeList<T, NodeProcessResult>(Nodes[nodeID]);
+            NodeList<T> result = new NodeList<T>(Nodes[nodeID]);
 
             SubListsReference(ref result, nodeID);
 
             return result;
         }
 
-        private void SubListsReference(ref NodeList<T, NodeProcessResult> list, int nodeID)
+        private void SubListsReference(ref NodeList<T> list, int nodeID)
         {
             foreach (int key in Nodes[nodeID].GetChildren().Keys)
             {
@@ -164,18 +164,18 @@ namespace HTMLCodeBuilder.Nodes
         /// </summary>
         /// <param name="nodeID"></param>
         /// <returns></returns>
-        protected NodeList<T, NodeProcessResult> GetSubListCopy(int nodeID)
+        protected NodeList<T> GetSubListCopy(int nodeID)
         {
             if (!Nodes.ContainsKey(nodeID))
             {
                 return null;
             }
-            NodeList<T, NodeProcessResult> result = new NodeList<T, NodeProcessResult>(Nodes[nodeID].GetData().Copy());
+            NodeList<T> result = new NodeList<T>(Nodes[nodeID].GetData().Copy());
             SubListsCopy(ref result, nodeID, result.RootID);
             return result;
         }
 
-        protected void SubListsCopy(ref NodeList<T, NodeProcessResult> list, int nodeID, int newParentID)
+        protected void SubListsCopy(ref NodeList<T> list, int nodeID, int newParentID)
         {
             foreach (int key in Nodes[nodeID].GetChildrenIDs())
             {
@@ -189,7 +189,7 @@ namespace HTMLCodeBuilder.Nodes
             }
         }
 
-        protected void ProcessNodes(INodeProcess<T, NodeProcessResult> process)
+        protected void ProcessNodes(INodeProcess<T,string> process)
         {
             int level = 0;
 
@@ -198,7 +198,17 @@ namespace HTMLCodeBuilder.Nodes
             GC.Collect();
         }
 
-        private void ProcessNodes(int level,Node<T> node, INodeProcess<T, NodeProcessResult> process)
+        protected void ProcessNodes<resultType>(INodeProcess<T, resultType> process)
+        {
+            int level = 0;
+
+            ProcessNodes(level, Nodes[RootID], process);
+
+            GC.Collect();
+        }
+
+
+        private void ProcessNodes<resultType>(int level,Node<T> node, INodeProcess<T, resultType> process)
         {
              process.OnStart(level, node);
 

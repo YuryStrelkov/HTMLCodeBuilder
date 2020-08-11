@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace HTMLCodeBuilder.TaggedElements
 {
-    public class TagElementsGroup : NodeList<ITagElement, string>
+    public class TagElementsGroup : NodeList<ITagElement>
     {
         public string Code { get; protected set; }
 
@@ -267,7 +267,7 @@ namespace HTMLCodeBuilder.TaggedElements
             return group;
         }
 
-        private TagElementsGroup(NodeList<ITagElement, string> gr) :base()
+        private TagElementsGroup(NodeList<ITagElement> gr) :base()
         {  
             Nodes = gr.Nodes;
 

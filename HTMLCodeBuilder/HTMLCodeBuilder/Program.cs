@@ -25,7 +25,7 @@ namespace HTMLBuilderExecutable
                             "This is text block " + i.ToString() + ".", true);
                     }
 
-            int table = page.AddTable(page.BodyID,"item",true,new string[3]{ "1","2","3" });
+            int table = page.AddTable(page.BodyID,"item",true,new string[3]{ "3","1","2" });
             HTMLTable t = (HTMLTable)page.GetElement(table);
             t.appendRecord("a");
             t.appendRecord("a");

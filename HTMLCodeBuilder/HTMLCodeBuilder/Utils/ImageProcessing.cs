@@ -89,6 +89,18 @@ namespace HTMLCodeBuilder.Utils
 
         public static readonly GRAY gray = new GRAY();
 
+        private static int  CalcStride(int w, int bytesPerPix)
+        {
+            int stride = w * bytesPerPix;
+
+            if (stride % 4 != 0)
+            {
+                stride = stride + 4 - stride % 4;
+            }
+
+            return stride;
+        }
+
         public static void UpdateImage(ref Bitmap image, double[] values)
         {
             int pixSizeInBytes = Image.GetPixelFormatSize(image.PixelFormat) / 8;
@@ -295,10 +307,12 @@ namespace HTMLCodeBuilder.Utils
 
             double abs = max - min;
 
-            int stride = w * 3;
+            // int stride = w * 3;
 
-            stride += (stride * 3) % 4;
-            
+            //stride += (stride * 3) % 4;
+
+            int stride = CalcStride( w, 3);
+
             byte[] bytes = new byte[stride * h];
             
 
@@ -353,9 +367,13 @@ namespace HTMLCodeBuilder.Utils
 
             double abs = max - min;
 
-            int stride = w * bytesPerPix;
+            //int stride = w * bytesPerPix;
             ///!!!! int stride = (w + (w * bytesPerPix) % 4)*bytesPerPix; - возможно
-            stride = stride + stride % 4;
+            //if (stride % 4 != 0)
+            //{
+            //    stride = stride + 4 - stride % 4;
+            //}
+            int stride = CalcStride(w, 3);
 
             byte[] bytes = new byte[stride * h];
 
