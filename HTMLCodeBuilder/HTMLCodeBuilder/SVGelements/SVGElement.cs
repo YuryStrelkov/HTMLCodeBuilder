@@ -184,11 +184,11 @@ namespace HTMLCodeBuilder.SVGelements
 
             translation = new Vec2D(0, 0);
 
-            translation.VecUnits = Units.PX;
+            translation.VecUnits.SetUnits(Units.PX);
 
             scale = new Vec2D(1, 1);
 
-            scale.VecUnits = Units.NONE;
+            scale.VecUnits.SetUnits(Units.NONE);
 
             rotation = 0;
 
@@ -210,9 +210,9 @@ namespace HTMLCodeBuilder.SVGelements
         {
             PosAndSize = new XYWH(0,0,0,0);
             translation = new Vec2D(0, 0);
-            translation.VecUnits = Units.PX;
+            translation.VecUnits.SetUnits(Units.PX);
             scale = new Vec2D(1, 1);
-            scale.VecUnits = Units.NONE;
+            scale.VecUnits.SetUnits(Units.NONE);
             rotation = 0;
 
             AddParam("class", openTag.Substring(1, openTag.Length - 2));
