@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 namespace HTMLCodeBuilder.Utils
 {
     [Serializable]
-    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 288)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 96)]
      public struct XYWH : IEquatable<XYWH>
     {
         [FieldOffset(0)]
         private Vec2D xy;
 
-        [FieldOffset(144)]
+        [FieldOffset(48)]
         private Vec2D wh;
 
         //public Vec2D XY { get { return xy; } }
@@ -33,12 +33,12 @@ namespace HTMLCodeBuilder.Utils
         public string Ws { get { return wh.Xs; }}
         public string Hs { get { return wh.Ys; }}
 
-        public Units ElementUnits { get { return xy.VecUnits; } set { UpdateUnits(value); } } 
+        public Units ElementUnits { get { return xy.VecUnits.VUnits; } set { UpdateUnits(value); } } 
         
         private void UpdateUnits(Units units)
         {
-            wh.VecUnits = units;
-            xy.VecUnits = units;
+            wh.VecUnits.SetUnits(units);
+            xy.VecUnits.SetUnits(units);
         }
 
         public XYWH(double x, double y, double w, double h)
