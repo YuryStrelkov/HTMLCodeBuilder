@@ -4,9 +4,100 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace HTMLCodeBuilder.Utils
 {
+
+    public struct Point3D
+    {
+        public double X { get; set; }
+
+        public double Y { get; set; }
+
+        public double Z { get; set; }
+
+        public Point3D(double x,double y, double z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+    }
+
+    public struct Tris
+    {
+        public static Point3D ClipPosX = new Point3D() { X = 1, Y = 0, Z = 0 };
+
+        public static Point3D ClipNegX = new Point3D() { X = -1, Y = 0, Z = 0 };
+
+        public static Point3D ClipPosY = new Point3D() { X = 0, Y = 1, Z = 0 };
+
+        public static Point3D ClipNegY = new Point3D() { X = 0, Y = -1, Z = 0 };
+        
+        public Point3D P1 { get { return p1; } set { p1 = value; } }
+
+        public Point3D P2 { get { return p2; } set { p2 = value; } }
+
+        public Point3D P3 { get { return p3; } set { p3 = value; } }
+
+        private Point3D p1;
+
+        private Point3D p2;
+
+        private Point3D p3;
+
+        public void SortVerticesY()
+        {
+            if (p1.Y > p2.Y)
+            {
+                SwapPoints(ref p1, ref p2);
+            }
+            if (p1.Y > p3.Y)
+            {
+                SwapPoints(ref p1, ref p3);
+            }
+            if (p2.Y > p3.Y)
+            {
+                SwapPoints(ref p2, ref p3);
+            }
+        }
+
+        private void SwapPoints(ref Point3D p1, ref Point3D p2)
+        {
+            Point3D dummyItem = p1;
+            p1 = p2;
+            p2 = dummyItem;
+        }
+
+        public List<Tris> ClipTris()
+        {
+
+        }
+
+        public Tris(Point3D p_1, Point3D p_2, Point3D p_3)
+        {
+            p1 = p_1;
+            p2 = p_2;
+            p3 = p_3;
+            SortVerticesY();
+        }
+
+        public Tris(double x1, double y1, double z1,
+                    double x2, double y2, double z2,
+                    double x3, double y3, double z3)
+        {
+            p1 = new Point3D(x1, y1, z1);
+            p2 = new Point3D(x2, y2, z2);
+            p3 = new Point3D(x3, y3, z3);
+            SortVerticesY();
+        }
+
+    }
+
+
+
+
     public enum ColorMaps
     {
         GRAY = 0,
@@ -99,6 +190,24 @@ namespace HTMLCodeBuilder.Utils
             }
 
             return stride;
+        }
+
+
+
+
+
+
+        private static void InterpolateTriangleDepth(ref Bitmap depth, Point3D P1, Point3D P2, Point3D P3)
+        {
+            if ( (P2.Y - P1.Y)/(P2.X - P1.X ) == (P3.Y - P2.Y) / (P3.X - P2.X))
+            {
+                return;
+            }
+         
+
+            List<int> indeces = new List<int>();
+            List<double> depthValues = new List<double>();
+
         }
 
         public static void UpdateImage(ref Bitmap image, double[] values)
