@@ -214,22 +214,22 @@ namespace HTMLCodeBuilder.TaggedElements
 
         public string BuildCode(int tab)
         {
-            PageBuildProcess process = new PageBuildProcess(tab);
+            PageBuildProcess builder = new PageBuildProcess(tab);
 
-            ProcessNodes(process);
+            ProcessNodes(builder);
 
-            Code = process.GetProcessResult();
+            Code = builder.GetProcessResult();
 
             return Code;
         }
 
         public string BuildCode()
         {
-            PageBuildProcess process = new PageBuildProcess();
+            PageBuildProcess builder = new PageBuildProcess();
 
-            ProcessNodes(process);
+            ProcessNodes(builder);
 
-            Code = process.GetProcessResult();
+            Code = builder.GetProcessResult();
 
             return Code;
         }
