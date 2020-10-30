@@ -1,5 +1,4 @@
-﻿using HTMLCodeBuilder.SVGelements;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace HTMLCodeBuilder.Utils

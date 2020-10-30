@@ -22,9 +22,7 @@ namespace HTMLCodeBuilder.TaggedElements
         protected int TabLevel = 0;
 
         protected bool autoCloseTag = false;
-
-        protected string elementTabLevel;
-
+        
         protected string GetTab(int level)
         {
             return new string('\t', level);
