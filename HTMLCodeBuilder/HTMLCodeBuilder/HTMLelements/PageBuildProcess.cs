@@ -6,9 +6,9 @@ namespace HTMLCodeBuilder.HTMLelements
 {
    public class PageBuildProcess : INodeProcess<ITagElement, string>
     {
-        private int startLevel;
+        private readonly int startLevel;
 
-        private StringBuilder code;
+        private readonly StringBuilder code;
 
         public string GetProcessResult()
         {

@@ -27,11 +27,11 @@ namespace HTMLBuilderExecutable
 
             int table = page.AddTable(page.BodyID,"item",true,new string[3]{ "3","1","2" });
             HTMLTable t = (HTMLTable)page.GetElement(table);
-            t.appendRecord("a");
-            t.appendRecord("a");
-            t.appendRecord("a");
-            t.appendRecord("a");
-            t.appendRecord("a");
+            t.AppendRecord("a");
+            t.AppendRecord("a");
+            t.AppendRecord("a");
+            t.AppendRecord("a");
+            t.AppendRecord("a");
 
             page.AddGraphic(page.BodyID,170,50);
             //для всех графиков должны быть одинаковые x

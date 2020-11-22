@@ -210,7 +210,7 @@ namespace HTMLCodeBuilder.Nodes
 
         private void ProcessNodes<resultType>(int level,Node<T> node, INodeProcess<T, resultType> process)
         {
-             process.OnStart(level, node);
+            process.OnStart(level, node);
 
             if (node.GetChildren().Count == 0)
             {

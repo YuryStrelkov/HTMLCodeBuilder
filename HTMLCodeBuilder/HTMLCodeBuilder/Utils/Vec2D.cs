@@ -115,11 +115,11 @@ namespace HTMLCodeBuilder.Utils
         #endregion
 
         #region Getters ans setters
-        public VectorUnits VecUnits { get { return vecUnits; } set { { updateUnits(value); } } }
+        public VectorUnits VecUnits { get { return vecUnits; } set { { UpdateUnits(value); } } }
 
-        public double X { get { return x; } set { setX(value); } }
+        public double X { get { return x; } set { SetX(value); } }
 
-        public double Y { get { return y; } set { setY(value); } }
+        public double Y { get { return y; } set { SetY(value); } }
 
         public double Xpix { get { return xpix; } private set { xpix = value; } }
 
@@ -211,21 +211,21 @@ namespace HTMLCodeBuilder.Utils
             return true;
         }
 
-        private void setX(double x_)
+        private void SetX(double x_)
         {
             x = x_;
 
             Xpix = x * vecUnits.UnitsScale;
         }
 
-        private void setY(double y_)
+        private void SetY(double y_)
         {
             y = y_;
 
             Ypix = y * vecUnits.UnitsScale;
         }
 
-        private void updateUnits(VectorUnits newUnits)
+        private void UpdateUnits(VectorUnits newUnits)
         {
             
             if (newUnits.Equals(VecUnits))

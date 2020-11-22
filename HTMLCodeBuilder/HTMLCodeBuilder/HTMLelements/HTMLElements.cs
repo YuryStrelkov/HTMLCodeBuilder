@@ -27,8 +27,10 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public static HTMLElement CreateDIV(string InnerString)
         {
-            HTMLElement element =  new HTMLElement("<div>", "</div>");
-            element.InnerString = InnerString ;
+            HTMLElement element = new HTMLElement("<div>", "</div>")
+            {
+                InnerString = InnerString
+            };
             return element;
         }
 
@@ -39,8 +41,10 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public static HTMLElement CreateSPAN(string InnerString)
         {
-            HTMLElement element = new HTMLElement("<span>", "</span>");
-            element.InnerString = InnerString;
+            HTMLElement element = new HTMLElement("<span>", "</span>")
+            {
+                InnerString = InnerString
+            };
             return element;
         }
 
@@ -51,8 +55,10 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public static HTMLElement CreateA(string InnerString)
         {
-            HTMLElement element = new HTMLElement("<a>", "</a>");
-            element.InnerString = InnerString;
+            HTMLElement element = new HTMLElement("<a>", "</a>")
+            {
+                InnerString = InnerString
+            };
             return element;
         }
 
@@ -63,15 +69,19 @@ namespace HTMLCodeBuilder.HTMLelements
 
         public static HTMLElement CreateParagraph(string InnerString)
         {
-            HTMLElement element = new HTMLElement("<p>", "</p>");
-            element.InnerString = InnerString;
+            HTMLElement element = new HTMLElement("<p>", "</p>")
+            {
+                InnerString = InnerString
+            };
             return element;
         }
 
         public static HTMLElement CreateTitle(string title)
         {
-            HTMLElement elem =new  HTMLElement("<title>", "</title>");
-            elem.InnerString = title;
+            HTMLElement elem = new HTMLElement("<title>", "</title>")
+            {
+                InnerString = title
+            };
             return   elem;
         }
 

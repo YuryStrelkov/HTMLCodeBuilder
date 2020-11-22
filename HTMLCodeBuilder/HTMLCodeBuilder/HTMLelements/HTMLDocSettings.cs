@@ -30,7 +30,7 @@ namespace HTMLCodeBuilder.HTMLelements
     }
     public class HTMLDocSettings
     {
-        private Dictionary<HTMLSettings, string> settings;
+        private readonly Dictionary<HTMLSettings, string> settings;
 
         public void Save(string pach)
         {

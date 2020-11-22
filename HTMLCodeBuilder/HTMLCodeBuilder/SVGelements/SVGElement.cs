@@ -6,7 +6,7 @@ namespace HTMLCodeBuilder.SVGelements
 {
     public class SVGElement : TagElement
     {
-        public Units SVGUnits { get { return units; } set { setUnits(value); } }
+        public Units SVGUnits { get { return units; } set { SetUnits(value); } }
 
         private Units units;
                
@@ -56,13 +56,13 @@ namespace HTMLCodeBuilder.SVGelements
 
         private double rotation;
 
-        public void setSizes(double x, double y)
+        public void SetSizes(double x, double y)
         {
             PosAndSize.W = x;
             PosAndSize.H = y;
         }
 
-        public void setPosition(double x, double y)
+        public void SetPosition(double x, double y)
         {
             PosAndSize.X = x;
             PosAndSize.Y = y;
@@ -115,8 +115,8 @@ namespace HTMLCodeBuilder.SVGelements
             {
                 code.Append(" transform = ");
                 code.Append('"');
-                code.Append(isTraUpdate ? "translate(" + SVGElements.num2str(translation.Xpix) + " " + SVGElements.num2str(translation.Ypix) + ") " : "");
-                code.Append(isRotUpdate ? "rotate(" + SVGElements.num2str(rotation) + ") " : "");
+                code.Append(isTraUpdate ? "translate(" + SVGElements.Num2str(translation.Xpix) + " " + SVGElements.Num2str(translation.Ypix) + ") " : "");
+                code.Append(isRotUpdate ? "rotate(" + SVGElements.Num2str(rotation) + ") " : "");
                 code.Append(isScaUpdate ? "scale(" + scale.Xs + " " + scale.Ys + ")" :"");
                 code.Append('"');
             }
@@ -165,7 +165,7 @@ namespace HTMLCodeBuilder.SVGelements
             return element;
         }
 
-        private void setUnits(Units units)
+        private void SetUnits(Units units)
         {
             this.units = units;
          ///   translation.VecUnits = units;

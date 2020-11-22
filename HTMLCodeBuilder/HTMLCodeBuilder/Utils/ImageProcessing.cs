@@ -18,36 +18,36 @@ namespace HTMLCodeBuilder.Utils
 
     public interface ICmap
     {
-        byte getR(double a);
-        byte getG(double a);
-        byte getB(double a);
-        byte getA(double a);
+        byte GetR(double a);
+        byte GetG(double a);
+        byte GetB(double a);
+        byte GetA(double a);
     }
     /// <summary>
     /// Input value belongs to [0,1]
     /// </summary>
     public struct JET : ICmap
     {
-        public byte getA(double a)
+        public byte GetA(double a)
         {
             return 1;
         }
 
-        public byte getB(double ordinal)
+        public byte GetB(double ordinal)
         {
             ordinal *= 4;
 
             return (byte)(255 * Math.Min(Math.Max(Math.Min(ordinal + 0.5, -ordinal + 2.5), 0), 1));
         }
 
-        public byte getG(double ordinal)
+        public byte GetG(double ordinal)
         {
             ordinal *= 4;
 
             return (byte)(255 * Math.Min(Math.Max(Math.Min(ordinal - 0.5, -ordinal + 3.5), 0), 1));
         }
 
-        public byte getR(double ordinal)
+        public byte GetR(double ordinal)
         {
             ordinal *= 4;
 
@@ -61,22 +61,22 @@ namespace HTMLCodeBuilder.Utils
 
     public struct GRAY : ICmap
     {
-        public byte getA(double a)
+        public byte GetA(double a)
         {
             return (byte)(255.0);
         }
 
-        public byte getB(double a)
+        public byte GetB(double a)
         {
             return (byte)(255.0*a);
         }
 
-        public byte getG(double a)
+        public byte GetG(double a)
         {
             return (byte)(255.0 * a);
         }
 
-        public byte getR(double a)
+        public byte GetR(double a)
         {
             return (byte)(255.0 * a);
         }
@@ -194,9 +194,9 @@ namespace HTMLCodeBuilder.Utils
             {
                 double gray = (1.0*index  / colors);
 
-                colorsVals[index * 4]     = jet.getR(gray);
-                colorsVals[index * 4 + 1] = jet.getG(gray );
-                colorsVals[index * 4 + 2] = jet.getB(gray );
+                colorsVals[index * 4]     = jet.GetR(gray);
+                colorsVals[index * 4 + 1] = jet.GetG(gray );
+                colorsVals[index * 4 + 2] = jet.GetB(gray );
             });
 
             UpdateImage(ref map, colorsVals);
@@ -217,7 +217,7 @@ namespace HTMLCodeBuilder.Utils
 
             Parallel.For(0, colors, index =>
             {
-                colorsVals[index * 4]     = gray.getR((colors - index) / colors);
+                colorsVals[index * 4]     = gray.GetR((colors - index) / colors);
                 colorsVals[index * 4 + 1] = colorsVals[index * 4];
                 colorsVals[index * 4 + 2] = colorsVals[index * 4];
             });
@@ -344,9 +344,9 @@ namespace HTMLCodeBuilder.Utils
                 for (int i = 0; i < w * 3; i+=3)
                 {
                     cellidx = rowidx + i / 3;
-                    bytes[rowStrideIdx + i]     = colorSetter.getR((array[cellidx] - min) / abs);
-                    bytes[rowStrideIdx + i + 1] = colorSetter.getG((array[cellidx] - min) / abs);
-                    bytes[rowStrideIdx + i + 2] = colorSetter.getB((array[cellidx] - min) / abs);
+                    bytes[rowStrideIdx + i]     = colorSetter.GetR((array[cellidx] - min) / abs);
+                    bytes[rowStrideIdx + i + 1] = colorSetter.GetG((array[cellidx] - min) / abs);
+                    bytes[rowStrideIdx + i + 2] = colorSetter.GetB((array[cellidx] - min) / abs);
                 }
             });
 

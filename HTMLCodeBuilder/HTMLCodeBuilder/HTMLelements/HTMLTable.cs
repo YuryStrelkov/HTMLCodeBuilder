@@ -7,25 +7,24 @@ namespace HTMLCodeBuilder.HTMLelements
     public class HTMLTable:TagElement
     {
         public int W { get; private set; }
-
         public int H { get; private set; }
 
         private int records;
 
-        private string CSS;
+        private readonly string CSS;
 
-        private List<int> rows;
+        private readonly List<int> rows;
 
-        private Dictionary<int, List<int>> cells;
+        private readonly Dictionary<int, List<int>> cells;
 
-        private TagElementsGroup table;
+        private readonly TagElementsGroup table;
 
-        public ITagElement getCellData(int i, int j)
+        public ITagElement GetCellData(int i, int j)
         {
-            return table.GetElement(getCellID(i, j));
+            return table.GetElement(GetCellID(i, j));
         }
 
-        public int getCellID(int i, int j)
+        public int GetCellID(int i, int j)
         {
             if (H < i + 1)
             {
@@ -39,21 +38,21 @@ namespace HTMLCodeBuilder.HTMLelements
             return cells[rows[i]][j];
         }
 
-        public void appendRecord(string val)
+        public void AppendRecord(string val)
         {
             if ( records%W == 0)
             {
-                addRow();
+                AddRow();
             }
 
-            setRecord(records/W, records%W, val);
+            SetRecord(records/W, records%W, val);
 
             records++;
         }
 
-        public void setRecord(int i, int j, string val)
+        public void SetRecord(int i, int j, string val)
         {
-            getCellData(i, j).InnerString = val;
+            GetCellData(i, j).InnerString = val;
         }
 
         public override string ExpandOpenTag(int tab)
@@ -87,7 +86,7 @@ namespace HTMLCodeBuilder.HTMLelements
             return table.BuildCode(TabLevel) +  GetTab(TabLevel) + CloseTag;
         }
 
-        private void addHeadersRow(string [] headedrs)
+        private void AddHeadersRow(string [] headedrs)
         {
             table.AddElementParam(table.RootID, "##style", CSS);
 
@@ -111,7 +110,7 @@ namespace HTMLCodeBuilder.HTMLelements
             records = W;
         }
 
-        private void addRow()
+        private void AddRow()
         {
             table.AddElementParam(table.RootID, "##style", CSS);
 
@@ -167,7 +166,7 @@ namespace HTMLCodeBuilder.HTMLelements
 
             AddParam( "##style", CSS);
 
-            addHeadersRow(headers);
+            AddHeadersRow(headers);
         }
 
         public override string ToString()

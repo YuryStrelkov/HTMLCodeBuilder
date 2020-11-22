@@ -9,9 +9,9 @@ namespace HTMLCodeBuilder.Nodes
     {
         private int InstanceCount = 0;
 
-        private object mutex;
+        private readonly object mutex;
 
-        private Stack<int> deletedInstances;
+        private readonly Stack<int> deletedInstances;
 
         public void RemoveInstance(int id)
         {

@@ -26,7 +26,7 @@ namespace HTMLCodeBuilder.TaggedElements
                 if (HasTag(ids, tag))
                 {
                     return true;
-                };
+                }
             }
             return false;
         }
@@ -51,7 +51,7 @@ namespace HTMLCodeBuilder.TaggedElements
                 if (HasClass(ids, Class))
                 {
                     return true;
-                };
+                }
             }
             return false;
         }
@@ -293,7 +293,7 @@ namespace HTMLCodeBuilder.TaggedElements
         {
             Code = null;
             base.Dispose();
-            GC.SuppressFinalize(this);
+            GC.Collect();
         }
     }
 }

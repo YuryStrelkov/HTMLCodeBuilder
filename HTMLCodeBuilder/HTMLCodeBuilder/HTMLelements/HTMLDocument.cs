@@ -8,9 +8,9 @@ namespace HTMLCodeBuilder.HTMLelements
 {
     public struct HTMLStyle:IStyle
     {
-        private string selector;
+        private readonly string selector;
 
-        private string code;
+        private readonly string code;
 
         public string Selector()
         {

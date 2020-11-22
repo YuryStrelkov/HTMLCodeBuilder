@@ -20,15 +20,15 @@ namespace HTMLCodeBuilder.Nodes
         /// <summary>
         /// Собственный ID
         /// </summary>
-        private int Id;
+        private readonly int Id;
         /// <summary>
         /// ID дочерних элементов
         /// </summary>
-        private Dictionary<int, int> childrens;
+        private readonly Dictionary<int, int> childrens;
         /// <summary>
         /// Хранимые данные
         /// </summary>
-        private T data;
+        private readonly T data;
         /// <summary>
         /// Метод доступа для обращения к хранимым данным
         /// </summary>
@@ -177,7 +177,7 @@ namespace HTMLCodeBuilder.Nodes
         public void Dispose()
         {
             instanceCounter.RemoveInstance(Id);
-            GC.SuppressFinalize(this);
+           // GC.Collect();
         }
 
         /*~Node()
