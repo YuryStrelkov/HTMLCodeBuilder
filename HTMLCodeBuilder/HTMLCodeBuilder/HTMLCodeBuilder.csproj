@@ -66,6 +66,7 @@
     <Compile Include="SVGelements\SVGElements.cs" />
     <Compile Include="Utils\ImageProcessing.cs" />
     <Compile Include="Utils\Vec2D.cs" />
+    <Compile Include="Utils\Vector3.cs" />
     <Compile Include="Utils\XYWH.cs" />
   </ItemGroup>
   <ItemGroup>
